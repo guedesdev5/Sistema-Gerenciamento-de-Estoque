@@ -1,0 +1,52 @@
+CREATE DATABASE loja;
+use loja;
+CREATE TABLE categorias (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT
+);
+CREATE TABLE fornecedores (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    telefone VARCHAR(20),
+    email VARCHAR(100),
+    endereco TEXT
+);
+CREATE TABLE produtos (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    preco FLOAT,
+    quantidade INT NOT NULL,
+    id_categoria INT,
+    id_fornecedor INT,
+    FOREIGN KEY (id_categoria) REFERENCES categorias(id),
+    FOREIGN KEY (id_fornecedor) REFERENCES fornecedores(id)
+);
+
+CREATE TABLE vendedores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    username VARCHAR(20) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(50),
+    permissao INT NOT NULL
+);
+
+CREATE TABLE vendas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    data_venda DATE DEFAULT CURRENT_TIMESTAMP,
+    quantidade_vendida INT NOT NULL,
+    id_produto INT,
+    id_fornecedor INT,
+    id_categoria INT,
+    id_vendedor INT,
+    FOREIGN KEY (id_produto) REFERENCES produtos(id),
+    FOREIGN KEY (id_fornecedor) REFERENCES fornecedores(id),
+    FOREIGN KEY (id_categoria) REFERENCES categorias(id),
+    FOREIGN KEY (id_vendedor) REFERENCES vendedores(id)
+);
+
+
+
+INSERT INTO vendedores (nome, username, email, senha, permissao) VALUES ('João', 'Jjoo', 'joao@example.com', 'senha123', 1);
