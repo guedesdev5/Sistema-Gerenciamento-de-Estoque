@@ -2,7 +2,7 @@ import mysql.connector
 
 def getConnection():
     global database
-    database = mysql.connector.Connect(host="localhost", database="loja", user="root", password="pietro29012007")
+    database = mysql.connector.Connect(host="localhost", database="sistema_geranciamento", user="root", password="pietro29012007")
 
 def getLogin(username, password):
     getConnection()

@@ -2,25 +2,9 @@ import mysql.connector
 
 def getConnection():
     global database
-    database = mysql.connector.Connect(host="localhost", database="loja", user="root", password="pietro29012007")
+    database = mysql.connector.Connect(host="localhost", database="sistema_geranciamento", user="root", password="pietro29012007")
 
-def create(id, name, description, price, quantity, categoryID, supplierID):
-    getConnection()
-    if database.is_connected():
-        try:
-             cursor = database.cursor() 
-             cursor.execute(f'''INSERT into produtos 
-             (id, nome, descricao, preco, quantidade, id_categoria, id_fornecedor) 
-             values 
-             ({id}, "{name}", "{description}", {price}, {quantity}, {categoryID}, {supplierID})''')
-             database.commit()
-             print('deu')
-             return 1
-        except Exception as error:
-            return error
-    return 2
-
-def read ():
+def readProdutos ():
     getConnection()
     if database.is_connected():
         try:
@@ -110,6 +94,20 @@ def readFornecedor ():
         try:
             cursor = database.cursor()
             cursor.execute('SELECT * from fornecedores')
+            results = cursor.fetchall()
+                    
+            return results
+        except Exception as e:
+            return e
+    else:
+        return 2
+    
+def readVendas ():
+    getConnection()
+    if database.is_connected():
+        try:
+            cursor = database.cursor()
+            cursor.execute('SELECT * from vendas')
             results = cursor.fetchall()
                     
             return results
