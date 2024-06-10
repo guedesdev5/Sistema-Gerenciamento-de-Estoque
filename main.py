@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, flash
+from flask import Flask, render_template, request, flash, g
 import backend.login as l
 import backend.read as r
 import backend.create as c
+import backend.update as u
 
 app = Flask(__name__)
 app.secret_key = 'abcdohdohfhef32833'
@@ -10,7 +11,6 @@ app.secret_key = 'abcdohdohfhef32833'
 def home():
     return render_template("login.html")
     
-
 @app.route("/login", methods=['POST'])
 def login():
     username = request.form.get('username')
@@ -19,7 +19,15 @@ def login():
     if result == 1:
         flash('Inserção realizada com sucesso!', 'success')
         readBD = r.readProdutos()
-        return render_template("homepage.html", lista = readBD)
+        readIdCategory = r.readIdCategory()
+        readIdFornecedores = r.readIdFornecedores()
+        permission = l.getPermission(username)
+        if permission == 1:
+            app.config['PERMISSION_USER'] = True
+        else:
+            app.config['PERMISSION_USER'] = False
+        
+        return render_template("homepage.html", lista = readBD, idCategory = readIdCategory, readIdFornecedores = readIdFornecedores, permissionUser = app.config['PERMISSION_USER'])
     else:
         flash('deu ruim', 'spam')
         return render_template("login.html")
@@ -35,11 +43,16 @@ def produtos():
     category_id = request.form.get('category_id')
     fornecedor_id = request.form.get('fornecedor_id')
     result = c.createProdutos(id, name, description, price, quantity, category_id, fornecedor_id)
+    print(result)
     readBD = r.readProdutos()
+    readIdCategory = r.readIdCategory()
+    readIdFornecedores = r.readIdFornecedores()
+    print(readIdFornecedores)
+    print(readIdCategory)
     if result == 1:
-        return render_template("homepage.html", lista = readBD)
+        return render_template("homepage.html", lista = readBD, idCategory = readIdCategory, readIdFornecedores = readIdFornecedores)
     else:
-        return render_template("homepage.html", lista = readBD)
+        return render_template("homepage.html", lista = readBD, idCategory = readIdCategory, readIdFornecedores = readIdFornecedores)
 
 @app.route("/categorias", methods=['POST'])
 def categoriaspost():
@@ -88,10 +101,14 @@ def vendaspost():
     cd_vendedor = request.form.get('codv')
     result = c.createVendas( qntd, cd_produto, cd_vendedor)
     readBD = r.readVendas()
+    readIdVendedor = r.readIdvendedor()
+    readIdProdutos = r.readIdprodutos()
+    u.updateProductQntd(cd_produto, qntd)
     if result == 1:
-        return render_template("vendas.html", lista = readBD)
+        return render_template("vendas.html", lista = readBD, readIdVendedor = readIdVendedor, readIdProdutos = readIdProdutos, permissionUser = app.config['PERMISSION_USER'])
     else:
-        return render_template("vendas.html", lista = readBD)
+        return render_template("vendas.html", lista = readBD, readIdVendedor = readIdVendedor, readIdProdutos = readIdProdutos, permissionUser = app.config['PERMISSION_USER'])
+
 
 @app.route("/vendedores.html")
 def vendedores():
@@ -101,7 +118,10 @@ def vendedores():
 @app.route("/homepage.html")
 def homepage():
     readBD = r.readProdutos()
-    return render_template("homepage.html",  lista = readBD)
+    readIdCategory = r.readIdCategory()
+    readIdFornecedores = r.readIdFornecedores()
+    return render_template("homepage.html", lista = readBD, idCategory = readIdCategory, readIdFornecedores = readIdFornecedores, permissionUser = app.config['PERMISSION_USER'])
+  
 
 @app.route("/categorias.html")
 def categorias():
@@ -111,7 +131,9 @@ def categorias():
 @app.route("/vendas.html")
 def vendas():
     readBD = r.readVendas()
-    return render_template("vendas.html",  lista = readBD)
+    readIdVendedor = r.readIdvendedor()
+    readIdProdutos = r.readIdprodutos()
+    return render_template("vendas.html", lista = readBD, readIdVendedor = readIdVendedor, readIdProdutos = readIdProdutos, permissionUser = app.config['PERMISSION_USER'])
 
 @app.route("/fornecedores.html")
 def fornecedores():

@@ -115,3 +115,64 @@ def readVendas ():
             return e
     else:
         return 2
+    
+def readIdCategory ():
+    getConnection()
+    if database.is_connected():
+        try:
+            cursor = database.cursor()
+            cursor.execute(' SELECT id FROM categorias')
+            results = cursor.fetchall()
+
+# Retornar a lista de resultados
+            return results
+        except Exception as e:
+            return e
+    else:
+        return 2
+    
+def readIdFornecedores ():
+    getConnection()
+    if database.is_connected():
+        try:
+            cursor = database.cursor()
+            cursor.execute(' SELECT id FROM fornecedores')
+            results = cursor.fetchall()
+            
+# Retornar a lista de resultados
+            return results
+        except Exception as e:
+            return e
+    else:
+        return 2
+
+def readIdvendedor ():
+    getConnection()
+    if database.is_connected():
+        try:
+            cursor = database.cursor()
+            cursor.execute(' SELECT id FROM vendedores')
+            results = cursor.fetchall()
+            
+# Retornar a lista de resultados
+            return results
+        except Exception as e:
+            return e
+    else:
+        return 2
+    
+def readIdprodutos ():
+    getConnection()
+    if database.is_connected():
+        try:
+            cursor = database.cursor()
+            cursor.execute(' SELECT id FROM produtos')
+            results = cursor.fetchall()
+            
+# Retornar a lista de resultados
+            return results
+        except Exception as e:
+            return e
+    else:
+        return 2
+   

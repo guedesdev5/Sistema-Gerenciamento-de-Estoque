@@ -65,7 +65,7 @@ def createProdutos(id, name, description, price, quantity, categoryID, supplierI
             return error
     return 2
 
-def createVendas(data, qntd, id_produto, id_vendedor):
+def createVendas( qntd, id_produto, id_vendedor):
     getConnection()
     if database.is_connected():
         try:

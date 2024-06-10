@@ -44,4 +44,19 @@ CREATE TABLE vendas (
 );
 
 
-INSERT INTO vendedores (nome, username, email, senha, permissao) VALUES ('João', 'Jjoo', 'joao@example.com', 'senha123', 1);
+INSERT INTO categorias (nome, descricao) VALUES ('Acessórios', 'Acessórios para piscina');
+INSERT INTO categorias (nome, descricao) VALUES ('Piscinas Média', '5 à 10 metros de comprimento');
+
+INSERT INTO fornecedores (nome, telefone, email, endereco) VALUES ('Igui Piscinas', '123456789', 'igui@piscinas.com', 'Rua dos mutuns, 446');
+INSERT INTO fornecedores (nome, telefone, email, endereco) VALUES ('Genco', '987654321', 'genco@gmail.com', 'Avenida das tangaras, 456');
+
+INSERT INTO produtos (id, nome, descricao, preco, quantidade, id_categoria, id_fornecedor) VALUES (1, 'Cloro', 'Cloro 10 kg', 300.00, 100, 1, 2);
+INSERT INTO produtos (id, nome, descricao, preco, quantidade, id_categoria, id_fornecedor) VALUES (2, 'Piscina', 'Piscina com lead', 50.00, 200, 2, 1);
+
+INSERT INTO vendedores (nome, username, email, senha, permissao) VALUES ('Ana Luiza', 'anac', 'ana@teste.com', 'senha123', 1);
+INSERT INTO vendedores (nome, username, email, senha, permissao) VALUES ('Yago Rafael', 'yagor', 'yago@teste.com', 'senha123', 2);
+
+
+
+
+

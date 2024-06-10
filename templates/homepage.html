@@ -9,6 +9,7 @@
 
 body{
     height: 100vh;
+    background: linear-gradient(to bottom right, #87CEFA, #FFC0CB);
     
 }
 
@@ -60,6 +61,7 @@ nav.menu-lateral:hover{
     line-height: 37px;
     margin-top: auto;
 
+
 }
 
 ul li.sair:hover{
@@ -72,10 +74,29 @@ ul li.sair{
     transition: 1s;
 }
 
+ul li.sair a{
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    font-size: 20px;
+    padding: 15px 4%;
+    display: flex;
+    line-height: 37px;
+}
+
 ul li.sair a .icon >i{
     font-size: 20px;
 }
 
+ul li.sair a .txt-link{
+   margin-left: 20px;
+}
+
+ul li.sair:hover{
+    background: #ffffff8a;
+}
+ul li.sair {
+    transition: 1s;
+}
 
 ul{
     height: 100%;
@@ -112,7 +133,10 @@ ul li.menu a .icon >i{
     width: 80%;
     margin: 0 auto;
     padding: 20px;
-    background-color: #ffffff;
+    .container {
+    padding: 20px;
+}
+
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-top: 50px;
@@ -148,7 +172,7 @@ input[type="number"] {
 
 button[type="submit"] {
     width: 100%;
-    background-color: #ffffff;
+    background-color: #028dff;
     color: #fff;
     border: none;
     padding: 10px;
@@ -157,7 +181,6 @@ button[type="submit"] {
     font-size: 16px;
     transition: background-color 0.3s ease;
 }
-
 button[type="submit"]:hover {
     background-color: #3378c3;
 }
@@ -175,7 +198,7 @@ table {
 }
 
 thead {
-    background-color: #333;
+    background-color: #686565;
     color: #fff;
 }
 
@@ -215,13 +238,7 @@ td a:hover {
         justify-content: space-between;
     }
 
-    .container .left-column {
-        flex: 0 0 calc(45% - 10px); /* Defina a largura da coluna esquerda */
-    }
-
-    .container .right-column {
-        flex: 0 0 calc(75% - 10px); /* Defina a largura da coluna direita */
-    }
+   
 
     .container label,
     .container input {
@@ -243,6 +260,45 @@ td a:hover {
     .container button {
         clear: both;
     }
+    .left-column {
+            float: left;
+            width: 45%; /* Define a largura da coluna esquerda */
+        }
+        .left-column input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .right-column {
+            float: right;
+            width: 45%; /* Define a largura da coluna direita */
+        }
+        .right-column input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .right-column select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        
 </style>
 </head>
 <body>
@@ -250,40 +306,40 @@ td a:hover {
     <nav class="menu-lateral">
         
         <ul>
+            {% if permissionUser %}
             <li class="menu">
                 <a href="vendedores.html">
-                <span class="icon"><i class="bi bi-basket3"></i></span>
+                <span class="icon"><i class="bi bi-person-lines-fill"></i></i></span>
                 <span class="txt-link"> Vendedores </span>
                 </a>
             </li>
+            {% endif %}
 
+            {% if permissionUser %}
             <li class="menu">
                 <a href="categorias.html">
                 <span class="icon"><i class="bi bi-bookmark"></i></span>
                 <span class="txt-link"> Categorias </span>
                 </a>
             </li>
+            {% endif %}
             
+            {% if permissionUser %}
             <li class="menu">
                 <a href="fornecedores.html">
-                <span class="icon"><i class="bi bi-box-arrow-up"></i></span>
+                <span class="icon"><i class="bi bi-truck"></i></span>
                 <span class="txt-link"> Fornecedores </span>
                 </a>
             </li>
+            {% endif %}
 
             <li class="menu">
                 <a href="vendas.html">
-                <span class="icon"><i class="bi bi-box-seam"></i>></span>
+                <span class="icon"><i class="bi bi-coin"></i></span>
                 <span class="txt-link"> Vendas </span>
                 </a>
             </li>
 
-            <li class="menu">
-                <a href="cliente.css">
-                <span class="icon"><i class="bi bi-person-fill"></i></span>
-                <span class="txt-link"> Cliente </span>
-                </a>
-            </li>
 
             <li class="sair">
                 <a href="login.html">
@@ -307,19 +363,35 @@ td a:hover {
                 <input type="text" id="description" name="description" required>
 
                 <label for="price">Preço do produto:</label>
-                <input type="number" id="price" name="price" required>
+                <input type="number" id="price" name="price" placeholder="R$" required>
         </div>
         <div class="right-column">
-    
-                <label for="quantity">Quantidade do produto:</label>
-                <input type="number" id="quantity" name="quantity" required>
-    
-                <label for="category_id">Id da categoria:</label>
-                <input type="number" id="category_id" name="category_id" required>
-    
-                <label for="fornecedor_id">Id do fornecedor:</label>
-                <input type="number" id="fornecedor_id" name="fornecedor_id" required>
-                <button type="submit">Salvar</button>
+            <label for="quantity">Quantidade do produto:</label>
+            <input type="number" id="quantity" name="quantity" required>
+                    
+            <label for="category_id">Id da categoria:</label>
+            <select id="category_id" name="category_id" required>
+                {% if idCategory %}
+                    {% for categoria in idCategory %}
+                        <option value="{{ categoria[0] }}">{{ categoria }}</option>
+                    {% endfor %}
+                {% else %}
+                    <option value=""><b>Sem Categorias</b></option>
+                {% endif %}
+            </select>
+            
+            <label for="fornecedor_id">Id do fornecedor:</label>
+            <select id="fornecedor_id" name="fornecedor_id" required>
+                {% if readIdFornecedores %}
+                    {% for Fornecedores in readIdFornecedores %}
+                        <option value="{{ Fornecedores[0] }}">{{ Fornecedores }}</option>
+                    {% endfor %}
+                {% else %}
+                    <option value=""><b>Sem Fornecedores</b></option>
+                {% endif %}
+            </select>
+
+            <button type="submit">Salvar</button>
         </div>
         </form>
     </div>

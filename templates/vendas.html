@@ -9,6 +9,7 @@
 
 body{
     height: 100vh;
+    background: linear-gradient(to bottom right, #87CEFA, #FFC0CB);
     
 }
 
@@ -112,7 +113,6 @@ ul li.menu a .icon >i{
     width: 80%;
     margin: 0 auto;
     padding: 20px;
-    background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-top: 50px;
@@ -148,7 +148,7 @@ input[type="number"] {
 
 button[type="submit"] {
     width: 100%;
-    background-color: #ffffff;
+    background-color: #028dff;
     color: #fff;
     border: none;
     padding: 10px;
@@ -157,7 +157,6 @@ button[type="submit"] {
     font-size: 16px;
     transition: background-color 0.3s ease;
 }
-
 button[type="submit"]:hover {
     background-color: #3378c3;
 }
@@ -175,7 +174,7 @@ table {
 }
 
 thead {
-    background-color: #333;
+    background-color: #686565;
     color: #fff;
 }
 
@@ -243,6 +242,77 @@ td a:hover {
     .container button {
         clear: both;
     }
+
+    ul li.sair a{
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    font-size: 20px;
+    padding: 15px 4%;
+    display: flex;
+    line-height: 37px;
+}
+
+ul li.sair a .icon >i{
+    font-size: 20px;
+}
+
+ul li.sair a .txt-link{
+   margin-left: 20px;
+}
+
+ul li.sair:hover{
+    background: #ffffff8a;
+}
+ul li.sair {
+    transition: 1s;
+}
+.right-column {
+            float: right;
+            width: 45%; /* Define a largura da coluna direita */
+        }
+        .right-column input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .right-column select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .left-column {
+            float: left;
+            width: 45%; /* Define a largura da coluna esquerda */
+        }
+        .left-column input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .left-column select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
 </style>
 </head>
 <body>
@@ -252,38 +322,39 @@ td a:hover {
         <ul>
             <li class="menu">
                 <a href="homepage.html">
-                <span class="icon"><i class="bi bi-cart-check"></i>></span>
+                <span class="icon"><i class="bi bi-box-seam"></i></span>
                 <span class="txt-link"> Produtos </span>
                 </a>
             </li>
 
+            {% if permissionUser %}
+            <li class="menu">
+                <a href="vendedores.html">
+                <span class="icon"><i class="bi bi-person-lines-fill"></i></i></span>
+                <span class="txt-link"> Vendedores </span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if permissionUser %}
             <li class="menu">
                 <a href="categorias.html">
                 <span class="icon"><i class="bi bi-bookmark"></i></span>
                 <span class="txt-link"> Categorias </span>
                 </a>
             </li>
+            {% endif %}
             
-            <li class="menu">
-                <a href="vendedores.html">
-                <span class="icon"><i class="bi bi-basket3"></i></span>
-                <span class="txt-link"> Vendedores </span>
-                </a>
-            </li>
-
+            {% if permissionUser %}
             <li class="menu">
                 <a href="fornecedores.html">
-                <span class="icon"><i class="bi bi-box-arrow-up"></i></span>
+                <span class="icon"><i class="bi bi-truck"></i></span>
                 <span class="txt-link"> Fornecedores </span>
                 </a>
             </li>
+            {% endif %}
 
-            <li class="menu">
-                <a href="cliente.css">
-                <span class="icon"><i class="bi bi-person-fill"></i></span>
-                <span class="txt-link"> Cliente </span>
-                </a>
-            </li>
+            
 
             <li class="sair">
                 <a href="login.html">
@@ -301,15 +372,31 @@ td a:hover {
                 <label for="qntd">Quantidade vendida (unidade):</label>
                 <input type="number" id="qntd" name="qntd" required>
 
+                <label for="cod">Código produto:</label>
+                <select  id="cod" name="cod" required>
+                    {% if readIdProdutos %}
+                        {% for produtos in readIdProdutos %}
+                            <option value="{{ produtos[0] }}">{{ produtos }}</option>
+                        {% endfor %}
+                    {% else %}
+                        <option value=""><b>Sem Produto</b></option>
+                    {% endif %}
+                </select>
+
                 
         </div>
         <div class="right-column">
 
-                <label for="cod">Código produto:</label>
-                <input type="number" id="cod" name="cod" required>
-
-                <label for="codv">Código Vendedoir:</label>
-                <input type="number" id="codv" name="codv" required>
+                <label for="codv">Código Vendedor:</label>
+                <select  id="codv" name="codv" required>
+                    {% if readIdVendedor %}
+                    {% for vendedor in readIdVendedor %}
+                        <option value="{{ vendedor[0] }}">{{ vendedor }}</option>
+                    {% endfor %}
+                {% else %}
+                    <option value=""><b>Sem Vendedor</b></option>
+                {% endif %}
+                </select>
     
                 <button type="submit">Salvar</button>
         </div>

@@ -23,3 +23,19 @@ def getLogin(username, password):
     else:
         return 2
 
+def getPermission(username):
+    getConnection()
+    if database.is_connected():
+        try:
+            cursor = database.cursor()
+            cursor.execute(f'SELECT permissao from vendedores WHERE username = "{username}"')
+            result = cursor.fetchall()
+            print(result)
+            if len(result) > 0:
+              return result[0][0]
+            else:
+                return 0
+        except Exception as e:
+            return e
+    else:
+        return 2
