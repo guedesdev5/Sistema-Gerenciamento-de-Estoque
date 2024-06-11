@@ -55,8 +55,8 @@ INSERT INTO produtos (id, nome, descricao, preco, quantidade, id_categoria, id_f
 
 INSERT INTO vendedores (nome, username, email, senha, permissao) VALUES ('Ana Luiza', 'anac', 'ana@teste.com', 'senha123', 1);
 INSERT INTO vendedores (nome, username, email, senha, permissao) VALUES ('Yago Rafael', 'yagor', 'yago@teste.com', 'senha123', 2);
+INSERT INTO vendedores (nome, username, email, senha, permissao) VALUES ('Pietro Guedes', 'guedes', 'guedesdev5@gmail.com', 'senha123', 2);
 
 
 
-
-
+--

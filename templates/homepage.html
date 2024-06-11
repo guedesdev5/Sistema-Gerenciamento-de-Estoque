@@ -306,19 +306,17 @@ td a:hover {
     <nav class="menu-lateral">
         
         <ul>
-            {% if permissionUser %}
             <li class="menu">
-                <a href="vendedores.html">
-                <span class="icon"><i class="bi bi-person-lines-fill"></i></i></span>
-                <span class="txt-link"> Vendedores </span>
+                <a href="homepage.html">
+                <span class="icon"><i class="bi bi-box-seam"></i></span>
+                <span class="txt-link"> Produtos </span>
                 </a>
             </li>
-            {% endif %}
 
             {% if permissionUser %}
             <li class="menu">
                 <a href="categorias.html">
-                <span class="icon"><i class="bi bi-bookmark"></i></span>
+                <span class="icon"><i class="bi bi-list-ul"></i></span>
                 <span class="txt-link"> Categorias </span>
                 </a>
             </li>
@@ -329,6 +327,15 @@ td a:hover {
                 <a href="fornecedores.html">
                 <span class="icon"><i class="bi bi-truck"></i></span>
                 <span class="txt-link"> Fornecedores </span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if permissionUser %}
+            <li class="menu">
+                <a href="vendedores.html">
+                <span class="icon"><i class="bi bi-person-lines-fill"></i></i></span>
+                <span class="txt-link"> Vendedores </span>
                 </a>
             </li>
             {% endif %}
