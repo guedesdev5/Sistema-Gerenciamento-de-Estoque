@@ -1,7 +1,7 @@
 
 body{
     height: 100vh;
-    
+    background: linear-gradient(to bottom right, #87CEFA, #FFC0CB);
 }
 
 *{
@@ -104,7 +104,6 @@ ul li.menu a .icon >i{
     width: 80%;
     margin: 0 auto;
     padding: 20px;
-    background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-top: 50px;
@@ -149,7 +148,6 @@ button[type="submit"] {
     font-size: 16px;
     transition: background-color 0.3s ease;
 }
-
 button[type="submit"]:hover {
     background-color: #3378c3;
 }
@@ -167,7 +165,7 @@ table {
 }
 
 thead {
-    background-color: #333;
+    background-color: #686565;
     color: #fff;
 }
 
@@ -259,29 +257,50 @@ ul li.sair:hover{
 ul li.sair {
     transition: 1s;
 }
+.right-column {
+            float: right;
+            width: 45%; /* Define a largura da coluna direita */
+        }
+        .right-column input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
 
-/* Classe para o rótulo */
-.custom-label {
-    display: block; /* Exibir em bloco para ocupar toda a largura disponível */
-    margin-bottom: 10px; /* Espaçamento inferior para separar os elementos */
-    font-weight: bold; /* Texto em negrito */
-    color: #333; /* Cor do texto */
-}
+        .right-column select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
 
-/* Classe para o campo de entrada */
-.custom-input {
-    width: 100%; /* Largura total do elemento */
-    padding: 10px; /* Preenchimento interno */
-    margin-bottom: 20px; /* Espaçamento inferior para separar os elementos */
-    border-radius: 5px; /* Borda arredondada */
-    border: 1px solid #ccc; /* Borda com cor */
-    box-sizing: border-box; /* Incluir o preenchimento e a borda na largura total */
-    font-size: 16px; /* Tamanho da fonte */
-}
+        .left-column {
+            float: left;
+            width: 45%; /* Define a largura da coluna esquerda */
+        }
+        .left-column input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
 
-/* Estilo para o campo de entrada quando está em foco */
-.custom-input:focus {
-    outline: none; /* Remover a borda de foco padrão */
-    border-color: #007bff; /* Alterar a cor da borda quando em foco */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Adicionar sombra quando em foco */
-}
+        .left-column select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
