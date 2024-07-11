@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dados Fornecedores</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleFornecedores.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleFornecedor.css') }}">
 </head>
 <body>
 
     <nav class="menu-lateral">
-        
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+        </div>
         <ul>
             <li class="menu">
                 <a href="homepage.html">
@@ -28,7 +30,7 @@
 
             <li class="menu">
                 <a href="fornecedores.html">
-                <span class="icon"><i class="bi bi-truck"></i></i></span>
+                <span class="icon"><i class="bi bi-truck"></i></span>
                 <span class="txt-link"> Fornecedores </span>
                 </a>
             </li>
@@ -47,8 +49,6 @@
                 </a>
             </li>
 
-            
-
             <li class="sair">
                 <a href="login.html">
                 <span class="icon"><i class="bi bi-box-arrow-right"></i></span>
@@ -60,48 +60,43 @@
 
     <div class="container">
         <form action="/fornecedores" method="post">
-        <div class="left-column">
-    
+            <div class="left-column">
                 <label for="name">Nome Fantasia:</label>
                 <input type="text" id="name" name="name" required>
     
                 <label for="tel">Telefone do Fornecedor:</label>
                 <input type="text" id="tel" name="tel" required>
-
-                
-        </div>
-        <div class="right-column">
-
+            </div>
+            <div class="right-column">
                 <label for="email">Email do Fornecedor:</label>
                 <input type="email" id="email" name="email" required>
 
                 <label for="endereco">Endereço do Fornecedor:</label>
                 <input type="text" id="endereco" name="endereco" required>
-    
-        </div>
-        <button type="submit">Salvar</button>
+            </div>
+            <button type="submit">Salvar</button>
         </form>
     </div>
-<br>
-<table>
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>Telefone</th>
-            <th>Email</th>
-            <th>Endereço</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for listagem in lista %}
-        <tr>
-            <td>{{ listagem[1] }}</td>
-            <td>{{ listagem[2] }}</td>
-            <td>{{ listagem[3] }}</td>
-            <td>{{ listagem[4] }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <br>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th>Email</th>
+                <th>Endereço</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for listagem in lista %}
+            <tr>
+                <td>{{ listagem[1] }}</td>
+                <td>{{ listagem[2] }}</td>
+                <td>{{ listagem[3] }}</td>
+                <td>{{ listagem[4] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>

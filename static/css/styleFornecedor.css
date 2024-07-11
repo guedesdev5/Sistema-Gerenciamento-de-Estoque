@@ -1,103 +1,86 @@
-
-body{
+body {
     height: 100vh;
-    background: linear-gradient(to bottom right, #87CEFA, #FFC0CB);
+    background: linear-gradient(to bottom right, #f0f4f7, #dae8fc);
+    font-family: 'Arial', sans-serif;
 }
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-
 }
 
-
-nav.menu-lateral{
+nav.menu-lateral {
     overflow: hidden;
-    transition: 1s;
+    transition: 0.5s;
     width: 50px;
     height: 100%;
-    background-color: rgb(0, 114, 180);
+    background-color: #003366;
     padding: 40px 0px 40px 1%;
-    box-shadow: 3px 0px 0px #ffffff5e;
+    box-shadow: 3px 0px 0px #cfcfcf;
     position: fixed;
     top: 0;
     left: 0;
-    
 }
 
-
-nav.menu-lateral:hover{
-
+nav.menu-lateral:hover {
     width: 250px;
 }
 
-.btn-expandir{
+.logo {
     width: 100%;
-    padding-left: 3px;
-}
-.btn-expandir>i{
-    color: rgb(105, 105, 105);
-    font-size: 20px;
-    cursor: pointer;
-
-}
-
-.sair{
-    color: rgb(255, 255, 255) !important;
-    text-decoration: none;
-    font-size: 10px;
-    padding: 15px 4%;
     display: flex;
-    line-height: 37px;
-    margin-top: auto;
-
+    justify-content: center;
+    margin-bottom: 20px;
 }
 
-ul li.sair:hover{
-    background: #ffffff5e;
+.logo img {
+    width: 80%;
 }
 
-ul li.sair{
+ul {
+    height: 100%;
+    list-style-type: none;
+    padding-left: 0;
+}
+
+ul li {
+    transition: 0.5s;
+}
+
+ul li.menu,
+ul li.sair {
+    padding: 10px;
+}
+
+ul li.menu a,
+ul li.sair a {
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+ul li.menu:hover,
+ul li.sair:hover {
+    background: #00509e;
+}
+
+ul li.menu a .txt-link,
+ul li.sair a .txt-link {
+    margin-left: 20px;
+}
+
+ul li.menu a .icon i,
+ul li.sair a .icon i {
+    font-size: 20px;
+}
+
+ul li.sair {
     position: absolute;
     bottom: 40px;
-    transition: 1s;
-}
-
-ul li.sair a .icon >i{
-    font-size: 20px;
-}
-
-
-ul{
-    height: 100%;
-    list-style-type:none; 
-}
-
-ul li.menu:hover{
-    background: #ffffff8a;
-}
-ul li.menu {
-    transition: 1s;
-}
-
-
-ul li.menu a{
-    color: rgb(255, 255, 255);
-    text-decoration: none;
-    font-size: 20px;
-    padding: 15px 4%;
-    display: flex;
-    line-height: 37px;
-    
-}
-
-ul li.menu a .txt-link{
-   margin-left: 20px;
-}
-
-ul li.menu a .icon >i{
-    font-size: 20px;
 }
 
 .container {
@@ -107,16 +90,16 @@ ul li.menu a .icon >i{
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-top: 50px;
-}
-
-h2 {
-    text-align: center;
-    color: #2b2b2b;
+    background: #fff;
 }
 
 form {
-    max-width: 400px;
-    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.left-column, .right-column {
+    width: 45%;
 }
 
 label {
@@ -126,9 +109,8 @@ label {
     color: #333;
 }
 
-input[type="text"],
-input[type="number"] {
-    width: 25%;
+input[type="text"], input[type="number"], select {
+    width: 100%;
     padding: 10px;
     margin-bottom: 20px;
     border-radius: 5px;
@@ -139,33 +121,31 @@ input[type="number"] {
 
 button[type="submit"] {
     width: 100%;
-    background-color: #028dff;
+    background-color: #00509e;
     color: #fff;
     border: none;
     padding: 10px;
     border-radius: 5px;
-
     font-size: 16px;
     transition: background-color 0.3s ease;
 }
+
 button[type="submit"]:hover {
-    background-color: #3378c3;
+    background-color: #003f7f;
 }
 
 table {
     width: 90%;
     border-collapse: collapse;
-    font-family: 'Arial', sans-serif;
     margin: 20px 0;
-    margin-left: 5%;
     background-color: #f9f9f9;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
 }
 
 thead {
-    background-color: #686565;
+    background-color: #003366;
     color: #fff;
 }
 
@@ -187,120 +167,20 @@ tbody tr:hover {
     background-color: #eaeaea;
 }
 
-td {
-    color: #555;
-}
-
-td a {
-    color: #333;
+td a.btn {
+    margin-right: 10px;
+    color: #00509e;
     text-decoration: none;
 }
 
-td a:hover {
-    text-decoration: underline;
+td a.btn:hover {
+    color: #003f7f;
 }
 
-.container {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .container .left-column {
-        flex: 0 0 calc(45% - 10px); /* Defina a largura da coluna esquerda */
-    }
-
-    .container .right-column {
-        flex: 0 0 calc(75% - 10px); /* Defina a largura da coluna direita */
-    }
-
-    .container label,
-    .container input {
-        display: block;
-        margin-bottom: 10px;
-    }
-
-    .container label {
-        width: 150px;
-        float: left;
-    }
-
-    .container input {
-        width: calc(100% - 160px);
-        float: left;
-        margin-right: 10px;
-    }
-
-    .container button {
-        clear: both;
-    }
-
-    ul li.sair a{
-    color: rgb(255, 255, 255);
-    text-decoration: none;
-    font-size: 20px;
-    padding: 15px 4%;
-    display: flex;
-    line-height: 37px;
+td a.btn-delete {
+    color: #e74c3c;
 }
 
-ul li.sair a .icon >i{
-    font-size: 20px;
+td a.btn-delete:hover {
+    color: #c0392b;
 }
-
-ul li.sair a .txt-link{
-   margin-left: 20px;
-}
-
-ul li.sair:hover{
-    background: #ffffff8a;
-}
-ul li.sair {
-    transition: 1s;
-}
-.right-column {
-            float: right;
-            width: 45%; /* Define a largura da coluna direita */
-        }
-        .right-column input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-
-        .right-column select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-
-        .left-column {
-            float: left;
-            width: 45%; /* Define a largura da coluna esquerda */
-        }
-        .left-column input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-
-        .left-column select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
