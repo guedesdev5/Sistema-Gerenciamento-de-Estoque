@@ -27,6 +27,17 @@ nav.menu-lateral:hover {
     width: 250px;
 }
 
+.logo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.logo img {
+    width: 80%;
+}
+
 ul {
     height: 100%;
     list-style-type: none;

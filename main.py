@@ -15,21 +15,18 @@ def home():
 def login():
     username = request.form.get('username')
     password = request.form.get('password')
-    result = l.getLogin(username, password)
-    if result == 1:
-        flash('Inserção realizada com sucesso!', 'success')
+    login = l.login(username, password)
+    if login != 9:
         readBD = r.readProdutos()
         readIdCategory = r.readIdCategory()
         readIdFornecedores = r.readIdFornecedores()
-        permission = l.getPermission(username)
-        if permission == 1:
+        if login == 1:
             app.config['PERMISSION_USER'] = True
         else:
             app.config['PERMISSION_USER'] = False
         
         return render_template("homepage.html", lista = readBD, idCategory = readIdCategory, readIdFornecedores = readIdFornecedores, permissionUser = app.config['PERMISSION_USER'])
     else:
-        flash('deu ruim', 'spam')
         return render_template("login.html")
 
 
