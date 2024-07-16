@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, flash, g
+from flask import Flask, render_template, request, flash, redirect, url_for
 import backend.login as l
 import backend.read as r
 import backend.create as c
 import backend.update as u
+import backend.delete as d
 
 app = Flask(__name__)
 app.secret_key = 'abcdohdohfhef32833'
@@ -20,6 +21,7 @@ def login():
         readBD = r.readProdutos()
         readIdCategory = r.readIdCategory()
         readIdFornecedores = r.readIdFornecedores()
+        print(login)
         if login == 1:
             app.config['PERMISSION_USER'] = True
         else:
@@ -55,12 +57,32 @@ def produtos():
 def categoriaspost():
     name = request.form.get('name')
     description = request.form.get('description')
-    result = c.createCategory(name, description)
-    readBD = r.readCategory()
-    if result == 1:
-        return render_template("categorias.html", lista = readBD)
+    response = c.createCategory(name, description)
+    readBD = r.readCategoria()
+    if response['status'] == 0:
+        return render_template("categorias.html", lista = readBD['data'])
     else:
-        return render_template("categorias.html", lista = readBD)
+        return render_template("categorias.html", lista = readBD['data'])
+    
+@app.route('/editar/categoria', methods=['POST'])
+def editarCategoria():
+    id = request.form['id']
+    nome = request.form['nome']
+    descricao = request.form['descricao']
+    response = u.updateCategory(id, nome, descricao)
+    if response['status'] == 0:
+        return redirect(url_for('categorias'))
+    else:
+        return redirect(url_for('categorias'))
+    
+@app.route('/excluir/categoria', methods=['post'])
+def excluirCategoria():
+    id = request.form['id'] 
+    response = d.deleteCategoria(id)
+    if response['status'] == 0:
+        return redirect(url_for('categorias'))
+    else:
+        return redirect(url_for('categorias'))
     
 @app.route("/fornecedores", methods=['POST'])
 def fornecedorespost():
@@ -107,12 +129,12 @@ def vendaspost():
         return render_template("vendas.html", lista = readBD, readIdVendedor = readIdVendedor, readIdProdutos = readIdProdutos, permissionUser = app.config['PERMISSION_USER'])
 
 
-@app.route("/vendedores.html")
+@app.route("/vendedores")
 def vendedores():
     readBD = r.readVender()
     return render_template("vendedores.html", lista = readBD)
 
-@app.route("/homepage.html")
+@app.route("/homepage")
 def homepage():
     readBD = r.readProdutos()
     readIdCategory = r.readIdCategory()
@@ -120,25 +142,26 @@ def homepage():
     return render_template("homepage.html", lista = readBD, idCategory = readIdCategory, readIdFornecedores = readIdFornecedores, permissionUser = app.config['PERMISSION_USER'])
   
 
-@app.route("/categorias.html")
+@app.route("/categorias")
 def categorias():
-    readBD = r.readCategory()
-    return render_template("categorias.html",  lista = readBD)
+    readBD = r.readCategoria()
+    return render_template("categorias.html",  lista = readBD['data'])
 
-@app.route("/vendas.html")
+@app.route("/vendas")
 def vendas():
     readBD = r.readVendas()
     readIdVendedor = r.readIdvendedor()
     readIdProdutos = r.readIdprodutos()
     return render_template("vendas.html", lista = readBD, readIdVendedor = readIdVendedor, readIdProdutos = readIdProdutos, permissionUser = app.config['PERMISSION_USER'])
 
-@app.route("/fornecedores.html")
+@app.route("/fornecedores")
 def fornecedores():
     readBD = r.readFornecedor()
     return render_template("fornecedores.html",  lista = readBD)
 
-@app.route("/login.html")
+@app.route("/login")
 def loginO():
     return render_template("login.html")
+
 if __name__ == "__main__":
     app.run(port = 1404, debug = True)

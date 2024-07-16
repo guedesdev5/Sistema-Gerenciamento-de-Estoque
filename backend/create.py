@@ -1,23 +1,26 @@
 import mysql.connector
+import requests
+
+urlBase = 'http://localhost:8500/apiGerenciamento/'
 
 def getConnection():
     global database
     database = mysql.connector.Connect(host="localhost", database="sistema_geranciamento", user="root", password="pietro29012007")
 
 def createCategory(name, description):
-    getConnection()
-    if database.is_connected():
-        try:
-             cursor = database.cursor() 
-             cursor.execute(f'''INSERT into categorias 
-             (nome, descricao) 
-             values 
-             ("{name}", "{description}")''')
-             database.commit()
-             return 1
-        except Exception as error:
-            return error
-    return 2
+    EndPoint = urlBase + 'categorias'
+    categoria = {
+        "nome": name,
+        "descricao": description
+    }
+    try:
+        response = requests.post(EndPoint, json=categoria)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return response.json()
+    except Exception as e:
+        return e
 
 def createFornecedor(name, tel, email, endereco):
     getConnection()

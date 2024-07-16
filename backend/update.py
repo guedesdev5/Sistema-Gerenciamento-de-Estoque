@@ -1,4 +1,7 @@
 import mysql.connector
+import requests
+
+urlBase = 'http://localhost:8500/apiGerenciamento/'
 
 def getConnection():
     global database
@@ -29,3 +32,17 @@ def updateProductQntd(id, quantity):
         except Exception as e:
             print(e)
 
+def updateCategory(id, name, description):
+    EndPoint = urlBase + f'categorias/{id}'
+    categoria = {
+        "nome": name,
+        "descricao": description
+    }
+    try:
+        response = requests.put(EndPoint, json=categoria)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return response.json()
+    except Exception as e:
+        return e

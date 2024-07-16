@@ -1,4 +1,7 @@
 import mysql.connector
+import requests
+
+urlBase = 'http://localhost:8500/apiGerenciamento/'
 
 def getConnection():
     global database
@@ -58,21 +61,16 @@ def delete(id):
         except:
             return 0
     else:
-        return 2
-    
-def readCategory ():
-    getConnection()
-    if database.is_connected():
-        try:
-            cursor = database.cursor()
-            cursor.execute('SELECT * from categorias')
-            results = cursor.fetchall()
-                    
-            return results
-        except Exception as e:
-            return e
-    else:
-        return 2
+        return 2 
+
+def readCategoria ():
+    EndPoint = urlBase + 'categorias'
+    try:
+        response = requests.get(EndPoint)
+        return response.json()
+    except Exception as e:
+        return e
+
     
 def readVender ():
     getConnection()

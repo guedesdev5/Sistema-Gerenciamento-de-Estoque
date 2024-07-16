@@ -187,3 +187,58 @@ td a.btn-delete {
 td a.btn-delete:hover {
     color: #c0392b;
 }
+
+.modal-content {
+    padding: 20px;
+    border: none; /* Remove a borda padrão */
+    border-radius: 10px; /* Adiciona bordas arredondadas */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra suave */
+}
+
+.modal-header {
+    border-bottom: 1px solid #0074c2;
+    background-color: #f0f0f0; /* Cor de fundo do cabeçalho */
+    padding-bottom: 15px; /* Espaçamento inferior menor */
+}
+
+.modal-body, .modal-footer {
+    padding: 20px; /* Espaçamento interno geral */
+}
+
+.modal-footer {
+    border-top: 1px solid #e5e5e5;
+    background-color: #f0f0f0; /* Cor de fundo do rodapé */
+    text-align: right; /* Alinha o conteúdo do rodapé à direita */
+}
+/* Estilos adicionais para os inputs */
+.modal-body input[type="text"],
+.modal-body input[type="number"],
+.modal-body textarea {
+    width: 70%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Garante que o padding não aumente a largura */
+}
+
+/* Estilos adicionais para o botão */
+.modal-body button[type="submit"],
+    .modal-footer button {
+        padding: 10px 20px;
+        background-color: #0074c2;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%; /* Define a largura do botão como 100% do contêiner */
+        max-width: 200px; /* Define uma largura máxima para evitar que o botão ocupe toda a largura */
+        margin-right: 10px; /* Espaçamento entre botões */
+    }
+
+    /* Estilo adicional para o botão de Excluir */
+    .modal-body button[type="submit"].btn-danger,
+    .modal-footer button.btn-danger {
+        background-color: #dc3545; /* Cor de fundo vermelha para botão de Excluir */
+    }
+
