@@ -87,18 +87,12 @@ def readVender ():
         return 2
     
 def readFornecedor ():
-    getConnection()
-    if database.is_connected():
-        try:
-            cursor = database.cursor()
-            cursor.execute('SELECT * from fornecedores')
-            results = cursor.fetchall()
-                    
-            return results
-        except Exception as e:
-            return e
-    else:
-        return 2
+    EndPoint = urlBase + 'fornecedores'
+    try:
+        response = requests.get(EndPoint)
+        return response.json()
+    except Exception as e:
+        return e
     
 def readVendas ():
     getConnection()

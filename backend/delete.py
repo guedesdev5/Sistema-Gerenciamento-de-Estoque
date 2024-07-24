@@ -9,3 +9,11 @@ def deleteCategoria(id):
         return response.json()
     except Exception as e:
         return e
+    
+def deleetFornecedor(id):
+    EndPoint = urlBase + f'fornecedores/{id}'
+    try:
+        response = requests.delete(EndPoint)
+        return response.json()
+    except Exception as e:
+        return e

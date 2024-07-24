@@ -90,13 +90,34 @@ def fornecedorespost():
     tel = request.form.get('tel')
     email = request.form.get('email')
     endereco = request.form.get('endereco')
-    result = c.createFornecedor(name, tel, email, endereco)
+    response = c.createFornecedor(name, tel, email, endereco)
     readBD = r.readFornecedor()
-    print(result)
-    if result == 1:
-        return render_template("fornecedores.html", lista = readBD)
+    if response['status'] == 0:
+        return render_template("fornecedores.html", lista = readBD['data'])
     else:
-        return render_template("fornecedores.html", lista = readBD)
+        return render_template("fornecedores.html", lista = readBD['data'])
+    
+@app.route('/editar/fornecedores', methods=['POST'])
+def editarFornecedor():
+    id = request.form['id']
+    nome = request.form['nome']
+    telefone = request.form['telefone']
+    email = request.form['email']
+    endereco = request.form['endereco']
+    response = u.updateFornecedor(id, nome, telefone, email, endereco)
+    if response['status'] == 0:
+        return redirect(url_for('fornecedores'))
+    else:
+        return redirect(url_for('fornecedores'))
+    
+@app.route('/excluir/fornecedores', methods=['post'])
+def excluirFornecedor():
+    id = request.form['id'] 
+    response = d.deleetFornecedor(id)
+    if response['status'] == 0:
+        return redirect(url_for('fornecedores'))
+    else:
+        return redirect(url_for('fornecedores'))
 
 @app.route("/vendedores", methods=['POST'])
 def vendedorespost():
@@ -157,7 +178,7 @@ def vendas():
 @app.route("/fornecedores")
 def fornecedores():
     readBD = r.readFornecedor()
-    return render_template("fornecedores.html",  lista = readBD)
+    return render_template("fornecedores.html",  lista = readBD['data'])
 
 @app.route("/login")
 def loginO():

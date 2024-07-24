@@ -50,7 +50,7 @@ ul li {
 
 ul li.menu,
 ul li.sair {
-    padding: 10px;
+    padding: 5px;
 }
 
 ul li.menu a,
@@ -59,7 +59,9 @@ ul li.sair a {
     text-decoration: none;
     display: flex;
     align-items: center;
-    padding: 10px;
+    padding: 5px;
+    margin-left: 1px;
+    margin-bottom: 15px;
     border-radius: 5px;
 }
 
@@ -70,7 +72,7 @@ ul li.sair:hover {
 
 ul li.menu a .txt-link,
 ul li.sair a .txt-link {
-    margin-left: 20px;
+    margin-left: 10px;
 }
 
 ul li.menu a .icon i,
@@ -84,7 +86,7 @@ ul li.sair {
 }
 
 .container {
-    width: 80%;
+    width: 50%;
     margin: 0 auto;
     padding: 20px;
     border-radius: 8px;
@@ -95,11 +97,19 @@ ul li.sair {
 
 form {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
 }
 
-.left-column, .right-column {
-    width: 45%;
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    width: 48%;
 }
 
 label {
@@ -109,24 +119,30 @@ label {
     color: #333;
 }
 
-input[type="text"], input[type="number"], select {
+input[type="text"], input[type="email"] {
     width: 100%;
     padding: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
     box-sizing: border-box;
     font-size: 16px;
 }
 
-button[type="submit"] {
+.button {
     width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+button[type="submit"] {
     background-color: #00509e;
     color: #fff;
     border: none;
-    padding: 10px;
     border-radius: 5px;
+    padding: 10px 20px;
     font-size: 16px;
+    cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
@@ -134,10 +150,11 @@ button[type="submit"]:hover {
     background-color: #003f7f;
 }
 
+
 table {
     width: 90%;
     border-collapse: collapse;
-    margin: 20px 0;
+    margin: 20px 5%;
     background-color: #f9f9f9;
     border-radius: 8px;
     overflow: hidden;
@@ -184,3 +201,58 @@ td a.btn-delete {
 td a.btn-delete:hover {
     color: #c0392b;
 }
+
+.modal-content {
+    padding: 20px;
+    border: none; /* Remove a borda padrão */
+    border-radius: 10px; /* Adiciona bordas arredondadas */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra suave */
+}
+
+.modal-header {
+    border-bottom: 1px solid #0074c2;
+    background-color: #f0f0f0; /* Cor de fundo do cabeçalho */
+    padding-bottom: 15px; /* Espaçamento inferior menor */
+}
+
+.modal-body, .modal-footer {
+    padding: 20px; /* Espaçamento interno geral */
+}
+
+.modal-footer {
+    border-top: 1px solid #e5e5e5;
+    background-color: #f0f0f0; /* Cor de fundo do rodapé */
+    text-align: right; /* Alinha o conteúdo do rodapé à direita */
+}
+/* Estilos adicionais para os inputs */
+.modal-body input[type="text"],
+.modal-body input[type="number"],
+.modal-body textarea {
+    width: 70%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Garante que o padding não aumente a largura */
+}
+
+/* Estilos adicionais para o botão */
+.modal-body button[type="submit"],
+    .modal-footer button {
+        padding: 10px 20px;
+        background-color: #239ce2;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%; /* Define a largura do botão como 100% do contêiner */
+        max-width: 200px; /* Define uma largura máxima para evitar que o botão ocupe toda a largura */
+        margin-right: 10px; /* Espaçamento entre botões */
+    }
+
+    /* Estilo adicional para o botão de Excluir */
+    .modal-body button[type="submit"].btn-danger,
+    .modal-footer button.btn-danger {
+        background-color: #dc3545; /* Cor de fundo vermelha para botão de Excluir */
+    }
+

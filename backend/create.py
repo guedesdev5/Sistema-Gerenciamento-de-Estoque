@@ -23,19 +23,21 @@ def createCategory(name, description):
         return e
 
 def createFornecedor(name, tel, email, endereco):
-    getConnection()
-    if database.is_connected():
-        try:
-             cursor = database.cursor() 
-             cursor.execute(f'''INSERT into fornecedores 
-             (nome, telefone, email, endereco) 
-             values 
-             ("{name}", "{tel}", "{email}", "{endereco}")''')
-             database.commit()
-             return 1
-        except Exception as error:
-            return error
-    return 2
+    EndPoint = urlBase + 'fornecedores'
+    fornecedor = {
+        "nome": name,
+        "telefone": tel,
+        "email": email,
+        "endereco": endereco
+    }
+    try:
+        response = requests.post(EndPoint, json=fornecedor)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return response.json()
+    except Exception as e:
+        return e
 
 def createVendedor(name, username, email, senha, permissao):
     getConnection()
