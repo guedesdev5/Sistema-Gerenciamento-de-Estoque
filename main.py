@@ -27,7 +27,7 @@ def login():
         else:
             app.config['PERMISSION_USER'] = False
         
-        return render_template("homepage.html", lista = readBD, idCategory = readIdCategory, readIdFornecedores = readIdFornecedores, permissionUser = app.config['PERMISSION_USER'])
+        return render_template("homepage.html", lista = readBD['data'], idCategory = readIdCategory, readIdFornecedores = readIdFornecedores, permissionUser = app.config['PERMISSION_USER'])
     else:
         return render_template("login.html")
 
@@ -41,17 +41,14 @@ def produtos():
     quantity = request.form.get('quantity')
     category_id = request.form.get('category_id')
     fornecedor_id = request.form.get('fornecedor_id')
-    result = c.createProdutos(id, name, description, price, quantity, category_id, fornecedor_id)
-    print(result)
+    response = c.createProdutos(int(id), name, description, float(price), int(quantity), int(category_id), int(fornecedor_id))
     readBD = r.readProdutos()
     readIdCategory = r.readIdCategory()
     readIdFornecedores = r.readIdFornecedores()
-    print(readIdFornecedores)
-    print(readIdCategory)
-    if result == 1:
-        return render_template("homepage.html", lista = readBD, idCategory = readIdCategory, readIdFornecedores = readIdFornecedores)
+    if response['status'] == 0:
+        return render_template("homepage.html", lista = readBD['data'], idCategory = readIdCategory, readIdFornecedores = readIdFornecedores)
     else:
-        return render_template("homepage.html", lista = readBD, idCategory = readIdCategory, readIdFornecedores = readIdFornecedores)
+        return render_template("homepage.html", lista = readBD['data'], idCategory = readIdCategory, readIdFornecedores = readIdFornecedores)
 
 @app.route("/categorias", methods=['POST'])
 def categoriaspost():
@@ -160,7 +157,7 @@ def homepage():
     readBD = r.readProdutos()
     readIdCategory = r.readIdCategory()
     readIdFornecedores = r.readIdFornecedores()
-    return render_template("homepage.html", lista = readBD, idCategory = readIdCategory, readIdFornecedores = readIdFornecedores, permissionUser = app.config['PERMISSION_USER'])
+    return render_template("homepage.html", lista = readBD['data'], idCategory = readIdCategory, readIdFornecedores = readIdFornecedores, permissionUser = app.config['PERMISSION_USER'])
   
 
 @app.route("/categorias")

@@ -8,17 +8,12 @@ def getConnection():
     database = mysql.connector.Connect(host="localhost", database="sistema_geranciamento", user="root", password="pietro29012007")
 
 def readProdutos ():
-    getConnection()
-    if database.is_connected():
-        try:
-            cursor = database.cursor()
-            cursor.execute('SELECT * from produtos')
-            results = cursor.fetchall()
-                    
-            return results
-        except Exception as e:
-            return e
-    else:
+    EndPoint = urlBase + 'produtos'
+    try:
+        response = requests.get(EndPoint)
+        return response.json()
+    except Exception as e:
+        return e
         return 2
 
 def readAcorderID (id):
@@ -34,34 +29,6 @@ def readAcorderID (id):
     else:
         return 2
             
-
-def update(id, name, description, price, quantity, categoryID, supplierID):
-    getConnection()
-    if database.is_connected():
-        try:
-            cursor = database.cursor()
-            cursor.execute(f'''UPDATE produtos set nome = "{name}", descricao = "{description}", 
-            preco = {price}, quantidade = {quantity}, id_categoria = {categoryID}, id_fornecedor = 
-            {supplierID} WHERE id = {id}''')
-            database.commit()
-            return 1
-        except:
-            return 0
-    else:
-        return 2
-            
-def delete(id):
-    getConnection()
-    if database.is_connected():
-        try:
-            cursor = database.cursor()
-            cursor.execute(f'DELETE from produtos WHERE id = {id}')
-            database.commit()
-            return 1
-        except:
-            return 0
-    else:
-        return 2 
 
 def readCategoria ():
     EndPoint = urlBase + 'categorias'

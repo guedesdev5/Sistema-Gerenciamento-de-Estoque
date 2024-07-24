@@ -55,20 +55,24 @@ def createVendedor(name, username, email, senha, permissao):
     return 2
 
 def createProdutos(id, name, description, price, quantity, categoryID, supplierID):
-    getConnection()
-    if database.is_connected():
-        try:
-             cursor = database.cursor() 
-             cursor.execute(f'''INSERT into produtos 
-             (id, nome, descricao, preco, quantidade, id_categoria, id_fornecedor) 
-             values 
-             ({id}, "{name}", "{description}", {price}, {quantity}, {categoryID}, {supplierID})''')
-             database.commit()
-             print('deu')
-             return 1
-        except Exception as error:
-            return error
-    return 2
+    EndPoint = urlBase + 'produtos'
+    produto = {
+        "id": id,
+        "nome": name,
+        "descricao": description,
+        "preco": price,
+        "quantidade": quantity,
+        "id_categoria": categoryID,
+        "id_fornecedor": supplierID
+    }
+    try:
+        response = requests.post(EndPoint, json=produto)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return response.json()
+    except Exception as e:
+        return e
 
 def createVendas( qntd, id_produto, id_vendedor):
     getConnection()

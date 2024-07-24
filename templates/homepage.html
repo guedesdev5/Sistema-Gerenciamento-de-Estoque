@@ -126,13 +126,13 @@
     <tbody>
         {% for listagem in lista %}
         <tr>
-            <td>{{ listagem[0] }}</td>
-            <td>{{ listagem[1] }}</td>
-            <td>{{ listagem[2] }}</td>
-            <td>{{ listagem[3] }}</td>
-            <td>{{ listagem[4] }}</td>
-            <td>{{ listagem[5] }}</td>
-            <td>{{ listagem[6] }}</td>
+            <td>{{ listagem['id'] }}</td>
+            <td>{{ listagem['nome'] }}</td>
+            <td>{{ listagem['descricao'] }}</td>
+            <td>{{ listagem['preco'] }}</td>
+            <td>{{ listagem['quantidade'] }}</td>
+            <td>{{ listagem['id_categoria'] }}</td>
+            <td>{{ listagem['id_fornecedor'] }}</td>
             <td>
                 <a href="/editar/{{ listagem[0] }}" class="btn btn-edit"><i class="bi bi-pencil"></i></a>
                 <a href="/excluir/{{ listagem[0] }}" class="btn btn-delete"><i class="bi bi-trash"></i></a>
