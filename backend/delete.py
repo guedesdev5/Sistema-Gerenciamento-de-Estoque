@@ -17,3 +17,11 @@ def deleetFornecedor(id):
         return response.json()
     except Exception as e:
         return e
+    
+def deleteProdutos(id):
+    EndPoint = urlBase + f'produtos/{id}'
+    try:
+        response = requests.delete(EndPoint)
+        return response.json()
+    except Exception as e:
+        return e

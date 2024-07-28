@@ -186,3 +186,67 @@ td a.btn-delete {
 td a.btn-delete:hover {
     color: #c0392b;
 }
+
+
+.modal-content {
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    border-bottom: 1px solid #0074c2;
+    background-color: #f0f0f0;
+    padding-bottom: 15px;
+}
+
+.modal-body, .modal-footer {
+    padding: 20px;
+}
+
+.modal-footer {
+    border-top: 1px solid #e5e5e5;
+    background-color: #f0f0f0;
+    text-align: right;
+}
+
+.input-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    width: 48%;
+}
+
+.modal-body input[type="text"],
+.modal-body input[type="number"],
+.modal-body textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.modal-body button[type="submit"],
+.modal-footer button {
+    padding: 10px 20px;
+    background-color: #239ce2;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 200px;
+    margin-right: 10px;
+}
+
+.modal-body button[type="submit"].btn-danger,
+.modal-footer button.btn-danger {
+    background-color: #dc3545;
+}

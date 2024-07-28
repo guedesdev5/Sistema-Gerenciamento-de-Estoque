@@ -8,19 +8,17 @@
 </head>
 <body>
 
+    <div class="background" href="{{ url_for('static', filename='images/piscina.jpg') }}"></div>
     <div class="tela">
         <form action="/login" method="post">
-        <h1>Login</h1>
-        <input class="nome" type="text" id="username" name="username" placeholder="Username">
-        <br>
-        <br>
-        <input class="senha" type="password" id="password" name="password" placeholder="Senha" >
-        <br><br>
-        <button type="submit" class="botao">Entrar</button>
-  
+            <h1>Login</h1>
+            <input class="nome" type="text" id="username" name="username" placeholder="Username" required>
+            <br><br>
+            <input class="senha" type="password" id="password" name="password" placeholder="Senha" required>
+            <br><br>
+            <button type="submit" class="botao">Entrar</button>
         </form>
-
     </div>
-    <script src="../static/js/script.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

@@ -10,7 +10,9 @@
 <body>
 
     <nav class="menu-lateral">
-        
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+        </div>
         <ul>
             <li class="menu">
                 <a href="homepage">
@@ -91,6 +93,7 @@
             <th>Username</th>
             <th>Email</th>
             <th>Permissão</th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -100,6 +103,9 @@
             <td>{{ listagem[2] }}</td>
             <td>{{ listagem[3] }}</td>
             <td>{{ listagem[5] }}</td>
+            <td>
+                <a href="#" class="btn btn-edit" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ listagem['id'] }}" data-nome="{{ listagem['nome'] }}" data-descricao="{{ listagem['descricao'] }}" data-preco="{{listagem['preco']}}" data-quantidade="{{listagem['quantidade']}}" data-id_categoria="{{listagem['id_categoria']}}" data-id_fornecedor="{{listagem['id_fornecedor']}}"><i class="bi bi-pencil"></i></a>
+            </td>
         </tr>
         {% endfor %}
     </tbody>

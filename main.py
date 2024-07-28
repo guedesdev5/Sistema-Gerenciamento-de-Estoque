@@ -19,15 +19,18 @@ def login():
     login = l.login(username, password)
     if login != 9:
         readBD = r.readProdutos()
-        readIdCategory = r.readIdCategory()
-        readIdFornecedores = r.readIdFornecedores()
-        print(login)
+        readIdCategory = r.readCategoria()
+        readIdFornecedores = r.readFornecedor()
+        idCategorias = [item['id'] for item in readIdCategory['data']]
+        idFornecedores = [item['id'] for item in readIdFornecedores['data']]
+        print(idCategorias)
+        print(idFornecedores)
         if login == 1:
             app.config['PERMISSION_USER'] = True
         else:
             app.config['PERMISSION_USER'] = False
         
-        return render_template("homepage.html", lista = readBD['data'], idCategory = readIdCategory, readIdFornecedores = readIdFornecedores, permissionUser = app.config['PERMISSION_USER'])
+        return render_template("homepage.html", lista = readBD['data'], idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config['PERMISSION_USER'])
     else:
         return render_template("login.html")
 
@@ -43,12 +46,15 @@ def produtos():
     fornecedor_id = request.form.get('fornecedor_id')
     response = c.createProdutos(int(id), name, description, float(price), int(quantity), int(category_id), int(fornecedor_id))
     readBD = r.readProdutos()
-    readIdCategory = r.readIdCategory()
-    readIdFornecedores = r.readIdFornecedores()
+    readIdCategory = r.readCategoria()
+    readIdFornecedores = r.readFornecedor()
+    idCategorias = [item['id'] for item in readIdCategory['data']]
+    idFornecedores = [item['id'] for item in readIdFornecedores['data']]
+    
     if response['status'] == 0:
-        return render_template("homepage.html", lista = readBD['data'], idCategory = readIdCategory, readIdFornecedores = readIdFornecedores)
+        return render_template("homepage.html", lista = readBD['data'], idCategory = idCategorias, readIdFornecedores = idFornecedores)
     else:
-        return render_template("homepage.html", lista = readBD['data'], idCategory = readIdCategory, readIdFornecedores = readIdFornecedores)
+        return render_template("homepage.html", lista = readBD['data'], idCategory = idCategorias, readIdFornecedores = idFornecedores)
 
 @app.route("/categorias", methods=['POST'])
 def categoriaspost():
@@ -116,6 +122,31 @@ def excluirFornecedor():
     else:
         return redirect(url_for('fornecedores'))
 
+@app.route('/editar/produtos', methods=['POST'])
+def editarProdutos():
+    id = request.form.get('id')
+    name = request.form.get('nome')
+    description = request.form.get('descricao')
+    price = request.form.get('preco')
+    quantity = request.form.get('quantidade')
+    category_id = request.form.get('idCategoria')
+    fornecedor_id = request.form.get('idFornecedor')
+    response = u.updateProdutos(int(id), name, description, float(price), int(quantity), int(category_id), int(fornecedor_id))
+    print(response)
+    if response['status'] == 0:
+        return redirect(url_for('homepage'))
+    else:
+        return redirect(url_for('homepage'))
+    
+@app.route('/excluir/produtos', methods=['post'])
+def excluirProdutos():
+    id = request.form['id'] 
+    response = d.deleteProdutos(id)
+    if response['status'] == 0:
+        return redirect(url_for('homepage'))
+    else:
+        return redirect(url_for('homepage'))
+
 @app.route("/vendedores", methods=['POST'])
 def vendedorespost():
     name = request.form.get('name')
@@ -155,9 +186,11 @@ def vendedores():
 @app.route("/homepage")
 def homepage():
     readBD = r.readProdutos()
-    readIdCategory = r.readIdCategory()
-    readIdFornecedores = r.readIdFornecedores()
-    return render_template("homepage.html", lista = readBD['data'], idCategory = readIdCategory, readIdFornecedores = readIdFornecedores, permissionUser = app.config['PERMISSION_USER'])
+    readIdCategory = r.readCategoria()
+    readIdFornecedores = r.readFornecedor()
+    idCategorias = [item['id'] for item in readIdCategory['data']]
+    idFornecedores = [item['id'] for item in readIdFornecedores['data']]
+    return render_template("homepage.html", lista = readBD['data'], idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config['PERMISSION_USER'])
   
 
 @app.route("/categorias")

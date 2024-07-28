@@ -63,3 +63,23 @@ def updateFornecedor(id, name, telefone, email, endereco):
             return response.json()
     except Exception as e:
         return e
+
+def updateProdutos(id, name, description, price, quantity, categoryID, supplierID):
+    EndPoint = urlBase + f'produtos/{id}'
+    produto = {
+        "nome": name,
+        "descricao": description,
+        "preco": price,
+        "quantidade": quantity,
+        "id_categoria": categoryID,
+        "id_fornecedor": supplierID
+    }
+    try:
+        response = requests.put(EndPoint, json=produto)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return response.json()
+    except Exception as e:
+        print(f'erro {e}')
+        return e
