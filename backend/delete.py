@@ -25,3 +25,11 @@ def deleteProdutos(id):
         return response.json()
     except Exception as e:
         return e
+
+def deleetVendedores(id):
+    EndPoint = urlBase + f'vendedores/{id}'
+    try:
+        response = requests.delete(EndPoint)
+        return response.json()
+    except Exception as e:
+        return e

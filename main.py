@@ -30,7 +30,7 @@ def login():
         else:
             app.config['PERMISSION_USER'] = False
         
-        return render_template("homepage.html", lista = readBD['data'], idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config['PERMISSION_USER'])
+        return render_template("homepage.html", lista = readBD['data'], idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
     else:
         return render_template("login.html")
 
@@ -154,13 +154,36 @@ def vendedorespost():
     email = request.form.get('email')
     senha = request.form.get('password')
     permissao = request.form.get('permission')
-    result = c.createVendedor(name, username, email, senha, permissao)
+    result = c.createVendedor(name, username, email, senha, int(permissao))
     readBD = r.readVender()
-    print(result)
     if result == 1:
-        return render_template("vendedores.html", lista = readBD)
+        return render_template("vendedores.html", lista = readBD['data'])
     else:
-        return render_template("vendedores.html", lista = readBD)
+        return render_template("vendedores.html", lista = readBD['data'])
+    
+@app.route('/editar/vendedores', methods=['POST'])
+def editarVendedores():
+    id = request.form['id'] 
+    name = request.form.get('nome')
+    username = request.form.get('username')
+    email = request.form.get('email')
+    senha = request.form.get('senha')
+    permissao = request.form.get('permissao')
+    response = u.updateVendedores(int(id), name, username, email, senha, int(permissao))
+    print(response)
+    if response['status'] == 0:
+        return redirect(url_for('vendedores'))
+    else:
+        return redirect(url_for('vendedores'))
+    
+@app.route('/excluir/vendedores', methods=['post'])
+def excluirVendedoress():
+    id = request.form['id'] 
+    response = d.deleetVendedores(id)
+    if response['status'] == 0:
+        return redirect(url_for('vendedores'))
+    else:
+        return redirect(url_for('vendedores'))
     
 @app.route("/vendas", methods=['POST'])
 def vendaspost():
@@ -169,19 +192,21 @@ def vendaspost():
     cd_vendedor = request.form.get('codv')
     result = c.createVendas( qntd, cd_produto, cd_vendedor)
     readBD = r.readVendas()
-    readIdVendedor = r.readIdvendedor()
-    readIdProdutos = r.readIdprodutos()
+    readIdVendedor = r.readVender()
+    readIdProdutos = r.readProdutos()
+    idvendedor = [item['id'] for item in readIdVendedor['data']]
+    idProdutos = [item['id'] for item in readIdProdutos['data']]
     u.updateProductQntd(cd_produto, qntd)
     if result == 1:
-        return render_template("vendas.html", lista = readBD, readIdVendedor = readIdVendedor, readIdProdutos = readIdProdutos, permissionUser = app.config['PERMISSION_USER'])
+        return render_template("vendas.html", lista = readBD['data'], readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
     else:
-        return render_template("vendas.html", lista = readBD, readIdVendedor = readIdVendedor, readIdProdutos = readIdProdutos, permissionUser = app.config['PERMISSION_USER'])
+        return render_template("vendas.html", lista = readBD['data'], readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
 
 
 @app.route("/vendedores")
 def vendedores():
     readBD = r.readVender()
-    return render_template("vendedores.html", lista = readBD)
+    return render_template("vendedores.html", lista = readBD['data'])
 
 @app.route("/homepage")
 def homepage():
@@ -190,7 +215,7 @@ def homepage():
     readIdFornecedores = r.readFornecedor()
     idCategorias = [item['id'] for item in readIdCategory['data']]
     idFornecedores = [item['id'] for item in readIdFornecedores['data']]
-    return render_template("homepage.html", lista = readBD['data'], idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config['PERMISSION_USER'])
+    return render_template("homepage.html", lista = readBD['data'], idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
   
 
 @app.route("/categorias")
@@ -201,9 +226,11 @@ def categorias():
 @app.route("/vendas")
 def vendas():
     readBD = r.readVendas()
-    readIdVendedor = r.readIdvendedor()
-    readIdProdutos = r.readIdprodutos()
-    return render_template("vendas.html", lista = readBD, readIdVendedor = readIdVendedor, readIdProdutos = readIdProdutos, permissionUser = app.config['PERMISSION_USER'])
+    readIdVendedor = r.readVender()
+    readIdProdutos = r.readProdutos()
+    idvendedor = [item['id'] for item in readIdVendedor['data']]
+    idProdutos = [item['id'] for item in readIdProdutos['data']]
+    return render_template("vendas.html", lista = readBD['data'], readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
 
 @app.route("/fornecedores")
 def fornecedores():

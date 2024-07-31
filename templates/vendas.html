@@ -117,10 +117,10 @@
     <tbody>
         {% for listagem in lista %}
         <tr>
-            <td>{{ listagem[1] }}</td>
-            <td>{{ listagem[2] }}</td>
-            <td>{{ listagem[3] }}</td>
-            <td>{{ listagem[4] }}</td>
+            <td>{{ listagem['data_venda'] }}</td>
+            <td>{{ listagem['quantidade_vendida'] }}</td>
+            <td>{{ listagem['id_produto'] }}</td>
+            <td>{{ listagem['id_vendedor'] }}</td>
         </tr>
         {% endfor %}
     </tbody>

@@ -1,5 +1,6 @@
 import mysql.connector
 import requests
+from datetime import datetime
 
 urlBase = 'http://localhost:8500/apiGerenciamento/'
 
@@ -40,19 +41,22 @@ def createFornecedor(name, tel, email, endereco):
         return e
 
 def createVendedor(name, username, email, senha, permissao):
-    getConnection()
-    if database.is_connected():
-        try:
-             cursor = database.cursor() 
-             cursor.execute(f'''INSERT into vendedores 
-             (nome, username, email, senha, permissao) 
-             values 
-             ("{name}", "{username}", "{email}", "{senha}", {permissao})''')
-             database.commit()
-             return 1
-        except Exception as error:
-            return error
-    return 2
+    EndPoint = urlBase + 'vendedores'
+    vendedor = {
+        "nome": name,
+        "username": username,
+        "email": email,
+        "senha": senha,
+        "permissao": permissao
+    }
+    try:
+        response = requests.post(EndPoint, json=vendedor)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return response.json()
+    except Exception as e:
+        return e
 
 def createProdutos(id, name, description, price, quantity, categoryID, supplierID):
     EndPoint = urlBase + 'produtos'
@@ -75,16 +79,18 @@ def createProdutos(id, name, description, price, quantity, categoryID, supplierI
         return e
 
 def createVendas( qntd, id_produto, id_vendedor):
-    getConnection()
-    if database.is_connected():
-        try:
-             cursor = database.cursor() 
-             cursor.execute(f'''INSERT into vendas 
-             ( quantidade_vendida, id_produto, id_vendedor) 
-             values 
-             ( {qntd}, {id_produto}, {id_vendedor})''')
-             database.commit()
-             return 1
-        except Exception as error:
-            return error
-    return 2
+    EndPoint = urlBase + 'produtos'
+    produto = {
+        "data_venda": datetime.now(),
+        "quantidade_vendida": qntd,
+        "id_produto": id_produto,
+        "id_vendedor": id_vendedor
+    }
+    try:
+        response = requests.post(EndPoint, json=produto)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return response.json()
+    except Exception as e:
+        return e

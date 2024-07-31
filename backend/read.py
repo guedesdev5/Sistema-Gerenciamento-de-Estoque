@@ -40,18 +40,12 @@ def readCategoria ():
 
     
 def readVender ():
-    getConnection()
-    if database.is_connected():
-        try:
-            cursor = database.cursor()
-            cursor.execute('SELECT * from vendedores')
-            results = cursor.fetchall()
-                    
-            return results
-        except Exception as e:
-            return e
-    else:
-        return 2
+    EndPoint = urlBase + 'vendedores'
+    try:
+        response = requests.get(EndPoint)
+        return response.json()
+    except Exception as e:
+        return e
     
 def readFornecedor ():
     EndPoint = urlBase + 'fornecedores'
@@ -62,18 +56,12 @@ def readFornecedor ():
         return e
     
 def readVendas ():
-    getConnection()
-    if database.is_connected():
-        try:
-            cursor = database.cursor()
-            cursor.execute('SELECT * from vendas')
-            results = cursor.fetchall()
-                    
-            return results
-        except Exception as e:
-            return e
-    else:
-        return 2
+    EndPoint = urlBase + 'vendas'
+    try:
+        response = requests.get(EndPoint)
+        return response.json()
+    except Exception as e:
+        return e
     
 def readIdCategory ():
     getConnection()

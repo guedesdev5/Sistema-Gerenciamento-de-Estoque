@@ -23,14 +23,19 @@ def update(id, name, description, price, quantity, categoryID, supplierID):
         return 2
     
 def updateProductQntd(id, quantity):
-    getConnection()
-    if database.is_connected():
-        try:
-            cursor = database.cursor()
-            cursor.execute(f'UPDATE produtos set quantidade = quantidade - {quantity} WHERE id = {id}')
-            database.commit()
-        except Exception as e:
-            print(e)
+    EndPoint = urlBase + f'produtos/{id}'
+    produto = {
+        "quantidade": quantity,
+    }
+    try:
+        response = requests.put(EndPoint, json=produto)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return response.json()
+    except Exception as e:
+        print(f'erro {e}')
+        return e
 
 def updateCategory(id, name, description):
     EndPoint = urlBase + f'categorias/{id}'
@@ -76,6 +81,25 @@ def updateProdutos(id, name, description, price, quantity, categoryID, supplierI
     }
     try:
         response = requests.put(EndPoint, json=produto)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return response.json()
+    except Exception as e:
+        print(f'erro {e}')
+        return e
+    
+def updateVendedores(id, name, username, email, senha, permissao):
+    EndPoint = urlBase + f'vendedores/{id}'
+    vendedor = {
+        "nome": name,
+        "username": username,
+        "email": email,
+        "senha": senha,
+        "permissao": permissao
+    }
+    try:
+        response = requests.put(EndPoint, json=vendedor)
         if response.status_code == 200:
             return response.json()
         else:
