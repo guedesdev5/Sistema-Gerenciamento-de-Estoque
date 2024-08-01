@@ -1,12 +1,7 @@
-import mysql.connector
 import requests
 from datetime import datetime
 
 urlBase = 'http://localhost:8500/apiGerenciamento/'
-
-def getConnection():
-    global database
-    database = mysql.connector.Connect(host="localhost", database="sistema_geranciamento", user="root", password="pietro29012007")
 
 def createCategory(name, description):
     EndPoint = urlBase + 'categorias'
@@ -79,15 +74,18 @@ def createProdutos(id, name, description, price, quantity, categoryID, supplierI
         return e
 
 def createVendas( qntd, id_produto, id_vendedor):
-    EndPoint = urlBase + 'produtos'
-    produto = {
-        "data_venda": datetime.now(),
+    EndPoint = urlBase + 'vendas'
+    data_hora_atual = datetime.now()
+    data_atual = str(data_hora_atual.date())
+    venda = {
+        "data_venda": data_atual,
         "quantidade_vendida": qntd,
         "id_produto": id_produto,
         "id_vendedor": id_vendedor
     }
+    print(venda)
     try:
-        response = requests.post(EndPoint, json=produto)
+        response = requests.post(EndPoint, json=venda)
         if response.status_code == 200:
             return response.json()
         else:

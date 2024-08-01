@@ -76,7 +76,7 @@
                     <select id="cod" name="cod" required>
                         {% if readIdProdutos %}
                             {% for produtos in readIdProdutos %}
-                                <option value="{{ produtos[0] }}">{{ produtos }}</option>
+                                <option value="{{ produtos }}">{{ produtos }}</option>
                             {% endfor %}
                         {% else %}
                             <option value=""><b>Sem Produto</b></option>
@@ -90,7 +90,7 @@
                     <select id="codv" name="codv" required>
                         {% if readIdVendedor %}
                             {% for vendedor in readIdVendedor %}
-                                <option value="{{ vendedor[0] }}">{{ vendedor }}</option>
+                                <option value="{{ vendedor }}">{{ vendedor }}</option>
                             {% endfor %}
                         {% else %}
                             <option value=""><b>Sem Vendedor</b></option>

@@ -190,16 +190,21 @@ def vendaspost():
     qntd = request.form.get('qntd')
     cd_produto = request.form.get('cod')
     cd_vendedor = request.form.get('codv')
-    result = c.createVendas( qntd, cd_produto, cd_vendedor)
+    print(f'teste {cd_produto}')
+    print(f'teste2 {cd_vendedor}')
+    result = c.createVendas( int(qntd), int(cd_produto), int(cd_vendedor))
+    print(f'result {result}')
     readBD = r.readVendas()
     readIdVendedor = r.readVender()
     readIdProdutos = r.readProdutos()
     idvendedor = [item['id'] for item in readIdVendedor['data']]
     idProdutos = [item['id'] for item in readIdProdutos['data']]
-    u.updateProductQntd(cd_produto, qntd)
+    u.updateProductQntd(cd_produto, int(qntd))
     if result == 1:
+        print("ok")
         return render_template("vendas.html", lista = readBD['data'], readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
     else:
+        print("não ok")
         return render_template("vendas.html", lista = readBD['data'], readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
 
 

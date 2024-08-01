@@ -92,6 +92,7 @@
 <table>
     <thead>
         <tr>
+            <th>Código</th>
             <th>Nome</th>
             <th>Username</th>
             <th>Email</th>
@@ -102,6 +103,7 @@
     <tbody>
         {% for listagem in lista %}
         <tr>
+            <td>{{ listagem['id'] }}</td>
             <td>{{ listagem['nome'] }}</td>
             <td>{{ listagem['username'] }}</td>
             <td>{{ listagem['email'] }}</td>

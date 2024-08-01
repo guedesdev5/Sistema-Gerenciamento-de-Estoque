@@ -1,31 +1,16 @@
-import mysql.connector
 import requests
+import backend.read as r
 
 urlBase = 'http://localhost:8500/apiGerenciamento/'
-
-def getConnection():
-    global database
-    database = mysql.connector.Connect(host="localhost", database="sistema_geranciamento", user="root", password="pietro29012007")
-
-def update(id, name, description, price, quantity, categoryID, supplierID):
-    getConnection()
-    if database.is_connected():
-        try:
-            cursor = database.cursor()
-            cursor.execute(f'''UPDATE produtos set nome = "{name}", descricao = "{description}", 
-            preco = {price}, quantidade = {quantity}, id_categoria = {categoryID}, id_fornecedor = 
-            {supplierID} WHERE id = {id}''')
-            database.commit()
-            return 1
-        except:
-            return 0
-    else:
-        return 2
     
 def updateProductQntd(id, quantity):
     EndPoint = urlBase + f'produtos/{id}'
+    result = r.readProdutos()
+    qntd_atual = result['data'][0]['quantidade']
+    print(f'qntd atual {qntd_atual}')
+    qntd = int(qntd_atual) - quantity
     produto = {
-        "quantidade": quantity,
+        "quantidade": qntd,
     }
     try:
         response = requests.put(EndPoint, json=produto)
