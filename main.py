@@ -52,9 +52,9 @@ def produtos():
     idFornecedores = [item['id'] for item in readIdFornecedores['data']]
     
     if response['status'] == 0:
-        return render_template("homepage.html", lista = readBD['data'], idCategory = idCategorias, readIdFornecedores = idFornecedores)
+        return render_template("homepage.html", lista = readBD['data'], idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
     else:
-        return render_template("homepage.html", lista = readBD['data'], idCategory = idCategorias, readIdFornecedores = idFornecedores)
+        return render_template("homepage.html", lista = readBD['data'], idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
 
 @app.route("/categorias", methods=['POST'])
 def categoriaspost():
@@ -201,10 +201,8 @@ def vendaspost():
     idProdutos = [item['id'] for item in readIdProdutos['data']]
     u.updateProductQntd(cd_produto, int(qntd))
     if result == 1:
-        print("ok")
         return render_template("vendas.html", lista = readBD['data'], readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
     else:
-        print("não ok")
         return render_template("vendas.html", lista = readBD['data'], readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
 
 

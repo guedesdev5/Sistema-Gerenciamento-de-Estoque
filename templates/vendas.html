@@ -10,7 +10,9 @@
 <body>
 
     <nav class="menu-lateral">
-        
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+        </div>
         <ul>
             <li class="menu">
                 <a href="homepage">
@@ -112,6 +114,7 @@
             <th>Quantidade vendida (unidade)</th>
             <th>Código produto</th>
             <th>Código Vendedor</th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -121,9 +124,51 @@
             <td>{{ listagem['quantidade_vendida'] }}</td>
             <td>{{ listagem['id_produto'] }}</td>
             <td>{{ listagem['id_vendedor'] }}</td>
+            <td>
+                <a href="#" class="btn btn-edit" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ listagem['id'] }}" data-qtd="{{ listagem['quantidade_vendida'] }}" data-idVendedor="{{ listagem['id_vendedor'] }}" data-idProduto="{{listagem['id_produto']}}"><i class="bi bi-pencil"></i></a>
+            </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Editar Venda</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" action="/editar/vendas" method="post">
+                    <div class="input-container">
+                        <div class="input-group left">
+                            <div class="mb-3">
+                                <label for="quantidadeVendas" class="form-label">Quantidade</label>
+                                <input type="text" class="form-control" id="quantidadeVendas" name="quantidadeVendas" value="" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="codVendedor" class="form-label">Código do Vendedor</label>
+                                <input type="text" class="form-control" id="codVendedor" name="codVendedor" value="" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="codProduto" class="form-label">Código produto</label>
+                                <input type="text" class="form-control" id="codProduto" name="codProduto" value="" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="editForm" class="btn btn-primary me-2">Editar</button>
+                <form id="deleteForm" action="/excluir/vendas" method="post" class="modal-footer">
+                    <input type="hidden" name="id" id="vendasIdExclusao" value="">
+                    <button type="submit" form="deleteForm" class="btn btn-danger">Excluir</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
