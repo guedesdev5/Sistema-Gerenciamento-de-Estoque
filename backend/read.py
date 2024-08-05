@@ -11,6 +11,22 @@ def readProdutos ():
         return e
             
 
+def readProdutos (id):
+    EndPoint = urlBase + f'produtos?id={id}'
+    try:
+        response = requests.get(EndPoint)
+        return response.json()
+    except Exception as e:
+        return e
+
+def readProdutos ():
+    EndPoint = urlBase + 'produtos'
+    try:
+        response = requests.get(EndPoint)
+        return response.json()
+    except Exception as e:
+        return e
+
 def readCategoria ():
     EndPoint = urlBase + 'categorias'
     try:
