@@ -108,8 +108,17 @@ form {
     margin-bottom: 20px;
 }
 
-.form-group {
+.left-column {
     width: 48%;
+    display: flex;
+    flex-direction: column;
+}
+
+.right-column {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 label {
@@ -119,7 +128,7 @@ label {
     color: #333;
 }
 
-input[type="text"], input[type="email"] {
+input[type="text"], input[type="email"], input[type="number"], select {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -133,6 +142,7 @@ input[type="text"], input[type="email"] {
     width: 100%;
     display: flex;
     justify-content: center;
+    margin-top: auto; /* Push the button to the bottom */
 }
 
 button[type="submit"] {
@@ -144,11 +154,14 @@ button[type="submit"] {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    width: 100%; /* Make the button full width */
 }
 
 button[type="submit"]:hover {
     background-color: #003f7f;
 }
+
+
 
 
 table {
