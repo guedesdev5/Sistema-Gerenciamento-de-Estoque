@@ -92,3 +92,19 @@ def updateVendedores(id, name, username, email, senha, permissao):
     except Exception as e:
         print(f'erro {e}')
         return e
+
+
+def updateVendas(id, qtd, cdP, cdV):
+    EndPoint = urlBase + f'vendas/{id}'
+    venda = {
+        "quantidade_vendida": qtd
+    }
+    try:
+        response = requests.put(EndPoint, json=venda)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return response.json()
+    except Exception as e:
+        print(f'erro {e}')
+        return e

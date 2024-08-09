@@ -205,6 +205,24 @@ def vendaspost():
     else:
         return render_template("vendas.html", lista = readBD['data'], readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
 
+@app.route("/vendas", methods=['POST'])
+def vendasupdate():
+    id = request.form.get('IDVenda')
+    qntd = request.form.get('quantidadeVendas')
+    cd_produto = request.form.get('codProduto')
+    cd_vendedor = request.form.get('codVendedor')
+    qtd_antiga = r.readVendas(int(id))
+    result = c.updateVendas( int(IDVenda), int(qntd), int(cd_produto), int(cd_vendedor))
+    readBD = r.readVendas()
+    readIdVendedor = r.readVender()
+    readIdProdutos = r.readProdutos()
+    idvendedor = [item['id'] for item in readIdVendedor['data']]
+    idProdutos = [item['id'] for item in readIdProdutos['data']]
+    u.updateProductQntd(cd_produto, int(qntd))
+    if result == 1:
+         return redirect(url_for('vendas'))
+    else:
+         return redirect(url_for('vendas'))
 
 @app.route("/vendedores")
 def vendedores():

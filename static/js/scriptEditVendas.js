@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
 
         var modalTitle = editModal.querySelector('.modal-title');
+        var modalBodyInputID = editModal.querySelector('#IDVenda');
         var modalBodyInputNome = editModal.querySelector('#quantidadeVendas');
         var modalBodyInputTelefone = editModal.querySelector('#codVendedor');
         var modalBodyInputEmail = editModal.querySelector('#codProduto');
@@ -19,6 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
         modalBodyInputNome.value = qtd;
         modalBodyInputTelefone.value = id_vendedor;
         modalBodyInputEmail.value = id_produto
-        modalBodyInputId.value = id
+        modalBodyInputID.value = id
     });
 });

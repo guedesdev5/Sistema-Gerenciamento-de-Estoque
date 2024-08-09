@@ -59,3 +59,11 @@ def readVendas ():
         return response.json()
     except Exception as e:
         return e
+
+def readVendas (id):
+    EndPoint = urlBase + f'vendas?id={id}'
+    try:
+        response = requests.get(EndPoint)
+        return response.json()
+    except Exception as e:
+        return e
