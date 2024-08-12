@@ -33,3 +33,12 @@ def deleetVendedores(id):
         return response.json()
     except Exception as e:
         return e
+    
+def deleteVendas(id):
+    print(f'testando valor do id {id}')
+    EndPoint = urlBase + f'vendas/{id}'
+    try:
+        response = requests.delete(EndPoint)
+        return response.json()
+    except Exception as e:
+        return e

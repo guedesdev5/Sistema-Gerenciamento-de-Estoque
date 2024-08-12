@@ -225,6 +225,19 @@ def vendasupdate():
          return redirect(url_for('vendas'))
     else:
          return redirect(url_for('vendas'))
+    
+@app.route('/excluir/vendas', methods=['post'])
+def excluirVendas():
+    id = request.form['vendasIdExclusao']
+    qntd = request.form['quantidadeVendas']
+
+    print (f'quantidade atual  {qntd}') 
+    response = d.deleteVendas(id)
+    print(f'response {response}')
+    if response['status'] == 0:
+        return redirect(url_for('vendas'))
+    else:
+        return redirect(url_for('vendas'))
 
 @app.route("/vendedores")
 def vendedores():

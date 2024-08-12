@@ -167,7 +167,8 @@
             <div class="modal-footer">
                 <button type="submit" form="editForm" class="btn btn-primary me-2">Editar</button>
                 <form id="deleteForm" action="/excluir/vendas" method="post" class="modal-footer">
-                    <input type="hidden" name="id" id="vendasIdExclusao" value="">
+                    <input type="hidden" name="vendasIdExclusao" id="vendasIdExclusao" value="">
+                    <input type="hidden" id="quantidadeVendas" name="quantidadeVendas" value="">
                     <button type="submit" form="deleteForm" class="btn btn-danger">Excluir</button>
                 </form>
             </div>
