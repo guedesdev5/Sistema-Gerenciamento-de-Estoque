@@ -11,7 +11,7 @@ def readProdutos ():
         return e
             
 
-def readProdutos (id):
+def readProdutosID (id):
     EndPoint = urlBase + f'produtos?id={id}'
     try:
         response = requests.get(EndPoint)
@@ -60,7 +60,7 @@ def readVendas ():
     except Exception as e:
         return e
 
-def readVendas (id):
+def readVendasID (id):
     EndPoint = urlBase + f'vendas?id={id}'
     try:
         response = requests.get(EndPoint)

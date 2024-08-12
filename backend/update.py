@@ -6,11 +6,8 @@ urlBase = 'http://localhost:8500/apiGerenciamento/'
 def updateProductQntd(id, quantity):
     EndPoint = urlBase + f'produtos/{id}'
     result = r.readProdutos()
-    qntd_atual = result['data'][0]['quantidade']
-    print(f'qntd atual {qntd_atual}')
-    qntd = int(qntd_atual) - quantity
     produto = {
-        "quantidade": qntd,
+        "quantidade": quantity,
     }
     try:
         response = requests.put(EndPoint, json=produto)

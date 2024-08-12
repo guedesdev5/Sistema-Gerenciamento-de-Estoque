@@ -190,35 +190,37 @@ def vendaspost():
     qntd = request.form.get('qntd')
     cd_produto = request.form.get('cod')
     cd_vendedor = request.form.get('codv')
-    print(f'teste {cd_produto}')
-    print(f'teste2 {cd_vendedor}')
     result = c.createVendas( int(qntd), int(cd_produto), int(cd_vendedor))
-    print(f'result {result}')
+    responseProduto = r.readProdutosID(int(cd_produto))
+    qtd_atual = int(responseProduto['data'][0]['quantidade'])
+    qtd_validada = qtd_atual - int(qntd)
     readBD = r.readVendas()
     readIdVendedor = r.readVender()
     readIdProdutos = r.readProdutos()
     idvendedor = [item['id'] for item in readIdVendedor['data']]
     idProdutos = [item['id'] for item in readIdProdutos['data']]
-    u.updateProductQntd(cd_produto, int(qntd))
+    u.updateProductQntd(cd_produto, int(qtd_validada))
     if result == 1:
         return render_template("vendas.html", lista = readBD['data'], readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
     else:
         return render_template("vendas.html", lista = readBD['data'], readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
 
-@app.route("/vendas", methods=['POST'])
+@app.route("/editar/vendas", methods=['POST'])
 def vendasupdate():
     id = request.form.get('IDVenda')
     qntd = request.form.get('quantidadeVendas')
     cd_produto = request.form.get('codProduto')
     cd_vendedor = request.form.get('codVendedor')
-    qtd_antiga = r.readVendas(int(id))
-    result = c.updateVendas( int(IDVenda), int(qntd), int(cd_produto), int(cd_vendedor))
-    readBD = r.readVendas()
+    qtd_antiga = r.readVendasID(int(id))
+    qtd_produto = r.readProdutosID(int(cd_produto))
+    print(qtd_antiga)
+    print(qtd_produto)
+    qtd_validada = qtd_antiga['data'][0]['quantidade_vendida'] + qtd_produto['data'][0]['quantidade'] 
+    qtd_atual = int(qtd_validada) - int(qntd)
+    result = u.updateVendas( int(id), int(qntd), int(cd_produto), int(cd_vendedor))
     readIdVendedor = r.readVender()
     readIdProdutos = r.readProdutos()
-    idvendedor = [item['id'] for item in readIdVendedor['data']]
-    idProdutos = [item['id'] for item in readIdProdutos['data']]
-    u.updateProductQntd(cd_produto, int(qntd))
+    u.updateProductQntd(cd_produto, qtd_atual)
     if result == 1:
          return redirect(url_for('vendas'))
     else:
