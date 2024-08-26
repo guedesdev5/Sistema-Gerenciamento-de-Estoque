@@ -58,7 +58,12 @@
                 </a>
             </li>
 
-            
+            <li class="menu">
+                <a href="entradas">
+                <span class="icon"><i class="bi bi-chevron-bar-right"></i></span>
+                <span class="txt-link"> Entradas </span>
+                </a>
+            </li>
 
             <li class="sair">
                 <a href="login">
@@ -75,11 +80,11 @@
                     <label for="qntd">Quantidade vendida (unidade):</label>
                     <input type="number" id="qntd" name="qntd" required>
                     
-                    <label for="codv">Código Vendedor:</label>
+                    <label for="codv">Nome Vendedor:</label>
                     <select id="codv" name="codv" required>
                         {% if readIdVendedor %}
                             {% for vendedor in readIdVendedor %}
-                                <option value="{{ vendedor }}">{{ vendedor }}</option>
+                                <option value="{{ vendedor['id'] }}">{{ vendedor['nome'] }}</option>
                             {% endfor %}
                         {% else %}
                             <option value=""><b>Sem Vendedor</b></option>
@@ -87,11 +92,11 @@
                     </select>
                 </div>
                 <div class="right-column">
-                    <label for="cod">Código produto:</label>
+                    <label for="cod">Nome produto:</label>
                     <select id="cod" name="cod" required>
                         {% if readIdProdutos %}
                             {% for produtos in readIdProdutos %}
-                                <option value="{{ produtos }}">{{ produtos }}</option>
+                                <option value="{{ produtos['id'] }}">{{ produtos['nome'] }}</option>
                             {% endfor %}
                         {% else %}
                             <option value=""><b>Sem Produto</b></option>

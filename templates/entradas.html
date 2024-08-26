@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dados Categoria</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleEntradas.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/scriptEditCategoria.js') }}"></script>
+
+</head>
+<body>
+
+    <nav class="menu-lateral">
+        <div class="logo">                                                                       
+            <img src="{{ url_for('static', filename='images/tcc.jpg') }}" alt="Logo">
+        </div>
+        <ul>
+            <li class="menu">
+                <a href="homepage">
+                <span class="icon"><i class="bi bi-box-seam"></i></span>
+                <span class="txt-link"> Produtos </span>
+                </a>
+            </li>
+
+            <li class="menu">
+                <a href="categorias">
+                <span class="icon"><i class="bi bi-list-ul"></i></span>
+                <span class="txt-link"> Categorias </span>
+                </a>
+            </li>
+            
+            <li class="menu">
+                <a href="fornecedores">
+                <span class="icon"><i class="bi bi-truck"></i></i></span>
+                <span class="txt-link"> Fornecedores </span>
+                </a>
+            </li>
+
+            <li class="menu">
+                <a href="vendedores">
+                <span class="icon"><i class="bi bi-person-lines-fill"></i></span>
+                <span class="txt-link"> Vendedores </span>
+                </a>
+            </li>
+            
+            <li class="menu">
+                <a href="vendas">
+                <span class="icon"><i class="bi bi-coin"></i></span>
+                <span class="txt-link"> Vendas </span>
+                </a>
+            </li>
+
+            <li class="menu">
+                <a href="entradas">
+                <span class="icon"><i class="bi bi-chevron-bar-right"></i></span>
+                <span class="txt-link"> Entradas </span>
+                </a>
+            </li>
+
+            <li class="sair">
+                <a href="login">
+                <span class="icon"><i class="bi bi-box-arrow-right"></i></span>
+                <span class="txt-link"> Sair </span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+
+</body>s
+</html>

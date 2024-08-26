@@ -58,6 +58,13 @@
                 </a>
             </li>
 
+            <li class="menu">
+                <a href="entradas">
+                <span class="icon"><i class="bi bi-chevron-bar-right"></i></span>
+                <span class="txt-link"> Entradas </span>
+                </a>
+            </li>
+
             <li class="sair">
                 <a href="login">
                 <span class="icon"><i class="bi bi-box-arrow-right"></i></span>
@@ -86,22 +93,22 @@
             <label for="quantity">Quantidade do produto:</label>
             <input type="number" id="quantity" name="quantity" required>
                     
-            <label for="category_id">Id da categoria:</label>
+            <label for="category_id">Nome da categoria:</label>
             <select id="category_id" name="category_id" required>
                 {% if idCategory %}
                     {% for categoria in idCategory %}
-                        <option value="{{ categoria }}">{{ categoria }}</option>
+                        <option value="{{ categoria['id'] }}">{{ categoria['nome'] }}</option>
                     {% endfor %}
                 {% else %}
                     <option value=""><b>Sem Categorias</b></option>
                 {% endif %}
             </select>
             
-            <label for="fornecedor_id">Id do fornecedor:</label>
+            <label for="fornecedor_id">Nome do fornecedor:</label>
             <select id="fornecedor_id" name="fornecedor_id" required>
                 {% if readIdFornecedores %}
                     {% for Fornecedores in readIdFornecedores %}
-                        <option value="{{ Fornecedores }}">{{ Fornecedores }}</option>
+                        <option value="{{ Fornecedores['id'] }}">{{ Fornecedores['nome'] }}</option>
                     {% endfor %}
                 {% else %}
                     <option value=""><b>Sem Fornecedores</b></option>

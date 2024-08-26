@@ -1,16 +1,16 @@
-body{
+body {
     height: 100vh;
     background: linear-gradient(to bottom right, #f0f4f7, #dae8fc);
     font-family: 'Arial', sans-serif;
 }
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-nav.menu-lateral{
+nav.menu-lateral {
     overflow: hidden;
     transition: 0.5s;
     width: 65px;
@@ -23,25 +23,24 @@ nav.menu-lateral{
     left: 0;
 }
 
-nav.menu-lateral:hover{
+nav.menu-lateral:hover {
     width: 250px;
 }
 
 .logo {
-    width: 110%;
+    width: 100%;
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
-
 }
 
 .logo img {
-    width: 120%;
+    width: 80%;
 }
 
-ul{
+ul {
     height: 100%;
-    list-style-type: none; 
+    list-style-type: none;
     padding-left: 0;
 }
 
@@ -87,7 +86,7 @@ ul li.sair {
 }
 
 .container {
-    width: 80%;
+    width: 50%;
     margin: 0 auto;
     padding: 20px;
     border-radius: 8px;
@@ -98,19 +97,12 @@ ul li.sair {
 
 form {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.form-row {
-    display: flex;
     justify-content: space-between;
-    width: 100%;
-    margin-bottom: 20px;
 }
 
-.form-group {
-    width: 48%;
+.left-column, .right-column {
+    width: 50%;
+    margin-left: 27%;
 }
 
 label {
@@ -120,37 +112,30 @@ label {
     color: #333;
 }
 
-input[type="text"], input[type="email"] {
+input[type="text"], input[type="number"], select {
     width: 100%;
     padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     border-radius: 5px;
     border: 1px solid #ccc;
     box-sizing: border-box;
     font-size: 16px;
 }
 
-.button {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
 button[type="submit"] {
+    width: 100%;
     background-color: #00509e;
     color: #fff;
     border: none;
+    padding: 10px;
     border-radius: 5px;
-    padding: 10px 20px;
     font-size: 16px;
-    cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 button[type="submit"]:hover {
     background-color: #003f7f;
 }
-
 
 table {
     width: 90%;
@@ -241,7 +226,7 @@ td a.btn-delete:hover {
 .modal-body button[type="submit"],
     .modal-footer button {
         padding: 10px 20px;
-        background-color: #239ce2;
+        background-color: #0074c2;
         color: #fff;
         border: none;
         border-radius: 5px;

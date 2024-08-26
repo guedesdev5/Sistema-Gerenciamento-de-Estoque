@@ -48,8 +48,8 @@ def produtos():
     readBD = r.readProdutos()
     readIdCategory = r.readCategoria()
     readIdFornecedores = r.readFornecedor()
-    idCategorias = [item['id'] for item in readIdCategory['data']]
-    idFornecedores = [item['id'] for item in readIdFornecedores['data']]
+    idCategorias = readIdCategory['data']
+    idFornecedores = readIdFornecedores['data']
     
     if response['status'] == 0:
         return render_template("homepage.html", lista = readBD['data'], idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
@@ -197,8 +197,8 @@ def vendaspost():
     readBD = r.readVendas()
     readIdVendedor = r.readVender()
     readIdProdutos = r.readProdutos()
-    idvendedor = [item['id'] for item in readIdVendedor['data']]
-    idProdutos = [item['id'] for item in readIdProdutos['data']]
+    idvendedor = readIdVendedor['data']
+    idProdutos = readIdProdutos['data']
     u.updateProductQntd(cd_produto, int(qtd_validada))
     if result == 1:
         return render_template("vendas.html", lista = readBD['data'], readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
@@ -249,8 +249,8 @@ def homepage():
     readBD = r.readProdutos()
     readIdCategory = r.readCategoria()
     readIdFornecedores = r.readFornecedor()
-    idCategorias = [item['id'] for item in readIdCategory['data']]
-    idFornecedores = [item['id'] for item in readIdFornecedores['data']]
+    idCategorias = readIdCategory['data']
+    idFornecedores = readIdFornecedores['data']
     return render_template("homepage.html", lista = readBD['data'], idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
   
 
@@ -264,14 +264,18 @@ def vendas():
     readBD = r.readVendas()
     readIdVendedor = r.readVender()
     readIdProdutos = r.readProdutos()
-    idvendedor = [item['id'] for item in readIdVendedor['data']]
-    idProdutos = [item['id'] for item in readIdProdutos['data']]
+    idvendedor = readIdVendedor['data']
+    idProdutos = readIdProdutos['data']
     return render_template("vendas.html", lista = readBD['data'], readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
 
 @app.route("/fornecedores")
 def fornecedores():
     readBD = r.readFornecedor()
     return render_template("fornecedores.html",  lista = readBD['data'])
+
+@app.route("/entradas")
+def entradas():
+    return render_template("entradas.html")
 
 @app.route("/login")
 def loginO():
