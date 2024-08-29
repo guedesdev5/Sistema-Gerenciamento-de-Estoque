@@ -83,6 +83,7 @@
                     <label for="codv">Nome Vendedor:</label>
                     <select id="codv" name="codv" required>
                         {% if readIdVendedor %}
+                            <option value=""></option>
                             {% for vendedor in readIdVendedor %}
                                 <option value="{{ vendedor['id'] }}">{{ vendedor['nome'] }}</option>
                             {% endfor %}
@@ -95,6 +96,7 @@
                     <label for="cod">Nome produto:</label>
                     <select id="cod" name="cod" required>
                         {% if readIdProdutos %}
+                        <option value=""></option>
                             {% for produtos in readIdProdutos %}
                                 <option value="{{ produtos['id'] }}">{{ produtos['nome'] }}</option>
                             {% endfor %}
@@ -118,8 +120,8 @@
         <tr>
             <th>Data</th>
             <th>Quantidade vendida (unidade)</th>
-            <th>Código produto</th>
-            <th>Código Vendedor</th>
+            <th>Produto</th>
+            <th>Vendedor</th>
             <th>Ações</th>
         </tr>
     </thead>
@@ -128,8 +130,8 @@
         <tr>
             <td>{{ listagem['data_venda'] }}</td>
             <td>{{ listagem['quantidade_vendida'] }}</td>
-            <td>{{ listagem['id_produto'] }}</td>
-            <td>{{ listagem['id_vendedor'] }}</td>
+            <td>{{ listagem['nome_produto'] }}</td>
+            <td>{{ listagem['nome_vendedor'] }}</td>
             <td>
                 <a href="#" class="btn btn-edit" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ listagem['id'] }}" data-qtd="{{ listagem['quantidade_vendida'] }}" data-idVendedor="{{ listagem['id_vendedor'] }}" data-idProduto="{{listagem['id_produto']}}"><i class="bi bi-pencil"></i></a>
             </td>

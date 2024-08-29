@@ -53,7 +53,7 @@ def createVendedor(name, username, email, senha, permissao):
     except Exception as e:
         return e
 
-def createProdutos(id, name, description, price, quantity, categoryID, supplierID):
+def createProdutos(id, name, description, price, quantity,  categoryID, supplierID):
     EndPoint = urlBase + 'produtos'
     produto = {
         "id": id,

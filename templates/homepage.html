@@ -96,7 +96,9 @@
             <label for="category_id">Nome da categoria:</label>
             <select id="category_id" name="category_id" required>
                 {% if idCategory %}
+                    <option value=""></option>
                     {% for categoria in idCategory %}
+                        
                         <option value="{{ categoria['id'] }}">{{ categoria['nome'] }}</option>
                     {% endfor %}
                 {% else %}
@@ -107,7 +109,8 @@
             <label for="fornecedor_id">Nome do fornecedor:</label>
             <select id="fornecedor_id" name="fornecedor_id" required>
                 {% if readIdFornecedores %}
-                    {% for Fornecedores in readIdFornecedores %}
+                <option value=""></option>
+                    {% for Fornecedores in readIdFornecedores %}    
                         <option value="{{ Fornecedores['id'] }}">{{ Fornecedores['nome'] }}</option>
                     {% endfor %}
                 {% else %}
@@ -123,12 +126,11 @@
 <table>
     <thead>
         <tr>
-            <th>Id</th>
             <th>Nome</th>
             <th>Descrição</th>
             <th>Preço</th>
             <th>Quantidade</th>
-            <th>Id categoria</th>
+            <th>Categoria</th>
             <th>Id fornecedor</th>
             <th>Ações</th>
         </tr>
@@ -136,13 +138,12 @@
     <tbody>
         {% for listagem in lista %}
         <tr>
-            <td>{{ listagem['id'] }}</td>
             <td>{{ listagem['nome'] }}</td>
             <td>{{ listagem['descricao'] }}</td>
             <td>{{ listagem['preco'] }}</td>
             <td>{{ listagem['quantidade'] }}</td>
-            <td>{{ listagem['id_categoria'] }}</td>
-            <td>{{ listagem['id_fornecedor'] }}</td>
+            <td>{{ listagem['tipo_produto'] }}</td>
+            <td>{{ listagem['nome_fornecedor'] }}</td>
             <td>
                 <a href="#" class="btn btn-edit" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ listagem['id'] }}" data-nome="{{ listagem['nome'] }}" data-descricao="{{ listagem['descricao'] }}" data-preco="{{listagem['preco']}}" data-quantidade="{{listagem['quantidade']}}" data-id_categoria="{{listagem['id_categoria']}}" data-id_fornecedor="{{listagem['id_fornecedor']}}"><i class="bi bi-pencil"></i></a>
             </td>
