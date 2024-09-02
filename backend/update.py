@@ -73,7 +73,7 @@ def updateProdutos(id, name, description, price, quantity, categoryID, supplierI
         return e
 
 def updateQtdProdutos(id, qtd):
-    EndPoint = urlBase + f'produtos/{id}'
+    EndPoint = urlBase + f'produtosEX/{id}'
     produto = {
         "quantidade_venda_excluida": qtd
     }

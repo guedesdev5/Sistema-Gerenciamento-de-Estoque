@@ -69,6 +69,104 @@
         </ul>
     </nav>
 
+    <div class="container">
+        <form action="/fornecedores" method="post">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="name">Data entrada:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="tel">Quantidade entrada:</label>
+                    <input type="text" id="tel" name="tel" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email">Nome Fornecedor:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="endereco">Nome Fornecedor:</label>
+                    <input type="text" id="endereco" name="endereco" required>
+                </div>
+            </div>
+            <div class="button">
+                <button type="submit">Salvar</button>
+            </div>
+        </form>
+    </div>
+    
+    <br>
+    <table>
+        <thead>
+            <tr>
+                <th>Data Entrada</th>
+                <th>Quantidade</th>
+                <th>Fornecedor</th>
+                <th>Produto</th>
+                <th>Editar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for listagem in lista %}
+            <tr>
+                <td>{{ listagem['nome'] }}</td>
+                <td>{{ listagem['telefone'] }}</td>
+                <td>{{ listagem['email'] }}</td>
+                <td>{{ listagem['endereco'] }}</td>
+                <td>
+                    <a href="#" class="btn btn-edit" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ listagem['id'] }}" data-nome="{{ listagem['nome'] }}" data-telefone="{{ listagem['telefone'] }}" data-email="{{ listagem['email'] }}" data-endereco="{{ listagem['endereco'] }}"><i class="bi bi-pencil"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar Fornecedor</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm" action="/editar/fornecedores" method="post">
+                        <div class="mb-3">
+                            <label for="categoriaId" class="form-label">Código</label>
+                            <input type="text" class="form-control" id="fornecedorId" name="id" value="" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="categoriaNome" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="fornecedorNome" name="nome" value="" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="categoriaDescricao" class="form-label">Telefone</label>
+                            <input type="text" class="form-control" id="fornecedorTel" name="telefone" value="" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="categoriaDescricao" class="form-label">Email</label>
+                            <input type="text" class="form-control" id="fornecedorEmail" name="email" value="" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="categoriaDescricao" class="form-label">Endereço</label>
+                            <input type="text" class="form-control" id="fornecedorEndereco" name="endereco" value="" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" form="editForm" class="btn btn-primary me-2">Editar</button>
+                    
+                    <form id="deleteForm" action="/excluir/fornecedores" method="post" class="modal-footer">
+                        <input type="hidden" name="id" id="fornecedorIdExclusao" value="">
+                        <button type="submit" form="deleteForm" class="btn btn-danger">Excluir</button>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>s
 </html>

@@ -230,10 +230,10 @@ def vendasupdate():
 def excluirVendas():
     id = request.form.get('vendasIdExclusao')
     id_produto = request.form.get('codProdutoEx')
-    qntd = request.form.get('quantidadeVendas')
+    qntd = request.form.get('quantidadeVendasEX')
     response = d.deleteVendas(id)
-    print (f'okokokokkok {id_produto}')
-
+    print(id_produto)
+    print(qntd)
     ajusta_quantidade = u.updateQtdProdutos(id_produto, qntd)
     print(f'tajusat   {ajusta_quantidade}')
     if response['status'] == 0:
