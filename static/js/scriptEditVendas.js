@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var modalBodyInputTelefone = editModal.querySelector('#codVendedor');
         var modalBodyInputEmail = editModal.querySelector('#codProduto');
         var modalBodyInputIdExcluir = editModal.querySelector('#vendasIdExclusao');
+        var modalBodyInputprodutoExcluir = editModal.querySelector('#codProdutoEx');
 
 
         modalTitle.textContent = 'Editar Venda: ' ;
@@ -22,5 +23,6 @@ document.addEventListener('DOMContentLoaded', function() {
         modalBodyInputEmail.value = id_produto
         modalBodyInputID.value = id
         modalBodyInputIdExcluir.value = id
+        modalBodyInputprodutoExcluir.value = id_produto
     });
 });

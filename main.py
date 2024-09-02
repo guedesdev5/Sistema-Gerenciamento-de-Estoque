@@ -228,12 +228,14 @@ def vendasupdate():
     
 @app.route('/excluir/vendas', methods=['post'])
 def excluirVendas():
-    id = request.form['vendasIdExclusao']
-    qntd = request.form['quantidadeVendas']
-
-    print (f'quantidade atual  {qntd}') 
+    id = request.form.get('vendasIdExclusao')
+    id_produto = request.form.get('codProdutoEx')
+    qntd = request.form.get('quantidadeVendas')
     response = d.deleteVendas(id)
-    print(f'response {response}')
+    print (f'okokokokkok {id_produto}')
+
+    ajusta_quantidade = u.updateQtdProdutos(id_produto, qntd)
+    print(f'tajusat   {ajusta_quantidade}')
     if response['status'] == 0:
         return redirect(url_for('vendas'))
     else:

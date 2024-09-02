@@ -19,6 +19,7 @@ def updateProductQntd(id, quantity):
         print(f'erro {e}')
         return e
 
+
 def updateCategory(id, name, description):
     EndPoint = urlBase + f'categorias/{id}'
     categoria = {
@@ -60,6 +61,21 @@ def updateProdutos(id, name, description, price, quantity, categoryID, supplierI
         "quantidade": quantity,
         "id_categoria": categoryID,
         "id_fornecedor": supplierID
+    }
+    try:
+        response = requests.put(EndPoint, json=produto)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return response.json()
+    except Exception as e:
+        print(f'erro {e}')
+        return e
+
+def updateQtdProdutos(id, qtd):
+    EndPoint = urlBase + f'produtos/{id}'
+    produto = {
+        "quantidade_venda_excluida": qtd
     }
     try:
         response = requests.put(EndPoint, json=produto)
