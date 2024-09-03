@@ -1,27 +1,46 @@
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleLogin.css') }}">
-    <title>Login</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styleLogin.css') }}">
+  <script src="https://kit.fontawesome.com/cf6fa412bd.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="bg">
-        <div class="login-container">
-            <h2>Conecte-se</h2>
-            <form action="/login" method="post">
-                <label for="username">Usuário</label>
-                <input type="text" id="username" name="username" required>
-
-                <label for="password">Senha</label>
-                <input type="password" id="password" name="password" required>
-                <br><br>
-                <input type="submit" value="Entrar">
-            </form>
-        </div>
+  <div class="container">
+    <div class="buttonsForm">
+      <div class="btnColor"></div>
+      <button id="btnSignin">Entrar</button>
+      <button id="btnSignup">Cadastrar</button>
     </div>
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+    <form id="signin" action="/login" method="post">
+        <input type="text" id="username" name="username" placeholder="Username" required>
+        <i class="fas fa-envelope iEmail"></i>
+        <input type="password" id="password" name="password" placeholder="Senha" required>
+        <i class="fas fa-lock iPassword"></i>
+        <button type="submit">Entrar</button>
+    </form>
+
+    <form id="signup" action="/cadastro" method="post">
+        <input type="text" id="nomeVendedor" name="nomeVendedor" placeholder="Nome" required>
+        <i class="fas fa-envelope iEmail"></i>
+        <input type="text" id="usernameVendedor" name="usernameVendedor" placeholder="Username" required>
+        <i class="fas fa-envelope iEmail2"></i>
+        <input type="text" id="emailVendedor" name="emailVendedor" placeholder="Email" required>
+        <i class="fas fa-envelope iEmail3"></i>
+        <input type="password" id="password" name="password" placeholder="Senha" required>
+        <i class="fas fa-lock iPassword"></i>
+        <button type="submit">Cadastrar</button>
+    </form>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
-

@@ -1,52 +1,116 @@
-body, html {
-    height: 100%;
-    margin: 0;
-    font-family: Arial, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Poppins&family=Roboto:wght@100;300;400;500;700;900&family=Source+Sans+Pro:wght@200;300;400;600;700;900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'poppins', sans-serif;
 }
 
-.bg {
-    background: url('https://i.pinimg.com/736x/06/40/f0/0640f0ccdbd5c72c367117c71cc02f92.jpg') no-repeat center center fixed; /* URL pública do GIF */
-    height: 100%;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
+body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.login-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(255, 255, 255, 0.8); /* Fundo semi-transparente para o formulário */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+.container {
+  background-color: whitesmoke;
+  padding: 6px;
+  width: 350px;
+  height: 550px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 0 20px 0 darkgrey;
 }
 
-.login-container h2 {
-    margin: 10px 10px 15px 180px;
+form {
+  position: absolute;
+  margin-top: 80px;
+  transition: .5s;
+  width: 300px;
+  height: 400px;
 }
 
-.login-container input[type="text"],
-.login-container input[type="password"] {
-    width: 95%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.buttonsForm {
+  margin-top: 40px;
+  position: relative;
+  border-radius: 30px;
+  box-shadow: 0 0 7px 0 rgb(55, 43, 226);
 }
 
-.login-container input[type="submit"] {
-    width: 99%;
-    padding: 10px;
-    background-color: #00509e;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+.buttonsForm button {
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  position: relative;
+  padding: 10px 29px;
 }
 
-.login-container input[type="submit"]:hover {
-    background-color: #0a6dcf;
+.btnColor {
+  position: absolute;
+  width: 108px;
+  height: 100%;
+  background: linear-gradient(to right, #3432da, #636df8);
+  border-radius: 30px;
+  transition: .3s;
+}
+
+input[type="text"], input[type="password"] {
+  border: none;
+  margin-top: 40px;
+  border-radius: 60px;
+  padding: 8px 0 8px 35px;
+  outline: none;
+  width: 100%;
+}
+
+button[type="submit"] {
+  background: #210fc8;
+  color: white;
+  border-radius: 30px;
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 8px 0 8px 15px;
+  font-size: 15px;
+  margin-top: 40px;
+  cursor: pointer;
+}
+
+.divCheck {
+  margin: 10px 0 0 5px;
+  width: 80%;
+  font-size: 13px;
+}
+
+#signin {
+  left: 25px;
+}
+
+#signup {
+  left: 450px;
+}
+
+i {
+  position: absolute;
+  left: 0;
+  padding: 10px 10px;
+}
+
+.iEmail {
+  top: 40px;
+}
+
+.iPassword {
+  top: 114px;
+}
+
+.iPassword2 {
+  top: 190px;
 }
