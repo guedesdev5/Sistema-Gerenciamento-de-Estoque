@@ -241,6 +241,24 @@ def excluirVendas():
     else:
         return redirect(url_for('vendas'))
 
+
+@app.route("/entradas", methods=['POST'])
+def entradaspost():
+    qntd = request.form.get('qntd')
+    cd_produto = request.form.get('codP')
+    cd_fornecedor = request.form.get('cod')
+    result = c.createVendas( int(qntd), int(cd_produto), int(cd_fornecedor))
+   
+    readBD = r.readVendas()
+    readFornecedor = r.readFornecedor()
+    readIdProdutos = r.readProdutos()
+    idFornecedor = readFornecedor['data']
+    idProdutos = readIdProdutos['data']
+    if result == 1:
+        return render_template("vendas.html", lista = readBD['data'], readIdFornecedor = idFornecedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+    else:
+        retur
+
 @app.route("/vendedores")
 def vendedores():
     readBD = r.readVender()
@@ -277,7 +295,13 @@ def fornecedores():
 
 @app.route("/entradas")
 def entradas():
-    return render_template("entradas.html")
+    readBD = r.readEntradas()
+    readFornecedor = r.readFornecedor()
+    readIdProdutos = r.readProdutos()
+    idFornecedor = readFornecedor['data']
+    idProdutos = readIdProdutos['data']
+    return render_template("vendas.html", lista = readBD['data'], readIdFornecedor = idFornecedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+    
 
 @app.route("/login")
 def loginO():

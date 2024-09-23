@@ -28,15 +28,14 @@ nav.menu-lateral:hover{
 }
 
 .logo {
-    width: 110%;
+    width: 100%;
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
-
 }
 
 .logo img {
-    width: 120%;
+    width: 80%;
 }
 
 ul{
@@ -87,7 +86,7 @@ ul li.sair {
 }
 
 .container {
-    width: 80%;
+    width: 50%;
     margin: 0 auto;
     padding: 20px;
     border-radius: 8px;
@@ -109,8 +108,17 @@ form {
     margin-bottom: 20px;
 }
 
-.form-group {
+.left-column {
     width: 48%;
+    display: flex;
+    flex-direction: column;
+}
+
+.right-column {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 label {
@@ -120,7 +128,7 @@ label {
     color: #333;
 }
 
-input[type="text"], input[type="email"] {
+input[type="text"], input[type="email"], input[type="number"], select {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -134,6 +142,7 @@ input[type="text"], input[type="email"] {
     width: 100%;
     display: flex;
     justify-content: center;
+    margin-top: auto; /* Push the button to the bottom */
 }
 
 button[type="submit"] {
@@ -145,11 +154,14 @@ button[type="submit"] {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    width: 100%; /* Make the button full width */
 }
 
 button[type="submit"]:hover {
     background-color: #003f7f;
 }
+
+
 
 
 table {
@@ -159,7 +171,7 @@ table {
     background-color: #f9f9f9;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 3px rgba(0,0,0,0.1);
 }
 
 thead {
@@ -203,57 +215,66 @@ td a.btn-delete:hover {
     color: #c0392b;
 }
 
+
 .modal-content {
     padding: 20px;
-    border: none; /* Remove a borda padrão */
-    border-radius: 10px; /* Adiciona bordas arredondadas */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra suave */
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .modal-header {
     border-bottom: 1px solid #0074c2;
-    background-color: #f0f0f0; /* Cor de fundo do cabeçalho */
-    padding-bottom: 15px; /* Espaçamento inferior menor */
+    background-color: #f0f0f0;
+    padding-bottom: 15px;
 }
 
 .modal-body, .modal-footer {
-    padding: 20px; /* Espaçamento interno geral */
+    padding: 20px;
 }
 
 .modal-footer {
     border-top: 1px solid #e5e5e5;
-    background-color: #f0f0f0; /* Cor de fundo do rodapé */
-    text-align: right; /* Alinha o conteúdo do rodapé à direita */
+    background-color: #f0f0f0;
+    text-align: right;
 }
-/* Estilos adicionais para os inputs */
+
+.input-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    width: 48%;
+}
+
 .modal-body input[type="text"],
 .modal-body input[type="number"],
 .modal-body textarea {
-    width: 70%;
+    width: 100%;
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-sizing: border-box; /* Garante que o padding não aumente a largura */
+    box-sizing: border-box;
 }
 
-/* Estilos adicionais para o botão */
 .modal-body button[type="submit"],
-    .modal-footer button {
-        padding: 10px 20px;
-        background-color: #239ce2;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        width: 100%; /* Define a largura do botão como 100% do contêiner */
-        max-width: 200px; /* Define uma largura máxima para evitar que o botão ocupe toda a largura */
-        margin-right: 10px; /* Espaçamento entre botões */
-    }
+.modal-footer button {
+    padding: 10px 20px;
+    background-color: #239ce2;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 200px;
+    margin-right: 10px;
+}
 
-    /* Estilo adicional para o botão de Excluir */
-    .modal-body button[type="submit"].btn-danger,
-    .modal-footer button.btn-danger {
-        background-color: #dc3545; /* Cor de fundo vermelha para botão de Excluir */
-    }
-
+.modal-body button[type="submit"].btn-danger,
+.modal-footer button.btn-danger {
+    background-color: #dc3545;
+}
