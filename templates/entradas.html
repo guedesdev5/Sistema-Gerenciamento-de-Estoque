@@ -70,29 +70,40 @@
     </nav>
 
     <div class="container">
-        <form action="/fornecedores" method="post">
+        <form action="/entradas" method="post">
             <div class="form-row">
-                <div class="form-group">
-                    <label for="name">Data entrada:</label>
-                    <input type="text" id="name" name="name" required>
+                <div class="left-column">
+                    <label for="qntd">Quantidade entrada (unidade):</label>
+                    <input type="number" id="qntd" name="qntd" required>
+                    
+                    <label for="codP">Nome Produto:</label>
+                    <select id="codP" name="codP" required>
+                        {% if readIdProduto %}
+                            <option value=""></option>
+                            {% for produto in readIdProduto %}
+                                <option value="{{ produto['id'] }}">{{ produto['nome'] }}</option>
+                            {% endfor %}
+                        {% else %}
+                            <option value=""><b>Sem Produto</b></option>
+                        {% endif %}
+                    </select>
                 </div>
-                <div class="form-group">
-                    <label for="tel">Quantidade entrada:</label>
-                    <input type="text" id="tel" name="tel" required>
+                <div class="right-column">
+                    <label for="cod">Nome Fornecedor:</label>
+                    <select id="cod" name="cod" required>
+                        {% if readIdFornecedor %}
+                        <option value=""></option>
+                            {% for fornecedor in readIdFornecedor %}
+                                <option value="{{ fornecedor['id'] }}">{{ fornecedor['nome'] }}</option>
+                            {% endfor %}
+                        {% else %}
+                            <option value=""><b>Sem Fornecedor</b></option>
+                        {% endif %}
+                    </select>
+                    <div class="button">
+                        <button type="submit">Salvar</button>
+                    </div>
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="email">Nome Fornecedor:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="endereco">Nome Fornecedor:</label>
-                    <input type="text" id="endereco" name="endereco" required>
-                </div>
-            </div>
-            <div class="button">
-                <button type="submit">Salvar</button>
             </div>
         </form>
     </div>
@@ -111,10 +122,10 @@
         <tbody>
             {% for listagem in lista %}
             <tr>
-                <td>{{ listagem['nome'] }}</td>
-                <td>{{ listagem['telefone'] }}</td>
-                <td>{{ listagem['email'] }}</td>
-                <td>{{ listagem['endereco'] }}</td>
+                <td>{{ listagem['data_entrada'] }}</td>
+                <td>{{ listagem['quantidade_entrada'] }}</td>
+                <td>{{ listagem['nome_produto'] }}</td>
+                <td>{{ listagem['nome_fornecedor'] }}</td>
                 <td>
                     <a href="#" class="btn btn-edit" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ listagem['id'] }}" data-nome="{{ listagem['nome'] }}" data-telefone="{{ listagem['telefone'] }}" data-email="{{ listagem['email'] }}" data-endereco="{{ listagem['endereco'] }}"><i class="bi bi-pencil"></i></a>
                 </td>
