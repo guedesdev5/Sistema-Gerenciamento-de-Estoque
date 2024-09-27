@@ -247,17 +247,42 @@ def entradaspost():
     qntd = request.form.get('qntd')
     cd_produto = request.form.get('codP')
     cd_fornecedor = request.form.get('cod')
-    result = c.createVendas( int(qntd), int(cd_produto), int(cd_fornecedor))
-   
-    readBD = r.readVendas()
+    print(cd_fornecedor)
+    result = c.createEntradas( int(qntd), int(cd_produto), int(cd_fornecedor))
+    readBD = r.readEntradas()
     readFornecedor = r.readFornecedor()
     readIdProdutos = r.readProdutos()
     idFornecedor = readFornecedor['data']
     idProdutos = readIdProdutos['data']
     if result == 1:
-        return render_template("vendas.html", lista = readBD['data'], readIdFornecedor = idFornecedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+        return render_template("entradas.html", lista = readBD['data'], readIdFornecedor = idFornecedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
     else:
-        retur
+        return render_template("entradas.html", lista = readBD['data'], readIdFornecedor = idFornecedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+
+@app.route("/editar/entradas", methods=['POST'])
+def entradasupdate():
+    id = request.form.get('ID')
+    qntd = request.form.get('quantidadeEntrada')
+    cd_produto = request.form.get('idProduto')
+    response = u.updateEntradas( int(id), int(qntd), int(cd_produto))
+    if response == 1:
+         return redirect(url_for('entradas'))
+    else:
+         return redirect(url_for('entradas'))
+
+@app.route('/excluir/entradas', methods=['post'])
+def excluirEntradas():
+    id = request.form.get('idEntrada')
+    id_produto = request.form.get('ProdutoIdExclusao')
+    qntd = request.form.get('quantidadeEntradasEX')
+    print(id)
+    print(id_produto)
+    print(qntd)
+    response = d.deleteEntradas(int(id), int(id_produto), int(qntd))
+    if response['status'] == 0:
+        return redirect(url_for('entradas'))
+    else:
+        return redirect(url_for('entradas'))
 
 @app.route("/vendedores")
 def vendedores():
@@ -300,7 +325,7 @@ def entradas():
     readIdProdutos = r.readProdutos()
     idFornecedor = readFornecedor['data']
     idProdutos = readIdProdutos['data']
-    return render_template("vendas.html", lista = readBD['data'], readIdFornecedor = idFornecedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+    return render_template("entradas.html", lista = readBD['data'], readIdFornecedor = idFornecedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
     
 
 @app.route("/login")

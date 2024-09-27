@@ -42,3 +42,11 @@ def deleteVendas(id):
         return response.json()
     except Exception as e:
         return e
+
+def deleteEntradas(idE, id_produto, qntd):
+    EndPoint = urlBase + f'entradas/{idE}/{id_produto}/{qntd}'
+    try:
+        response = requests.delete(EndPoint)
+        return response.json()
+    except Exception as e:
+        return e

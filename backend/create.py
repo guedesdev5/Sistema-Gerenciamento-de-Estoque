@@ -95,18 +95,17 @@ def createVendas( qntd, id_produto, id_vendedor):
 
 
 def createEntradas(qntd, id_produto, id_Fornecedor):
-   EndPoint = urlBase + 'entradas'
+    EndPoint = urlBase + 'entradas'
     data_hora= datetime.now()
     data_atual = str(data_hora.date())
-    venda = {
+    entrada = {
         "data_entrada": data_atual,
         "quantidade_entrada": qntd,
         "id_produto": id_produto,
-        "id_fornecedor": id_produto
+        "id_fornecedor": id_Fornecedor
     }
-    print(venda)
     try:
-        response = requests.post(EndPoint, json=venda)
+        response = requests.post(EndPoint, json=entrada)
         if response.status_code == 200:
             return response.json()
         else:

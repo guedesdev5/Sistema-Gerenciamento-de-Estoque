@@ -121,3 +121,18 @@ def updateVendas(id, qtd, cdP, cdV):
     except Exception as e:
         print(f'erro {e}')
         return e
+
+def updateEntradas(id, qtd, idP):
+    EndPoint = urlBase + f'entradas/{id}/{idP}'
+    entradas = {
+        "quantidade_entrada": qtd
+    }
+    try:
+        response = requests.put(EndPoint, json=entradas)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return response.json()
+    except Exception as e:
+        print(f'erro {e}')
+        return e
