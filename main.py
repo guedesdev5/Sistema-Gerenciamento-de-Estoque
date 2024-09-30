@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
+
 import backend.login as l
 import backend.read as r
 import backend.create as c
 import backend.update as u
 import backend.delete as d
+import backend.dashboard as dash
 
 app = Flask(__name__)
 app.secret_key = 'abcdohdohfhef32833'
@@ -327,6 +329,18 @@ def entradas():
     idProdutos = readIdProdutos['data']
     return render_template("entradas.html", lista = readBD['data'], readIdFornecedor = idFornecedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
     
+@app.route("/dashboard")
+def dashboard():
+    vendas = {
+        "meses": ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
+        "valores": [500, 700, 800, 600, 900, 1000]
+    }
+    entradas = {
+        "meses": ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
+        "valores": [300, 400, 350, 500, 600, 550]
+    }
+    graphJSON = dash.create_plot(vendas, entradas , "outubro")
+    return render_template('dashboard.html', graphJSON=graphJSON)
 
 @app.route("/login")
 def loginO():
