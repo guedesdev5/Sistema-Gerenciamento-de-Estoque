@@ -35,3 +35,5 @@ def create_plot(vendas, entradas, mes):
     # Converte o gráfico Plotly para JSON para renderizar na página HTML
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     return graphJSON
+
+

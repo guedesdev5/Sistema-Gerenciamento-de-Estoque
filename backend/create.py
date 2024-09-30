@@ -75,10 +75,15 @@ def createProdutos(id, name, description, price, quantity,  categoryID, supplier
 
 def createVendas( qntd, id_produto, id_vendedor):
     EndPoint = urlBase + 'vendas'
-    data_hora_atual = datetime.now()
-    data_atual = str(data_hora_atual.date())
+    response = requests.get('http://worldtimeapi.org/api/timezone/Etc/UTC')
+    data = response.json()
+    current_time = data['datetime']
+    data_atual = str(current_time)
+    dt = datetime.fromisoformat(data_atual)
+    data = dt.date()
+
     venda = {
-        "data_venda": data_atual,
+        "data_venda": data,
         "quantidade_vendida": qntd,
         "id_produto": id_produto,
         "id_vendedor": id_vendedor
@@ -96,10 +101,14 @@ def createVendas( qntd, id_produto, id_vendedor):
 
 def createEntradas(qntd, id_produto, id_Fornecedor):
     EndPoint = urlBase + 'entradas'
-    data_hora= datetime.now()
-    data_atual = str(data_hora.date())
+    response = requests.get('http://worldtimeapi.org/api/timezone/Etc/UTC')
+    data = response.json()
+    current_time = data['datetime']
+    data_atual = str(current_time)
+    dt = datetime.fromisoformat(data_atual)
+    data = dt.date()
     entrada = {
-        "data_entrada": data_atual,
+        "data_entrada": data,
         "quantidade_entrada": qntd,
         "id_produto": id_produto,
         "id_fornecedor": id_Fornecedor
