@@ -81,9 +81,11 @@ def createVendas( qntd, id_produto, id_vendedor):
     data_atual = str(current_time)
     dt = datetime.fromisoformat(data_atual)
     data = dt.date()
+    dataN = str(data)
+
 
     venda = {
-        "data_venda": data,
+        "data_venda": dataN,
         "quantidade_vendida": qntd,
         "id_produto": id_produto,
         "id_vendedor": id_vendedor
@@ -107,8 +109,9 @@ def createEntradas(qntd, id_produto, id_Fornecedor):
     data_atual = str(current_time)
     dt = datetime.fromisoformat(data_atual)
     data = dt.date()
+    dataN = str(data)
     entrada = {
-        "data_entrada": data,
+        "data_entrada": dataN,
         "quantidade_entrada": qntd,
         "id_produto": id_produto,
         "id_fornecedor": id_Fornecedor

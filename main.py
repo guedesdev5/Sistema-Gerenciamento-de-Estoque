@@ -251,6 +251,8 @@ def entradaspost():
     cd_fornecedor = request.form.get('cod')
     print(cd_fornecedor)
     result = c.createEntradas( int(qntd), int(cd_produto), int(cd_fornecedor))
+    print('testabdi post')
+    print(result)
     readBD = r.readEntradas()
     readFornecedor = r.readFornecedor()
     readIdProdutos = r.readProdutos()
@@ -313,6 +315,8 @@ def vendas():
     readIdProdutos = r.readProdutos()
     idvendedor = readIdVendedor['data']
     idProdutos = readIdProdutos['data']
+    print("ana luiza viada putonha")
+    print(readBD)
     return render_template("vendas.html", lista = readBD['data'], readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
 
 @app.route("/fornecedores")
