@@ -1,47 +1,49 @@
-
-
-
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styleLogin.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleLogin.css') }}">
   <link rel="icon" type="image/x-icon" href="/static/images/tcc.jpg">
-  <script src="https://kit.fontawesome.com/cf6fa412bd.js" crossorigin="anonymous"></script>
+    <title>Login</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <div class="buttonsForm">
-      <div class="btnColor"></div>
-      <button id="btnSignin">Entrar</button>
-      <button id="btnSignup">Cadastrar</button>
+    <div class="login-container">
+        <div class="login-image">
+            <img src="/static/images/tcc.jpg" alt="Loja Splash Piscinas">
+        </div>
+        <div class="login-box">
+            <h2>Bem-vindo à Splash Piscinas</h2>
+            <form action="/login" method="POST">
+                <div class="input-group">
+                    <label for="username">Usuário</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="input-group">
+                  <label for="password">Senha</label>
+                  <div class="password-container">
+                      <input type="password" id="senha" name="password" required>
+                      <span class="show-password-toggle" id="togglePassword">👁️</span>
+                  </div>
+              </div>
+                <button type="submit" class="login-button">Entrar</button>
+            </form>
+        </div>
     </div>
+    <script>
+      const togglePassword = document.querySelector('#togglePassword');
+      const passwordInput = document.querySelector('#senha');
 
-    <form id="signin" action="/login" method="post">
-        <input type="text" id="username" name="username" placeholder="Username" required>
-        <i class="fas fa-envelope iEmail"></i>
-        <input type="password" id="password" name="password" placeholder="Senha" required>
-        <i class="fas fa-lock iPassword"></i>
-        <button type="submit">Entrar</button>
-    </form>
+togglePassword.addEventListener('click', function () {
+    // Verifica o tipo do campo de senha
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
 
-    <form id="signup" action="/cadastro" method="post">
-        <input type="text" id="nomeVendedor" name="nomeVendedor" placeholder="Nome" required>
-        <i class="fas fa-envelope iEmail"></i>
-        <input type="text" id="usernameVendedor" name="usernameVendedor" placeholder="Username" required>
-        <i class="fas fa-envelope iEmail2"></i>
-        <input type="text" id="emailVendedor" name="emailVendedor" placeholder="Email" required>
-        <i class="fas fa-envelope iEmail3"></i>
-        <input type="password" id="password" name="password" placeholder="Senha" required>
-        <i class="fas fa-lock iPassword"></i>
-        <button type="submit">Cadastrar</button>
-    </form>
-  </div>
+    // Altera o ícone (opcional, apenas para experiência do usuário)
+    this.textContent = type === 'password' ? '👁️' : '👁️‍🗨️';
+});
 
-  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    </script>
 </body>
 </html>

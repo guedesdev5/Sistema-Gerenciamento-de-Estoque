@@ -34,9 +34,9 @@ def deleetVendedores(id):
     except Exception as e:
         return e
     
-def deleteVendas(id):
-    print(f'testando valor do id {id}')
-    EndPoint = urlBase + f'vendas/{id}'
+def deleteVendas(id, id_produto, qntd):
+
+    EndPoint = urlBase + f'vendas/{id}/{id_produto}/{qntd}'
     try:
         response = requests.delete(EndPoint)
         return response.json()

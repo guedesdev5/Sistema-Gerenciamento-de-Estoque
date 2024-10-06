@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.6/inputmask.min.js"></script>
     <link rel="icon" type="image/x-icon" href="/static/images/tcc.jpg">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styleHomepage.css') }}">
     <script src="{{ url_for('static', filename='js/scriptEditProdutos.js') }}"></script>
@@ -82,6 +84,14 @@
         </ul>
     </nav>
 
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="flash-message {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
     <div class="container">
         <form action="/produtos" method="post">
         <div class="left-column">
@@ -95,7 +105,7 @@
                 <input type="text" id="description" name="description" required>
 
                 <label for="price">Preço do produto:</label>
-                <input type="number" id="price" name="price" placeholder="R$" required>
+                <input type="text" id="price" name="price" placeholder="R$">
         </div>
         <div class="right-column">
             <label for="quantity">Quantidade do produto:</label>
@@ -137,8 +147,7 @@
     
 </div>
 
-
-<table >
+<table>
     <thead>
         <tr>
             <th>Nome</th>
@@ -148,25 +157,38 @@
             <th>Categoria</th>
             <th>Fornecedor</th>
             <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody id="productTable">
-            {% for listagem in lista %}
-            <tr>
-                <td>{{ listagem['nome'] }}</td>
-                <td>{{ listagem['descricao'] }}</td>
-                <td>{{ listagem['preco'] }}</td>
-                <td>{{ listagem['quantidade'] }}</td>
-                <td>{{ listagem['tipo_produto'] }}</td>
-                <td>{{ listagem['nome_fornecedor'] }}</td>
-                <td>
-                    <a href="#" class="btn btn-edit" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ listagem['id'] }}" data-nome="{{ listagem['nome'] }}" data-descricao="{{ listagem['descricao'] }}" data-preco="{{listagem['preco']}}" data-quantidade="{{listagem['quantidade']}}" data-id_categoria="{{listagem['id_categoria']}}" data-id_fornecedor="{{listagem['id_fornecedor']}}"><i class="bi bi-pencil"></i></a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-        
+        </tr>
+    </thead>
+    <tbody id="productTable">
+        {% for listagem in lista %}
+        <tr>
+            <td>{{ listagem['nome'] }}</td>
+            <td>{{ listagem['descricao'] }}</td>
+            <td>{{ listagem['preco'] }}</td>
+            <td>
+                <span class="{% if listagem['quantidade'] <= 5 %}text-danger{% endif %}">
+                    {{ listagem['quantidade'] }}
+                </span>
+            </td>
+            <td>{{ listagem['tipo_produto'] }}</td>
+            <td>{{ listagem['nome_fornecedor'] }}</td>
+            <td>
+                <a href="#" class="btn btn-edit" data-bs-toggle="modal" data-bs-target="#editModal" 
+                   data-id="{{ listagem['id'] }}" 
+                   data-nome="{{ listagem['nome'] }}" 
+                   data-descricao="{{ listagem['descricao'] }}" 
+                   data-preco="{{ listagem['preco'] }}" 
+                   data-quantidade="{{ listagem['quantidade'] }}" 
+                   data-id_categoria="{{ listagem['tipo_produto'] }}" 
+                   data-id_fornecedor="{{ listagem['nome_fornecedor'] }}">
+                   <i class="bi bi-pencil"></i>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+   
 
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -202,11 +224,11 @@
                                 <input type="text" class="form-control" id="produtoQuantidade" name="quantidade" value="" required>
                             </div>
                             <div class="mb-3">
-                                <label for="produtoIdCategoria" class="form-label">Id Categoria</label>
+                                <label for="produtoIdCategoria" class="form-label">Categoria</label>
                                 <input type="text" class="form-control" id="produtoIdCategoria" name="idCategoria" value="" readonly>
                             </div>
                             <div class="mb-3">
-                                <label for="produtoIdFornecedor" class="form-label">Id Fornecedor</label>
+                                <label for="produtoIdFornecedor" class="form-label">Fornecedor</label>
                                 <input type="text" class="form-control" id="produtoIdFornecedor" name="idFornecedor" value="" readonly>
                             </div>
                         </div>
@@ -242,5 +264,19 @@
         }
     }
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(function(message) {
+                message.style.display = 'block'; 
+                setTimeout(function() {
+                    message.style.opacity = '0'; 
+                    setTimeout(function() {
+                        message.style.display = 'none'; 
+                    }, 500); 
+                }, 1500); 
+            });
+        });
+
 </script>
 </html>

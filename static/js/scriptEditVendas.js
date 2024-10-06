@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
         var qtd = button.getAttribute('data-qtd');
         var id_vendedor = button.getAttribute('data-idVendedor');
         var id_produto = button.getAttribute('data-idProduto');
+        var iDP = button.getAttribute('data-idP')
+        
         
 
         var modalTitle = editModal.querySelector('.modal-title');
@@ -16,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var modalBodyInputIdExcluir = editModal.querySelector('#vendasIdExclusao');
         var modalBodyInputprodutoExcluir = editModal.querySelector('#codProdutoEx');
         var modalBodyInputqttdExcluir = editModal.querySelector('#quantidadeVendasEX');
+        var IDP = editModal.querySelector('#idProduto');
 
 
 
@@ -27,5 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
         modalBodyInputIdExcluir.value = id
         modalBodyInputprodutoExcluir.value = id_produto
         modalBodyInputqttdExcluir.value = qtd
+        IDP.value = iDP
     });
 });

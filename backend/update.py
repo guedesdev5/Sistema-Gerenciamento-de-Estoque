@@ -52,15 +52,14 @@ def updateFornecedor(id, name, telefone, email, endereco):
     except Exception as e:
         return e
 
-def updateProdutos(id, name, description, price, quantity, categoryID, supplierID):
+def updateProdutos(id, name, description, price, quantity):
     EndPoint = urlBase + f'produtos/{id}'
     produto = {
         "nome": name,
         "descricao": description,
         "preco": price,
-        "quantidade": quantity,
-        "id_categoria": categoryID,
-        "id_fornecedor": supplierID
+        "quantidade": quantity
+
     }
     try:
         response = requests.put(EndPoint, json=produto)
@@ -107,8 +106,8 @@ def updateVendedores(id, name, username, email, senha, permissao):
         return e
 
 
-def updateVendas(id, qtd, cdP, cdV):
-    EndPoint = urlBase + f'vendas/{id}'
+def updateVendas(id, qtd, cdP):
+    EndPoint = urlBase + f'vendas/{id}/{cdP}'
     venda = {
         "quantidade_vendida": qtd
     }

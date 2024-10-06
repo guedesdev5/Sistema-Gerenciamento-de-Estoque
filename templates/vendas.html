@@ -141,7 +141,7 @@
             <td>{{ listagem['nome_produto'] }}</td>
             <td>{{ listagem['nome_vendedor'] }}</td>
             <td>
-                <a href="#" class="btn btn-edit" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ listagem['id'] }}" data-qtd="{{ listagem['quantidade_vendida'] }}" data-idVendedor="{{ listagem['id_vendedor'] }}" data-idProduto="{{listagem['id_produto']}}"><i class="bi bi-pencil"></i></a>
+                <a href="#" class="btn btn-edit" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ listagem['id'] }}" data-qtd="{{ listagem['quantidade_vendida'] }}" data-idVendedor="{{ listagem['nome_vendedor'] }}" data-idProduto="{{listagem['nome_produto']}}" data-idP="{{listagem['id_produto']}}"><i class="bi bi-pencil"></i></a>
             </td>
         </tr>
         {% endfor %}
@@ -160,7 +160,7 @@
                     <div class="input-container">
                         <div class="input-group left">
                             <div class="mb-3">
-                                <label for="IDVenda" class="form-label">IDVenda</label>
+                                <label for="IDVenda" class="form-label">Código Venda</label>
                                 <input type="text" class="form-control" id="IDVenda" name="IDVenda" value="" readonly>
                             </div>
                             <div class="mb-3">
@@ -168,12 +168,13 @@
                                 <input type="text" class="form-control" id="quantidadeVendas" name="quantidadeVendas" value="" required>
                             </div>
                             <div class="mb-3">
-                                <label for="codVendedor" class="form-label">Código do Vendedor</label>
+                                <label for="codVendedor" class="form-label">Vendedor</label>
                                 <input type="text" class="form-control" id="codVendedor" name="codVendedor" value="" readonly>
                             </div>
                             <div class="mb-3">
-                                <label for="codProduto" class="form-label">Código produto</label>
+                                <label for="codProduto" class="form-label">Produto</label>
                                 <input type="text" class="form-control" id="codProduto" name="codProduto" value="" readonly>
+                                <input type="hidden" name="idProduto" id="idProduto" value="">
                             </div>
                         </div>
                     </div>

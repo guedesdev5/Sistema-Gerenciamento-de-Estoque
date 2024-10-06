@@ -1,116 +1,127 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins&family=Roboto:wght@100;300;400;500;700;900&family=Source+Sans+Pro:wght@200;300;400;600;700;900&display=swap');
-
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    font-family: 'Arial', sans-serif;
+    background-color:  linear-gradient(to bottom right, #f0f4f7, #dae8fc);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
 }
 
-.container {
-  background-color: rgb(235, 226, 252);
-  padding: 6px;
-  width: 350px;
-  height: 550px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-  border-radius: 10px;
-  box-shadow: 0 0 20px 0 darkgrey;
+.login-container {
+    display: flex;
+    justify-content: space-between;
+    width: 900px;
+    height: 500px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-form {
-  position: absolute;
-  margin-top: 80px;
-  transition: .5s;
-  width: 300px;
-  height: 400px;
+.login-image {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #0e3366;
+    border-radius: 15px 0 0 15px;
 }
 
-.buttonsForm {
-  margin-top: 40px;
-  position: relative;
-  border-radius: 30px;
-  box-shadow: 0 0 7px 0 rgb(55, 43, 226);
+.login-image img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
 }
 
-.buttonsForm button {
-  cursor: pointer;
-  background: transparent;
-  border: none;
-  position: relative;
-  padding: 10px 29px;
+.login-box {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50%;
+    background: linear-gradient(135deg, #56ccf2, #2f80ed);
+    border-radius: 0 15px 15px 0;
+    color: white;
 }
 
-.btnColor {
-  position: absolute;
-  width: 108px;
-  height: 100%;
-  background: linear-gradient(to right, #3432da, #636df8);
-  border-radius: 30px;
-  transition: .3s;
+h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+}
+
+
+input {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    font-size: 16px;
 }
 
 input[type="text"], input[type="password"] {
-  border: none;
-  margin-top: 40px;
-  border-radius: 60px;
-  padding: 8px 0 8px 35px;
-  outline: none;
-  width: 100%;
+    background-color: #fff;
+    color: #333;
 }
 
-button[type="submit"] {
-  background: #210fc8;
-  color: rgb(255, 255, 255);
-  border-radius: 30px;
-  width: 100%;
-  border: none;
-  outline: none;
-  padding: 8px 0 8px 15px;
-  font-size: 15px;
-  margin-top: 40px;
-  cursor: pointer;
+.login-button {
+    padding: 15px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #2f80ed;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
 }
 
-.divCheck {
-  margin: 10px 0 0 5px;
-  width: 80%;
-  font-size: 13px;
+.login-button:hover {
+    background-color: #1c5ec9;
 }
 
-#signin {
-  left: 25px;
+.forgot-password {
+    margin-top: 10px;
+    text-align: center;
+    color: white;
+    text-decoration: none;
+}
+.password-container {
+  position: relative; /* Permite o posicionamento absoluto do ícone */
 }
 
-#signup {
-  left: 450px;
+.password-container input {
+  padding-right: 150px; /* Espaço para o ícone */
 }
 
-i {
+.show-password-toggle {
   position: absolute;
-  left: 0;
-  padding: 10px 10px;
+  right: 10px; /* Posição à direita do input */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: #888;
+  user-select: none; /* Impede a seleção do texto */
 }
 
-.iEmail {
-  top: 40px;
-}
 
-.iPassword {
-  top: 114px;
-}
 
-.iPassword2 {
-  top: 190px;
+.forgot-password:hover {
+    text-decoration: underline;
 }

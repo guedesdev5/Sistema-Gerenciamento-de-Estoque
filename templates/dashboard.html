@@ -26,27 +26,33 @@
                 </a>
             </li>
 
+            {% if permissionUser %}
             <li class="menu">
                 <a href="categorias">
                 <span class="icon"><i class="bi bi-list-ul"></i></span>
                 <span class="txt-link"> Categorias </span>
                 </a>
             </li>
+            {% endif %}
             
+            {% if permissionUser %}
             <li class="menu">
                 <a href="fornecedores">
-                <span class="icon"><i class="bi bi-truck"></i></i></span>
+                <span class="icon"><i class="bi bi-truck"></i></span>
                 <span class="txt-link"> Fornecedores </span>
                 </a>
             </li>
+            {% endif %}
 
+            {% if permissionUser %}
             <li class="menu">
                 <a href="vendedores">
-                <span class="icon"><i class="bi bi-person-lines-fill"></i></span>
+                <span class="icon"><i class="bi bi-person-lines-fill"></i></i></span>
                 <span class="txt-link"> Vendedores </span>
                 </a>
             </li>
-            
+            {% endif %}
+
             <li class="menu">
                 <a href="vendas">
                 <span class="icon"><i class="bi bi-coin"></i></span>
@@ -77,13 +83,10 @@
         </ul>
     </nav>
 
-    <h1 style="text-align: center;">Dashboard de Vendas e Entradas</h1>
-    <div id="dashboard" style="width: 80%; margin: auto;"></div>
-
+    <div class="grafico"></div>
     <script>
-        // Renderiza o gráfico usando Plotly com o template Jinja2
         var graphs = {{ graphJSON | safe }};
-        Plotly.newPlot('dashboard', graphs.data, graphs.layout);
+        Plotly.newPlot('grafico', graphs.data, graphs.layout);
     </script>
 </body>
 </html>

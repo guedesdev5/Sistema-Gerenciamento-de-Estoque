@@ -15,7 +15,7 @@
 <body>
 
     <nav class="menu-lateral">
-        <div class="logo">                                                                       
+        <div class="logo">
             <img src="{{ url_for('static', filename='images/tcc.jpg') }}" alt="Logo">
         </div>
         <ul>
@@ -26,27 +26,33 @@
                 </a>
             </li>
 
+            {% if permissionUser %}
             <li class="menu">
                 <a href="categorias">
                 <span class="icon"><i class="bi bi-list-ul"></i></span>
                 <span class="txt-link"> Categorias </span>
                 </a>
             </li>
+            {% endif %}
             
+            {% if permissionUser %}
             <li class="menu">
                 <a href="fornecedores">
-                <span class="icon"><i class="bi bi-truck"></i></i></span>
+                <span class="icon"><i class="bi bi-truck"></i></span>
                 <span class="txt-link"> Fornecedores </span>
                 </a>
             </li>
+            {% endif %}
 
+            {% if permissionUser %}
             <li class="menu">
                 <a href="vendedores">
-                <span class="icon"><i class="bi bi-person-lines-fill"></i></span>
+                <span class="icon"><i class="bi bi-person-lines-fill"></i></i></span>
                 <span class="txt-link"> Vendedores </span>
                 </a>
             </li>
-            
+            {% endif %}
+
             <li class="menu">
                 <a href="vendas">
                 <span class="icon"><i class="bi bi-coin"></i></span>

@@ -54,8 +54,10 @@ def produtos():
     idFornecedores = readIdFornecedores['data']
     
     if response['status'] == 0:
+        flash('Produto cadastrado com sucesso!', 'success')
         return render_template("homepage.html", lista = readBD['data'], idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
     else:
+        flash('Problema ao cadastrar o produto!', 'error')
         return render_template("homepage.html", lista = readBD['data'], idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
 
 @app.route("/categorias", methods=['POST'])
@@ -133,7 +135,7 @@ def editarProdutos():
     quantity = request.form.get('quantidade')
     category_id = request.form.get('idCategoria')
     fornecedor_id = request.form.get('idFornecedor')
-    response = u.updateProdutos(int(id), name, description, float(price), int(quantity), int(category_id), int(fornecedor_id))
+    response = u.updateProdutos(int(id), name, description, float(price), int(quantity))
     print(response)
     if response['status'] == 0:
         return redirect(url_for('homepage'))
@@ -193,15 +195,11 @@ def vendaspost():
     cd_produto = request.form.get('cod')
     cd_vendedor = request.form.get('codv')
     result = c.createVendas( int(qntd), int(cd_produto), int(cd_vendedor))
-    responseProduto = r.readProdutosID(int(cd_produto))
-    qtd_atual = int(responseProduto['data'][0]['quantidade'])
-    qtd_validada = qtd_atual - int(qntd)
     readBD = r.readVendas()
     readIdVendedor = r.readVender()
     readIdProdutos = r.readProdutos()
     idvendedor = readIdVendedor['data']
     idProdutos = readIdProdutos['data']
-    u.updateProductQntd(cd_produto, int(qtd_validada))
     if result == 1:
         return render_template("vendas.html", lista = readBD['data'], readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
     else:
@@ -211,18 +209,9 @@ def vendaspost():
 def vendasupdate():
     id = request.form.get('IDVenda')
     qntd = request.form.get('quantidadeVendas')
-    cd_produto = request.form.get('codProduto')
+    cd_produto = request.form.get('idProduto')
     cd_vendedor = request.form.get('codVendedor')
-    qtd_antiga = r.readVendasID(int(id))
-    qtd_produto = r.readProdutosID(int(cd_produto))
-    print(qtd_antiga)
-    print(qtd_produto)
-    qtd_validada = qtd_antiga['data'][0]['quantidade_vendida'] + qtd_produto['data'][0]['quantidade'] 
-    qtd_atual = int(qtd_validada) - int(qntd)
-    result = u.updateVendas( int(id), int(qntd), int(cd_produto), int(cd_vendedor))
-    readIdVendedor = r.readVender()
-    readIdProdutos = r.readProdutos()
-    u.updateProductQntd(cd_produto, qtd_atual)
+    result = u.updateVendas( int(id), int(qntd), int(cd_produto))
     if result == 1:
          return redirect(url_for('vendas'))
     else:
@@ -233,11 +222,8 @@ def excluirVendas():
     id = request.form.get('vendasIdExclusao')
     id_produto = request.form.get('codProdutoEx')
     qntd = request.form.get('quantidadeVendasEX')
-    response = d.deleteVendas(id)
-    print(id_produto)
-    print(qntd)
-    ajusta_quantidade = u.updateQtdProdutos(id_produto, qntd)
-    print(f'tajusat   {ajusta_quantidade}')
+    response = d.deleteVendas(id, id_produto, qntd)
+    print(response)
     if response['status'] == 0:
         return redirect(url_for('vendas'))
     else:
@@ -315,8 +301,6 @@ def vendas():
     readIdProdutos = r.readProdutos()
     idvendedor = readIdVendedor['data']
     idProdutos = readIdProdutos['data']
-    print("ana luiza viada putonha")
-    print(readBD)
     return render_template("vendas.html", lista = readBD['data'], readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
 
 @app.route("/fornecedores")
@@ -335,16 +319,12 @@ def entradas():
     
 @app.route("/dashboard")
 def dashboard():
-    vendas = {
-        "meses": ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
-        "valores": [500, 700, 800, 600, 900, 1000]
-    }
-    entradas = {
-        "meses": ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
-        "valores": [300, 400, 350, 500, 600, 550]
-    }
-    graphJSON = dash.create_plot(vendas, entradas , "outubro")
-    return render_template('dashboard.html', graphJSON=graphJSON)
+    dias = list(range(1, 32))  # Dias de agosto
+    entradas = [50, 40, 45, 60, 70, 65, 50, 55, 60, 45, 50, 60, 55, 65, 70, 75, 80, 70, 65, 60, 55, 60, 50, 45, 50, 55, 60, 65, 70, 75, 80]
+    vendas = [30, 35, 25, 40, 50, 45, 40, 50, 55, 35, 40, 45, 35, 50, 55, 60, 65, 55, 50, 40, 45, 50, 55, 40, 35, 45, 50, 55, 60, 65, 70]
+
+    graphJSON = dash.dashboard(dias, entradas, vendas)
+    return render_template('dashboard.html', graphJSON=graphJSON, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
 
 @app.route("/login")
 def loginO():
