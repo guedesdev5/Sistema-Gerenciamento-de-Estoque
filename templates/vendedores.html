@@ -76,6 +76,15 @@
         </ul>
     </nav>
 
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="flash-message {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+
     <div class="container">
         <form action="/vendedores" method="post">
         <div class="left-column">
@@ -95,7 +104,11 @@
                 <input type="password" id="password" name="password" required>
     
                 <label for="permission">Permissão:</label>
-                <input type="number" id="permission" name="permission" required>
+                <select id="permission" name="permission" required>
+                    <option value=""></option>
+                        <option value="1">Administrador</option>
+                        <option value="2">Agente</option>
+                </select>
     
                 <button type="submit">Salvar</button>
         </div>

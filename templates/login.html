@@ -9,6 +9,16 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="flash-message {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+
     <div class="login-container">
         <div class="login-image">
             <img src="/static/images/tcc.jpg" alt="Loja Splash Piscinas">
@@ -42,6 +52,19 @@ togglePassword.addEventListener('click', function () {
 
     // Altera o ícone (opcional, apenas para experiência do usuário)
     this.textContent = type === 'password' ? '👁️' : '👁️‍🗨️';
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    const flashMessages = document.querySelectorAll('.flash-message');
+    flashMessages.forEach(function(message) {
+        message.style.display = 'block'; 
+        setTimeout(function() {
+            message.style.opacity = '0'; 
+            setTimeout(function() {
+                message.style.display = 'none'; 
+            }, 500); 
+        }, 1500); 
+    });
 });
 
     </script>

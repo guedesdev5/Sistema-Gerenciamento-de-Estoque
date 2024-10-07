@@ -253,3 +253,35 @@ td a.btn-delete:hover {
 .modal-footer button.btn-danger {
     background-color: #dc3545;
 }
+
+.flash-message {
+    position: fixed;
+    top: 10%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000; 
+    display: none; 
+    transition: opacity 0.5s ease;
+}
+
+.flash-message.success {
+    background-color: #28a745; 
+    color: white;
+}
+
+.flash-message.error {
+    background-color: #dc3545; 
+    color: white;
+}
+
+input[type="text"], input[type="number"], select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 16px;
+}

@@ -77,6 +77,15 @@
         </ul>
     </nav>
 
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="flash-message {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+
     <div class="container">
         <form action="/categorias" method="post">
             <div class="left-column">
