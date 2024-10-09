@@ -32,3 +32,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+function hideIcon() {
+    document.getElementById('searchIcon').style.display = 'none';
+}
+
+function showIcon() {
+    const input = document.getElementById('searchInput');
+    if (input.value === '') {
+        document.getElementById('searchIcon').style.display = 'block';
+    }
+}

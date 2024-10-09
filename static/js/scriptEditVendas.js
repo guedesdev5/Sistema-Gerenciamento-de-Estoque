@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
         modalBodyInputEmail.value = id_produto
         modalBodyInputID.value = id
         modalBodyInputIdExcluir.value = id
-        modalBodyInputprodutoExcluir.value = id_produto
+        modalBodyInputprodutoExcluir.value = iDP
         modalBodyInputqttdExcluir.value = qtd
         IDP.value = iDP
     });

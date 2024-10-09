@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var id_vendedor = button.getAttribute('data-idFornecedor');
         var id_produto = button.getAttribute('data-idProduto');
         var idP = button.getAttribute('data-idP');
+        var preco = button.getAttribute('data-preco');
         
 
         var modalTitle = editModal.querySelector('.modal-title');
@@ -20,6 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
         var modalBodyInputIdExcluir = editModal.querySelector('#idEntrada');
         var modalBodyInputprodutoExcluir = editModal.querySelector('#ProdutoIdExclusao');
         var modalBodyInputqttdExcluir = editModal.querySelector('#quantidadeEntradasEX');
+        var modalBodyInpupreco = editModal.querySelector('#precoEntrada');
+        
 
 
 
@@ -33,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
         modalBodyInputIdExcluir.value = id
         modalBodyInputprodutoExcluir.value = idP
         modalBodyInputqttdExcluir.value = qtd
+        modalBodyInpupreco.value = preco
     });
 });
 

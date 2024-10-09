@@ -142,11 +142,10 @@
     </div>
 <br>
 
-<div class = "pesquisa">
-    <input type="text" id="searchInput" class="form-control" placeholder="Pesquisar produtos...">
-    
+<div class="pesquisa">
+    <i class="bi bi-search" id="searchIcon"></i>
+    <input type="text" id="searchInput" class="form-control" placeholder="     Pesquisar produtos..." onfocus="hideIcon()" onblur="showIcon()">
 </div>
-
 <table>
     <thead>
         <tr>
@@ -164,7 +163,7 @@
         <tr>
             <td>{{ listagem['nome'] }}</td>
             <td>{{ listagem['descricao'] }}</td>
-            <td>{{ listagem['preco'] }}</td>
+            <td>R$ {{ listagem['preco'] }}</td>
             <td>
                 <span class="{% if listagem['quantidade'] <= 5 %}text-danger{% endif %}">
                     {{ listagem['quantidade'] }}

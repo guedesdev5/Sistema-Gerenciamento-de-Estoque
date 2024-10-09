@@ -101,7 +101,7 @@ def createVendas( qntd, id_produto, id_vendedor):
         return e
 
 
-def createEntradas(qntd, id_produto, id_Fornecedor):
+def createEntradas(qntd, id_produto, id_Fornecedor, valor):
     EndPoint = urlBase + 'entradas'
     response = requests.get('http://worldtimeapi.org/api/timezone/Etc/UTC')
     data = response.json()
@@ -113,6 +113,7 @@ def createEntradas(qntd, id_produto, id_Fornecedor):
     entrada = {
         "data_entrada": dataN,
         "quantidade_entrada": qntd,
+        "preco": valor,
         "id_produto": id_produto,
         "id_fornecedor": id_Fornecedor
     }

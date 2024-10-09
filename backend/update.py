@@ -121,10 +121,11 @@ def updateVendas(id, qtd, cdP):
         print(f'erro {e}')
         return e
 
-def updateEntradas(id, qtd, idP):
+def updateEntradas(id, qtd, idP, preco):
     EndPoint = urlBase + f'entradas/{id}/{idP}'
     entradas = {
-        "quantidade_entrada": qtd
+        "quantidade_entrada": qtd,
+        "preco": preco
     }
     try:
         response = requests.put(EndPoint, json=entradas)

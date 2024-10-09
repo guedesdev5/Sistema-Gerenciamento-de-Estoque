@@ -1,4 +1,7 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
+import pandas as pd
+import plotly.graph_objects as go
+import plotly.offline as pyo
 
 import backend.login as l
 import backend.read as r
@@ -227,13 +230,18 @@ def vendaspost():
     qntd = request.form.get('qntd')
     cd_produto = request.form.get('cod')
     cd_vendedor = request.form.get('codv')
-    result = c.createVendas( int(qntd), int(cd_produto), int(cd_vendedor))
-    readBD = r.readVendas()
+    response = r.readProdutosID(cd_produto)
     readIdVendedor = r.readVender()
+    readBD = r.readVendas()
     readIdProdutos = r.readProdutos()
     idvendedor = readIdVendedor['data']
     idProdutos = readIdProdutos['data']
+    if int(response['data'][0]['quantidade']) - int(qntd) < 0:
+        flash('Impossível efetuar venda! Estoque de produtos  insuficiete', 'error')
+        return render_template("vendas.html", lista = readBD['data'], readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+    result = c.createVendas( int(qntd), int(cd_produto), int(cd_vendedor))   
     if result['status'] == 0:
+        readBD = r.readVendas()
         flash('Cadastro realizado com sucesso!', 'sucess')
         return render_template("vendas.html", lista = readBD['data'], readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
     else:
@@ -259,6 +267,9 @@ def excluirVendas():
     id = request.form.get('vendasIdExclusao')
     id_produto = request.form.get('codProdutoEx')
     qntd = request.form.get('quantidadeVendasEX')
+    print(id)
+    print(id_produto)
+    print(qntd)
     response = d.deleteVendas(id, id_produto, qntd)
     print(response)
     if response['status'] == 0:
@@ -274,10 +285,8 @@ def entradaspost():
     qntd = request.form.get('qntd')
     cd_produto = request.form.get('codP')
     cd_fornecedor = request.form.get('cod')
-    print(cd_fornecedor)
-    result = c.createEntradas( int(qntd), int(cd_produto), int(cd_fornecedor))
-    print('testabdi post')
-    print(result)
+    valor_entrada = request.form.get('valor')
+    result = c.createEntradas( int(qntd), int(cd_produto), int(cd_fornecedor), int(valor_entrada))
     readBD = r.readEntradas()
     readFornecedor = r.readFornecedor()
     readIdProdutos = r.readProdutos()
@@ -295,7 +304,8 @@ def entradasupdate():
     id = request.form.get('ID')
     qntd = request.form.get('quantidadeEntrada')
     cd_produto = request.form.get('idProduto')
-    response = u.updateEntradas( int(id), int(qntd), int(cd_produto))
+    preco = request.form.get('precoEntrada')
+    response = u.updateEntradas( int(id), int(qntd), int(cd_produto), int(preco))
     if response['status'] == 0:
         flash('Edição realizada com sucesso!', 'sucess')
         return redirect(url_for('entradas'))
@@ -308,9 +318,7 @@ def excluirEntradas():
     id = request.form.get('idEntrada')
     id_produto = request.form.get('ProdutoIdExclusao')
     qntd = request.form.get('quantidadeEntradasEX')
-    print(id)
-    print(id_produto)
-    print(qntd)
+
     response = d.deleteEntradas(int(id), int(id_produto), int(qntd))
     if response['status'] == 0:
         flash('Exclusão realizada com sucesso!', 'sucess')
@@ -371,12 +379,28 @@ def entradas():
     
 @app.route("/dashboard")
 def dashboard():
-    dias = list(range(1, 32))  # Dias de agosto
-    entradas = [50, 40, 45, 60, 70, 65, 50, 55, 60, 45, 50, 60, 55, 65, 70, 75, 80, 70, 65, 60, 55, 60, 50, 45, 50, 55, 60, 65, 70, 75, 80]
-    vendas = [30, 35, 25, 40, 50, 45, 40, 50, 55, 35, 40, 45, 35, 50, 55, 60, 65, 55, 50, 40, 45, 50, 55, 40, 35, 45, 50, 55, 60, 65, 70]
+    dados_entrada = r.readEntradas()
+    dados_venda = r.readVendas()
+    print(dados_entrada)
+    print(dados_venda)
+    df_relacao = dash.unir_dados(dados_entrada['data'], dados_venda['data'])  
+    graph = dash.criar_dashboard(df_relacao)
 
-    graphJSON = dash.dashboard(dias, entradas, vendas)
-    return render_template('dashboard.html', graphJSON=graphJSON, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+    labels = ['Categoria A', 'Categoria B', 'Categoria C']
+    values = [30, 50, 20]
+
+    # Criar o gráfico de pizza
+    pie_data = [go.Pie(labels=labels, values=values, textinfo='label+percent')]
+    pie_layout = go.Layout(
+        plot_bgcolor='rgba(0,0,0,0)',  # Fundo transparente
+        paper_bgcolor='rgba(0,0,0,0)',  # Fundo transparente
+        margin=dict(l=0, r=0, t=40, b=0)  # Margens
+    )
+    pie_fig = go.Figure(data=pie_data, layout=pie_layout)
+
+    # Renderizar o gráfico
+    pie_graph = pyo.plot(pie_fig, include_plotlyjs=False, output_type='div')
+    return render_template('dashboard.html', mes='setembro', graph=graph, pie_graph=pie_graph, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
 
 @app.route("/login")
 def loginO():

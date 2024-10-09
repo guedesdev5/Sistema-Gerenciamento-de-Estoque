@@ -21,6 +21,7 @@ nav.menu-lateral{
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 10;
 }
 
 nav.menu-lateral:hover{
@@ -283,13 +284,34 @@ td a.btn-delete:hover {
     }
 }
 
-.pesquisa{
-    width:20%;
+.pesquisa {
+    width: 20%;
     margin-left: 5%;
     margin-bottom: -20px;
     border-radius: 8px;
-
+    position: relative; /* Para que o ícone possa ser posicionado em relação a este contêiner */
+    z-index: 1;
 }
+
+.pesquisa i {
+    position: absolute; /* Posiciona o ícone de forma absoluta */
+    left: 15px; /* Distância da borda esquerda */
+    top: 50%; /* Centraliza verticalmente */
+    transform: translateY(-50%); /* Ajusta para que fique centralizado */
+    color: #aaa; /* Cor do ícone (opcional) */
+    pointer-events: none; /* Ignora eventos de clique no ícone */
+}
+
+.pesquisa input {
+    padding-left: 50px; /* Espaço à esquerda para o ícone */
+    width: 100%; /* Para que o input ocupe toda a largura do contêiner */
+    border-radius: 8px; /* Bordas arredondadas do input */
+    border: 1px solid #ccc; /* Borda do input */
+    height: 40px; /* Altura do input, ajustável */
+}
+
+
+
 
 .flash-message {
     position: fixed;

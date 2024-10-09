@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Vendas e Entradas</title>
+    <title>Dashboard</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleCategory.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleDashboard.css') }}">
     <link rel="icon" type="image/x-icon" href="/static/images/tcc.jpg">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ url_for('static', filename='js/scriptEditCategoria.js') }}"></script>
-
 </head>
 <body>
     <nav class="menu-lateral">
@@ -19,74 +21,55 @@
             <img src="{{ url_for('static', filename='images/tcc.jpg') }}" alt="Logo">
         </div>
         <ul>
-            <li class="menu">
-                <a href="homepage">
-                <span class="icon"><i class="bi bi-box-seam"></i></span>
-                <span class="txt-link"> Produtos </span>
-                </a>
-            </li>
-
+            <li class="menu"><a href="homepage"><span class="icon"><i class="bi bi-box-seam"></i></span><span class="txt-link"> Produtos </span></a></li>
             {% if permissionUser %}
-            <li class="menu">
-                <a href="categorias">
-                <span class="icon"><i class="bi bi-list-ul"></i></span>
-                <span class="txt-link"> Categorias </span>
-                </a>
-            </li>
+            <li class="menu"><a href="categorias"><span class="icon"><i class="bi bi-list-ul"></i></span><span class="txt-link"> Categorias </span></a></li>
             {% endif %}
-            
             {% if permissionUser %}
-            <li class="menu">
-                <a href="fornecedores">
-                <span class="icon"><i class="bi bi-truck"></i></span>
-                <span class="txt-link"> Fornecedores </span>
-                </a>
-            </li>
+            <li class="menu"><a href="fornecedores"><span class="icon"><i class="bi bi-truck"></i></span><span class="txt-link"> Fornecedores </span></a></li>
             {% endif %}
-
             {% if permissionUser %}
-            <li class="menu">
-                <a href="vendedores">
-                <span class="icon"><i class="bi bi-person-lines-fill"></i></i></span>
-                <span class="txt-link"> Vendedores </span>
-                </a>
-            </li>
+            <li class="menu"><a href="vendedores"><span class="icon"><i class="bi bi-person-lines-fill"></i></span><span class="txt-link"> Vendedores </span></a></li>
             {% endif %}
-
-            <li class="menu">
-                <a href="vendas">
-                <span class="icon"><i class="bi bi-coin"></i></span>
-                <span class="txt-link"> Vendas </span>
-                </a>
-            </li>
-
-            <li class="menu">
-                <a href="entradas">
-                <span class="icon"><i class="bi bi-chevron-bar-right"></i></span>
-                <span class="txt-link"> Entradas </span>
-                </a>
-            </li>
-
-            <li class="menu">
-                <a href="dashboard">
-                <span class="icon"><i class="bi bi-speedometer"></i></span>
-                <span class="txt-link"> Dashboard </span>
-                </a>
-            </li>
-
-            <li class="sair">
-                <a href="login">
-                <span class="icon"><i class="bi bi-box-arrow-right"></i></span>
-                <span class="txt-link"> Sair </span>
-                </a>
-            </li>
+            <li class="menu"><a href="vendas"><span class="icon"><i class="bi bi-coin"></i></span><span class="txt-link"> Vendas </span></a></li>
+            <li class="menu"><a href="entradas"><span class="icon"><i class="bi bi-chevron-bar-right"></i></span><span class="txt-link"> Entradas </span></a></li>
+            <li class="menu"><a href="dashboard"><span class="icon"><i class="bi bi-speedometer"></i></span><span class="txt-link"> Dashboard </span></a></li>
+            <li class="sair"><a href="login"><span class="icon"><i class="bi bi-box-arrow-right"></i></span><span class="txt-link"> Sair </span></a></li>
         </ul>
     </nav>
 
-    <div class="grafico"></div>
+    <div class="form-group" style="position: absolute; top: 20px; left: 100px;">
+        <label for="date-picker">Escolha um mês e ano:</label>
+        <form id="date-form" action="/filtradados" method="POST">
+            <input type="text" id="date-picker" name="date-picker" class="form-control" placeholder="Selecione um mês e ano">
+        </form>
+    </div>
+    <br>
+    <div class="conteudo" style="padding-top: 100px; display: flex; flex-direction: column; align-items: center; margin-left:-35px;">
+        <div class="grafico" style="width: 80%; margin-top:20%; margin-bottom: 10px;  ">
+            <h3>Relação entrada e venda por produto mês de {{mes}}</h3>
+            <div id="graph">{{ graph|safe }}</div>
+        </div>
+        <br><br>
+        <div class="grafico" style="width: 80%;">
+            <h3>Lucro por categoria mês de {{mes}}</h3>
+            <div id="pie-graph">{{ pie_graph|safe }}</div>
+        </div>
+    </div>
+
     <script>
-        var graphs = {{ graphJSON | safe }};
-        Plotly.newPlot('grafico', graphs.data, graphs.layout);
+        flatpickr("#date-picker", {
+            plugins: [
+                new monthSelectPlugin({
+                    shorthand: true,
+                    dateFormat: "Y-m",
+                    altFormat: "F Y"
+                })
+            ],
+            onChange: function(selectedDates, dateStr, instance) {
+                document.getElementById("date-form").submit();
+            }
+        });
     </script>
 </body>
 </html>
