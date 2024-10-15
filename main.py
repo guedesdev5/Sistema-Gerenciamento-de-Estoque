@@ -379,28 +379,44 @@ def entradas():
     
 @app.route("/dashboard")
 def dashboard():
+    dataAtual = dash.pegarDataAtual()
     dados_entrada = r.readEntradas()
+    dataFiltradosEntrada = dash.filtrarDados(dados_entrada, dataAtual, 'entrada')
     dados_venda = r.readVendas()
-    print(dados_entrada)
-    print(dados_venda)
+    dadosFiltradosVendas= dash.filtrarDados(dados_venda, dataAtual, 'venda')
     df_relacao = dash.unir_dados(dados_entrada['data'], dados_venda['data'])  
     graph = dash.criar_dashboard(df_relacao)
 
-    labels = ['Categoria A', 'Categoria B', 'Categoria C']
-    values = [30, 50, 20]
-
-    # Criar o gráfico de pizza
-    pie_data = [go.Pie(labels=labels, values=values, textinfo='label+percent')]
-    pie_layout = go.Layout(
-        plot_bgcolor='rgba(0,0,0,0)',  # Fundo transparente
-        paper_bgcolor='rgba(0,0,0,0)',  # Fundo transparente
-        margin=dict(l=0, r=0, t=40, b=0)  # Margens
-    )
-    pie_fig = go.Figure(data=pie_data, layout=pie_layout)
-
-    # Renderizar o gráfico
-    pie_graph = pyo.plot(pie_fig, include_plotlyjs=False, output_type='div')
+    pie_graph = dash.criarDashboardLucro()
     return render_template('dashboard.html', mes='setembro', graph=graph, pie_graph=pie_graph, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+
+@app.route("/FiltrarDashboard", methods=['post'])
+def FiltrarDashboard():
+    date = request.form.get('date-picker')
+    dados_entrada = r.readEntradas()
+    dadosFiltradosEntrada = dash.filtrarDados(dados_entrada, date, 'entrada')
+    dados_venda = r.readVendas()
+    dadosFiltradosVendas= dash.filtrarDados(dados_venda, date, 'venda')
+    produtos = r.readProdutos()
+    print(produtos)
+    print(dados_entrada)
+    print(dados_venda)
+
+    lucro = dash.calcularLucro(dados_entrada['data'], dados_venda['data'], produtos['data'])
+    print(lucro)
+    if dadosFiltradosEntrada == 1 or dadosFiltradosVendas == 1:
+        flash('Não há dados suficientes no mês escolhido!', 'error')
+        return render_template('dashboard.html', mes='setembro', permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+    
+
+    df_relacao = dash.unir_dados(dadosFiltradosEntrada, dadosFiltradosVendas)  
+    graph = dash.criar_dashboard(df_relacao)
+
+    pie_graph = dash.criarDashboardLucro()
+
+    return render_template('dashboard.html', mes='setembro', graph=graph, pie_graph=pie_graph, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+
+
 
 @app.route("/login")
 def loginO():
