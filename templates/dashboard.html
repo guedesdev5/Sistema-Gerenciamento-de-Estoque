@@ -44,9 +44,9 @@
             <div class="flash-message {{ category }}">{{ message }}</div>
         {% endfor %}
     {% endif %}
-{% endwith %}
+    {% endwith %}
 
-
+    <br>
     <div class="form-group" style="position: absolute; top: 20px; left: 100px; z-index: 1;">
         <label for="date-picker">Escolha um mês e ano:</label>
         <form id="date-form" action="/FiltrarDashboard" method="POST">
@@ -54,10 +54,9 @@
         </form>
     </div>
     <br>
-    <br>
-    <div class="conteudo" style="padding-top: 100px; display: flex; justify-content: center; align-items: center; margin-left:20px;">
+    <div class="conteudo" style="padding-top: 80px; display: flex; justify-content: center; align-items: center; margin-left:20px;">
         <div class="grafico" style="width: 45%; margin-right: 2%; margin-bottom: 10px;">
-            <h3>             Relação entrada e venda por produto mês de {{mes}}</h3>
+            <h3>Relação entrada e venda por produto mês de {{mes}}</h3>
             <div id="graph">{{ graph|safe }}</div>
         </div>
         

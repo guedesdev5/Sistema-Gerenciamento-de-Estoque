@@ -340,7 +340,6 @@ def vendedores():
 @app.route("/homepage")
 def homepage():
     readBD = r.readProdutos()
-    print(readBD)
     readIdCategory = r.readCategoria()
     readIdFornecedores = r.readFornecedor()
     idCategorias = readIdCategory['data']
@@ -385,10 +384,14 @@ def dashboard():
     dados_venda = r.readVendas()
     dadosFiltradosVendas= dash.filtrarDados(dados_venda, dataAtual, 'venda')
     df_relacao = dash.unir_dados(dados_entrada['data'], dados_venda['data'])  
-    graph = dash.criar_dashboard(df_relacao)
+    produtos = r.readProdutos()
+    categorias = r.readCategoria()
 
-    pie_graph = dash.criarDashboardLucro()
-    return render_template('dashboard.html', mes='setembro', graph=graph, pie_graph=pie_graph, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+    graph = dash.criar_dashboard(df_relacao)
+    lucro_por_categoria = dash.calcularLucro(dados_entrada, dados_venda, produtos, categorias)
+    mes_atual = dash.getStringMes(dataAtual)
+    pie_graph = dash.criarDashboardLucro(list(lucro_por_categoria.keys()), list(lucro_por_categoria.values()))
+    return render_template('dashboard.html', mes=mes_atual, graph=graph, pie_graph=pie_graph, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
 
 @app.route("/FiltrarDashboard", methods=['post'])
 def FiltrarDashboard():
@@ -398,23 +401,19 @@ def FiltrarDashboard():
     dados_venda = r.readVendas()
     dadosFiltradosVendas= dash.filtrarDados(dados_venda, date, 'venda')
     produtos = r.readProdutos()
-    print(produtos)
-    print(dados_entrada)
-    print(dados_venda)
-
-    lucro = dash.calcularLucro(dados_entrada['data'], dados_venda['data'], produtos['data'])
-    print(lucro)
+    categorias = r.readCategoria()
+    mes_atual = dash.getStringMes(date)
     if dadosFiltradosEntrada == 1 or dadosFiltradosVendas == 1:
+        print('Vai corinthians')
         flash('Não há dados suficientes no mês escolhido!', 'error')
-        return render_template('dashboard.html', mes='setembro', permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+        return render_template('dashboard.html', mes=mes_atual, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
     
-
+    lucro_por_categoria = dash.calcularLucro(dados_entrada, dados_venda, produtos, categorias)
     df_relacao = dash.unir_dados(dadosFiltradosEntrada, dadosFiltradosVendas)  
     graph = dash.criar_dashboard(df_relacao)
+    pie_graph = dash.criarDashboardLucro(list(lucro_por_categoria.keys()), list(lucro_por_categoria.values()))
 
-    pie_graph = dash.criarDashboardLucro()
-
-    return render_template('dashboard.html', mes='setembro', graph=graph, pie_graph=pie_graph, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+    return render_template('dashboard.html', mes=mes_atual, graph=graph, pie_graph=pie_graph, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
 
 
 

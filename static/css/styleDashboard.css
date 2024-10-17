@@ -293,26 +293,25 @@ td a.btn-delete:hover {
             color: #007bff; /* Cor do texto */
             cursor: pointer; /* Muda o cursor ao passar */
         }
+    
+.flash-message {
+   position: fixed;
+    top: 10%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000; 
+    display: none; 
+    transition: opacity 0.5s ease;
+}
         
-
-        .flash-message {
-            position: fixed;
-            top: 10%; 
-            left: 50%; 
-            transform: translate(-50%, -50%); 
-            padding: 10px 20px;
-            border-radius: 5px;
-            z-index: 1000; 
-            display: none; 
-            transition: opacity 0.5s ease;
-        }
+.flash-message.success {
+    background-color: #28a745; 
+    color: white;
+}
         
-        .flash-message.success {
-            background-color: #28a745; 
-            color: white;
-        }
-        
-        .flash-message.error {
-            background-color: #dc3545; 
-            color: white;
-        }
+.flash-message.error {
+    background-color: #dc3545; 
+    color: white;
+}
