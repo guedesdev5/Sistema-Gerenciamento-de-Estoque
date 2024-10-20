@@ -9,6 +9,7 @@ import backend.create as c
 import backend.update as u
 import backend.delete as d
 import backend.dashboard as dash
+import backend.utils as utils
 
 app = Flask(__name__)
 app.secret_key = 'abcdohdohfhef32833'
@@ -23,7 +24,7 @@ def login():
     password = request.form.get('password')
     login = l.login(username, password)
     if login != 9:
-        readBD = r.readProdutos()
+        readBD = utils.formatMoney(r.readProdutos())
         readIdCategory = r.readCategoria()
         readIdFornecedores = r.readFornecedor()
         idCategorias = [item['id'] for item in readIdCategory['data']]
@@ -52,7 +53,7 @@ def produtos():
     category_id = request.form.get('category_id')
     fornecedor_id = request.form.get('fornecedor_id')
     response = c.createProdutos(int(id), name, description, float(price), int(quantity), int(category_id), int(fornecedor_id))
-    readBD = r.readProdutos()
+    readBD = utils.formatMoney(r.readProdutos()) 
     readIdCategory = r.readCategoria()
     readIdFornecedores = r.readFornecedor()
     idCategorias = readIdCategory['data']
@@ -99,8 +100,12 @@ def editarCategoria():
 def excluirCategoria():
     id = request.form['id'] 
     response = d.deleteCategoria(id)
+    print(response)
     if response['status'] == 0:
         flash('Exclusão realizada com sucesso!', 'success')
+        return redirect(url_for('categorias'))
+    elif (response['erro']['code'] == 'P2003'):
+        flash('Categortia  já atrtíbuida  algum produto. Impossível exclusão!', 'error')
         return redirect(url_for('categorias'))
     else:
         flash('Problema ao realizar a exclusão!', 'error')
@@ -143,6 +148,9 @@ def excluirFornecedor():
     if response['status'] == 0:
         flash('Exclusão realizada com sucesso!', 'success')
         return redirect(url_for('fornecedores'))
+    elif (response['erro']['code'] == 'P2003'):
+        flash('Fornecedor já cadastrado em um produto. Impossível a exclusão!', 'error')
+        return redirect(url_for('fornecedores'))
     else:
         flash('Problema ao realizar a exclusão!', 'error')
         return redirect(url_for('fornecedores'))
@@ -157,7 +165,6 @@ def editarProdutos():
     category_id = request.form.get('idCategoria')
     fornecedor_id = request.form.get('idFornecedor')
     response = u.updateProdutos(int(id), name, description, float(price), int(quantity))
-    print(response)
     if response['status'] == 0:
         flash('Edição realizada com sucesso!', 'success')
         return redirect(url_for('homepage'))
@@ -169,8 +176,12 @@ def editarProdutos():
 def excluirProdutos():
     id = request.form['id'] 
     response = d.deleteProdutos(id)
+    print(response)
     if response['status'] == 0:
         flash('Exclusão realizada com sucesso!', 'success')
+        return redirect(url_for('homepage'))
+    elif response['erro']['code'] == 'P2003':
+        flash('Produto já relacionado a  uma venda/entrada. Impossível exclusão!', 'error')
         return redirect(url_for('homepage'))
     else:
         flash('Problema ao realizar a exclusão!', 'error')
@@ -208,7 +219,7 @@ def editarVendedores():
     response = u.updateVendedores(int(id), name, username, email, senha, int(permissao))
     print(response)
     if response['status'] == 0:
-        flash('Edição realizada com sucesso!', 'sucess')
+        flash('Edição realizada com sucesso!', 'success')
         return redirect(url_for('vendedores'))
     else:
         flash('Problema ao realizar a edição!', 'error')
@@ -219,7 +230,10 @@ def excluirVendedoress():
     id = request.form['id'] 
     response = d.deleetVendedores(id)
     if response['status'] == 0:
-        flash('Exculsão realizada com sucesso!', 'sucess')
+        flash('Exculsão realizada com sucesso!', 'success')
+        return redirect(url_for('vendedores'))
+    elif (response['erro']['code'] == 'P2003'):
+        flash('Vendedor já cadastrado em uma Venda/Entrada. Impossível exclusão!', 'error')
         return redirect(url_for('vendedores'))
     else:
         flash('Problema ao realizar a exclusão!', 'error')
@@ -232,21 +246,22 @@ def vendaspost():
     cd_vendedor = request.form.get('codv')
     response = r.readProdutosID(cd_produto)
     readIdVendedor = r.readVender()
-    readBD = r.readVendas()
+    data = dash.pegarDataAtual()
+    readBD = dash.filtrarDados(r.readVendas(), data , 'venda')
+    readBD = utils.formatDate(readBD ,'venda')
     readIdProdutos = r.readProdutos()
     idvendedor = readIdVendedor['data']
     idProdutos = readIdProdutos['data']
     if int(response['data'][0]['quantidade']) - int(qntd) < 0:
         flash('Impossível efetuar venda! Estoque de produtos  insuficiete', 'error')
-        return render_template("vendas.html", lista = readBD['data'], readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+        return render_template("vendas.html", lista = readBD, readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
     result = c.createVendas( int(qntd), int(cd_produto), int(cd_vendedor))   
     if result['status'] == 0:
-        readBD = r.readVendas()
-        flash('Cadastro realizado com sucesso!', 'sucess')
-        return render_template("vendas.html", lista = readBD['data'], readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+        flash('Cadastro realizado com sucesso!', 'success')
+        return redirect(url_for('vendas'))
     else:
         flash('Problema ao realizar o cadastro!', 'error')
-        return render_template("vendas.html", lista = readBD['data'], readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
+        return render_template("vendas.html", lista = readBD, readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
 
 @app.route("/editar/vendas", methods=['POST'])
 def vendasupdate():
@@ -256,7 +271,7 @@ def vendasupdate():
     cd_vendedor = request.form.get('codVendedor')
     result = u.updateVendas( int(id), int(qntd), int(cd_produto))
     if result['status'] == 0:
-        flash('Edição realizada com sucesso!', 'sucess')
+        flash('Edição realizada com sucesso!', 'success')
         return redirect(url_for('vendas'))
     else:
         flash('Problema ao realizar a edição!', 'error')
@@ -273,7 +288,7 @@ def excluirVendas():
     response = d.deleteVendas(id, id_produto, qntd)
     print(response)
     if response['status'] == 0:
-        flash('Exclusão realizada com sucesso!', 'sucess')
+        flash('Exclusão realizada com sucesso!', 'success')
         return redirect(url_for('vendas'))
     else:
         flash('Problema ao realizar a exclusão!', 'error')
@@ -287,27 +302,22 @@ def entradaspost():
     cd_fornecedor = request.form.get('cod')
     valor_entrada = request.form.get('valor')
     result = c.createEntradas( int(qntd), int(cd_produto), int(cd_fornecedor), int(valor_entrada))
-    readBD = r.readEntradas()
-    readFornecedor = r.readFornecedor()
-    readIdProdutos = r.readProdutos()
-    idFornecedor = readFornecedor['data']
-    idProdutos = readIdProdutos['data']
     if result['status'] == 0:
-        flash('Cadastro realizado com sucesso!', 'sucess')
-        return render_template("entradas.html", lista = readBD['data'], readIdFornecedor = idFornecedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+        flash('Cadastro realizado com sucesso!', 'success')
+        return redirect(url_for('entradas'))
     else:
         flash('Problema ao realizar a exclusão!', 'error')
         return render_template("entradas.html", lista = readBD['data'], readIdFornecedor = idFornecedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
-
+            
 @app.route("/editar/entradas", methods=['POST'])
 def entradasupdate():
-    id = request.form.get('ID')
+    id = request.form.get('idEntrada')
     qntd = request.form.get('quantidadeEntrada')
     cd_produto = request.form.get('idProduto')
     preco = request.form.get('precoEntrada')
-    response = u.updateEntradas( int(id), int(qntd), int(cd_produto), int(preco))
+    response = u.updateEntradas( int(id), int(qntd), int(cd_produto), float(preco))
     if response['status'] == 0:
-        flash('Edição realizada com sucesso!', 'sucess')
+        flash('Edição realizada com sucesso!', 'success')
         return redirect(url_for('entradas'))
     else:
         flash('Problema ao realizar a edição!', 'error')
@@ -315,13 +325,12 @@ def entradasupdate():
 
 @app.route('/excluir/entradas', methods=['post'])
 def excluirEntradas():
-    id = request.form.get('idEntrada')
+    id = request.form.get('identrada')
     id_produto = request.form.get('ProdutoIdExclusao')
     qntd = request.form.get('quantidadeEntradasEX')
-
     response = d.deleteEntradas(int(id), int(id_produto), int(qntd))
     if response['status'] == 0:
-        flash('Exclusão realizada com sucesso!', 'sucess')
+        flash('Exclusão realizada com sucesso!', 'success')
         return redirect(url_for('entradas'))
     else:
         flash('Problema ao realizar a exclusão!', 'error')
@@ -339,7 +348,7 @@ def vendedores():
 
 @app.route("/homepage")
 def homepage():
-    readBD = r.readProdutos()
+    readBD = utils.formatMoney(r.readProdutos())
     readIdCategory = r.readCategoria()
     readIdFornecedores = r.readFornecedor()
     idCategorias = readIdCategory['data']
@@ -354,13 +363,14 @@ def categorias():
 
 @app.route("/vendas")
 def vendas():
-    readBD = r.readVendas()
-    
+    data = dash.pegarDataAtual()
+    readBD = dash.filtrarDados(r.readVendas(), data , 'venda')
+    readBD = utils.formatDate(readBD ,'venda')
     readIdVendedor = r.readVender()
     readIdProdutos = r.readProdutos()
     idvendedor = readIdVendedor['data']
     idProdutos = readIdProdutos['data']
-    return render_template("vendas.html", lista = readBD['data'], readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+    return render_template("vendas.html", lista = readBD, readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
 
 @app.route("/fornecedores")
 def fornecedores():
@@ -369,12 +379,14 @@ def fornecedores():
 
 @app.route("/entradas")
 def entradas():
-    readBD = r.readEntradas()
+    data = dash.pegarDataAtual()
+    readBD = dash.filtrarDados(r.readEntradas(), data , 'entrada')
+    readBD = utils.formatDate(utils.formatMoney(readBD), 'entrada')
     readFornecedor = r.readFornecedor()
     readIdProdutos = r.readProdutos()
     idFornecedor = readFornecedor['data']
     idProdutos = readIdProdutos['data']
-    return render_template("entradas.html", lista = readBD['data'], readIdFornecedor = idFornecedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+    return render_template("entradas.html", lista = readBD, readIdFornecedor = idFornecedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
     
 @app.route("/dashboard")
 def dashboard():
@@ -404,7 +416,7 @@ def FiltrarDashboard():
     categorias = r.readCategoria()
     mes_atual = dash.getStringMes(date)
     if dadosFiltradosEntrada == 1 or dadosFiltradosVendas == 1:
-        print('Vai corinthians')
+
         flash('Não há dados suficientes no mês escolhido!', 'error')
         return render_template('dashboard.html', mes=mes_atual, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
     

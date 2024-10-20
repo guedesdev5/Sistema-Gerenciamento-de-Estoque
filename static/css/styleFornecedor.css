@@ -131,21 +131,19 @@ input[type="text"], input[type="email"] {
 }
 
 button[type="submit"] {
+    width: 100%;
     background-color: #00509e;
     color: #fff;
     border: none;
+    padding: 10px;
     border-radius: 5px;
-    padding: 10px 20px;
     font-size: 16px;
-    cursor: pointer;
     transition: background-color 0.3s ease;
-    width: 100%; /* Make the button full width */
 }
 
 button[type="submit"]:hover {
     background-color: #003f7f;
 }
-
 
 
 table {

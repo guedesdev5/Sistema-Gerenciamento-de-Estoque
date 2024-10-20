@@ -138,6 +138,16 @@ input[type="text"], input[type="email"], input[type="number"], select {
     font-size: 16px;
 }
 
+.select2{
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
 .button {
     width: 100%;
     display: flex;
@@ -300,3 +310,4 @@ td a.btn-delete:hover {
     background-color: #dc3545; 
     color: white;
 }
+

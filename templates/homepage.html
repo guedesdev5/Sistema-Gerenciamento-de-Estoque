@@ -105,11 +105,11 @@
                 <input type="text" id="description" name="description" required>
 
                 <label for="price">Preço do produto:</label>
-                <input type="text" id="price" name="price" placeholder="R$">
+                <input type="number" id="price" name="price" min="0" placeholder="R$">
         </div>
         <div class="right-column">
             <label for="quantity">Quantidade do produto:</label>
-            <input type="number" id="quantity" name="quantity" required>
+            <input type="number" id="quantity" name="quantity" min="0" required>
                     
             <label for="category_id">Nome da categoria:</label>
             <select id="category_id" name="category_id" required>
@@ -149,9 +149,10 @@
 <table>
     <thead>
         <tr>
+            <th>Código</th>
             <th>Nome</th>
             <th>Descrição</th>
-            <th>Preço</th>
+            <th>Preço (Un)</th>
             <th>Quantidade</th>
             <th>Categoria</th>
             <th>Fornecedor</th>
@@ -161,6 +162,7 @@
     <tbody id="productTable">
         {% for listagem in lista %}
         <tr>
+            <td>{{ listagem['id'] }}</td>
             <td>{{ listagem['nome'] }}</td>
             <td>{{ listagem['descricao'] }}</td>
             <td>R$ {{ listagem['preco'] }}</td>
@@ -255,11 +257,16 @@
     var rows = document.getElementById('productTable').getElementsByTagName('tr');
 
     for (var i = 0; i < rows.length; i++) {
-        var firstColumnText = rows[i].getElementsByTagName('td')[0].textContent.toLowerCase();
-        if (firstColumnText.indexOf(searchValue) > -1) {
-            rows[i].style.display = '';
-        } else {
-            rows[i].style.display = 'none';
+        var cells = rows[i].getElementsByTagName('td');
+        if (cells.length > 0) {
+            var codigoText = cells[0].textContent.toLowerCase(); 
+            var nomeText = cells[1].textContent.toLowerCase(); 
+
+            if (codigoText.indexOf(searchValue) > -1 || nomeText.indexOf(searchValue) > -1) {
+                rows[i].style.display = ''; 
+            } else {
+                rows[i].style.display = 'none'; 
+            }
         }
     }
 });
