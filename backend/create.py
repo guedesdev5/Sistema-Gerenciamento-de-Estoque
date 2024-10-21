@@ -73,14 +73,11 @@ def createProdutos(id, name, description, price, quantity,  categoryID, supplier
     except Exception as e:
         return e
 
-def createVendas( qntd, id_produto, id_vendedor):
+def createVendas(qntd, id_produto, id_vendedor):
     EndPoint = urlBase + 'vendas'
-    response = requests.get('http://worldclockapi.com/api/json/utc/now')
-    data = response.json()
-    current_time = data['currentDateTime']
-    current_time = current_time.replace('Z', '+00:00')
-    dt = datetime.fromisoformat(current_time)
-    data_atual = dt.date()
+    
+    # Obtém a data atual diretamente do sistema
+    data_atual = datetime.utcnow().date()  # Usa UTC
     dataN = str(data_atual)
 
     venda = {
@@ -96,19 +93,15 @@ def createVendas( qntd, id_produto, id_vendedor):
         else:
             return response.json()
     except Exception as e:
-        return e
-
+        return str(e)
 
 def createEntradas(qntd, id_produto, id_Fornecedor, valor):
     EndPoint = urlBase + 'entradas'
-    response = requests.get('http://worldclockapi.com/api/json/utc/now')
-
-    data = response.json()
-    current_time = data['currentDateTime']
-    current_time = current_time.replace('Z', '+00:00')
-    dt = datetime.fromisoformat(current_time)
-    data_atual = dt.date()
+    
+    # Obtém a data atual diretamente do sistema
+    data_atual = datetime.utcnow().date()  # Usa UTC
     dataN = str(data_atual)
+
     entrada = {
         "data_entrada": dataN,
         "quantidade_entrada": qntd,
@@ -123,4 +116,4 @@ def createEntradas(qntd, id_produto, id_Fornecedor, valor):
         else:
             return response.json()
     except Exception as e:
-        return e
+        return str(e)

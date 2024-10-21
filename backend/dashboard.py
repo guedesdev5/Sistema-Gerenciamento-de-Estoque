@@ -2,7 +2,10 @@ import pandas as pd
 import plotly.graph_objects as go
 import requests
 import plotly.offline as pyo
-from datetime import datetime
+from datetime import datetime, timedelta
+
+data_cache = None
+ultima_atualizacao = None
 
 def getStringMes(date):
     mes = int(date.split('-')[1])
@@ -59,19 +62,8 @@ def filtrarDados(response, data, tipo):
     return response['data']
 
 def pegarDataAtual():
-    response = requests.get('http://worldclockapi.com/api/json/utc/now')
-    if response.status_code == 200:
-        data = response.json()
-        current_time = data['currentDateTime']  
-        
-        current_time = current_time.replace('Z', '+00:00')
-      
-        dt = datetime.fromisoformat(current_time)
-        data_atual = dt.date()
-        dataN = str(data_atual)
-        return dataN[:7]  
-    else:
-        return None
+    data_atual = datetime.utcnow().date()  # Usa UTC
+    return str(data_atual)[:7]
 
 
 def criarDashboardLucro(labels, values):

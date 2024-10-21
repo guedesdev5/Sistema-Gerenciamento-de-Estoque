@@ -360,7 +360,7 @@ def vendas():
     readIdProdutos = r.readProdutos()
     idvendedor = readIdVendedor['data']
     idProdutos = readIdProdutos['data']
-    return render_template("vendas.html", lista = readBD, readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+    return render_template("vendas.html", lista = readBD, mes = dash.getStringMes(data), readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
 
 @app.route("/fornecedores")
 def fornecedores():
@@ -378,11 +378,13 @@ def entradas():
     readIdProdutos = r.readProdutos()
     idFornecedor = readFornecedor['data']
     idProdutos = readIdProdutos['data']
-    return render_template("entradas.html", lista = readBD, readIdFornecedor = idFornecedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+    return render_template("entradas.html", lista = readBD, mes = dash.getStringMes(data), readIdFornecedor = idFornecedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
     
 @app.route("/dashboard")
 def dashboard():
+    print('problema abaico')
     dataAtual = dash.pegarDataAtual()
+    print('passou')
     dados_entrada = r.readEntradas()
     dados_venda = r.readVendas()
     if (not dados_venda['data'] or not dados_entrada['data']):
