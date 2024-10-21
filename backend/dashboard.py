@@ -27,11 +27,11 @@ def unir_dados(dados_entrada, dados_venda):
 
 def calcularLucro(dados_entrada, dados_venda, produtos, categorias):
     gastoEntrada = 0
-    for valorEntrada in dados_entrada['data']:
+    for valorEntrada in dados_entrada:
         gastoEntrada += int(valorEntrada['preco'])
         
     ganhoVenda = 0
-    for valorVenda in dados_venda['data']:
+    for valorVenda in dados_venda:
         for idProduto in produtos['data']:
             if (int(valorVenda['id_produto']) == int(idProduto['id'])):
                 ganhoVenda += int(valorVenda['quantidade_vendida']) * int(idProduto['preco'])
@@ -41,7 +41,7 @@ def calcularLucro(dados_entrada, dados_venda, produtos, categorias):
         if categoria['nome'] not in lucroCategorias:
             lucroCategorias[categoria['nome']] = 0
         for idProduto in produtos['data']:
-            for valorVenda in dados_venda['data']:
+            for valorVenda in dados_venda:
                 if(categoria['nome'] == idProduto['tipo_produto'] and idProduto['nome'] == valorVenda['nome_produto']):
                     lucroCategorias[categoria['nome']] += int(valorVenda['quantidade_vendida']) * int(idProduto['preco'])
 

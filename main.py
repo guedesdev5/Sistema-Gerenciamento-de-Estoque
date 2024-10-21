@@ -24,19 +24,14 @@ def login():
     password = request.form.get('password')
     login = l.login(username, password)
     if login != 9:
-        produtos = r.readProdutos()
-        readBD = utils.formatMoney(produtos['data'])
-        readIdCategory = r.readCategoria()
-        readIdFornecedores = r.readFornecedor()
-        idCategorias = [item['id'] for item in readIdCategory['data']]
-        idFornecedores = [item['id'] for item in readIdFornecedores['data']]
+        
         if login == 1:
             app.config['PERMISSION_USER'] = True
         else:
             app.config['PERMISSION_USER'] = False
         
         flash('Login efetuado com sucesso!', 'success')
-        return render_template("homepage.html", lista = readBD, idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+        return redirect(url_for('homepage'))
     else:
         flash('Problema ao efetuar login!', 'error')
         return render_template("login.html")
@@ -52,35 +47,28 @@ def produtos():
     category_id = request.form.get('category_id')
     fornecedor_id = request.form.get('fornecedor_id')
     response = c.createProdutos(int(id), name, description, float(price), int(quantity), int(category_id), int(fornecedor_id))
-    produtos = r.readProdutos()
-    readBD = utils.formatMoney(produtos['data']) 
-    readIdCategory = r.readCategoria()
-    readIdFornecedores = r.readFornecedor()
-    idCategorias = readIdCategory['data']
-    idFornecedores = readIdFornecedores['data']
     
     if response['status'] == 0:
         flash('Produto cadastrado com sucesso!', 'success')
-        return render_template("homepage.html", lista = readBD, idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
+        return redirect(url_for('homepage'))     
     else:
         if response['error']['code'] == 'P2002':
             flash('Código inserido já existe!!', 'error')
-            return render_template("homepage.html", lista = readBD, idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
+            return redirect(url_for('homepage'))
         flash('Problema ao cadastrar o produto!', 'error')
-        return render_template("homepage.html", lista = readBD, idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
+        return redirect(url_for('homepage'))
 
 @app.route("/categorias", methods=['POST'])
 def categoriaspost():
     name = request.form.get('name')
     description = request.form.get('description')
     response = c.createCategory(name, description)
-    readBD = r.readCategoria()
     if response['status'] == 0:
         flash('Categoria cadastrada com sucesso!', 'success')
-        return render_template("categorias.html", lista = readBD['data'])
+        return redirect(url_for('categorias'))
     else:
         flash('Problema ao cadastrar a categoria!', 'error')
-        return render_template("categorias.html", lista = readBD['data'])
+        return redirect(url_for('categorias'))
     
 @app.route('/editar/categoria', methods=['POST'])
 def editarCategoria():
@@ -382,8 +370,10 @@ def fornecedores():
 @app.route("/entradas")
 def entradas():
     data = dash.pegarDataAtual()
-    readBD = dash.filtrarDados(r.readEntradas(), data , 'entrada')
-    readBD = utils.formatDate(utils.formatMoney(readBD), 'entrada')
+    readBDN = r.readEntradas()
+    readBD_Filtrado = dash.filtrarDados(readBDN, data , 'entrada')
+    format_money = utils.formatMoney(readBD_Filtrado)
+    readBD = utils.formatDate(format_money, 'entrada')
     readFornecedor = r.readFornecedor()
     readIdProdutos = r.readProdutos()
     idFornecedor = readFornecedor['data']
@@ -400,11 +390,11 @@ def dashboard():
         return redirect(url_for('entradas'))
     dataFiltradosEntrada = dash.filtrarDados(dados_entrada, dataAtual, 'entrada')
     dadosFiltradosVendas= dash.filtrarDados(dados_venda, dataAtual, 'venda')
-    df_relacao = dash.unir_dados(dados_entrada['data'], dados_venda['data'])  
+    df_relacao = dash.unir_dados(dataFiltradosEntrada,dadosFiltradosVendas)  
     produtos = r.readProdutos()
     categorias = r.readCategoria()
     graph = dash.criar_dashboard(df_relacao)
-    lucro_por_categoria = dash.calcularLucro(dados_entrada, dados_venda, produtos, categorias)
+    lucro_por_categoria = dash.calcularLucro(dataFiltradosEntrada, dadosFiltradosVendas, produtos, categorias)
     mes_atual = dash.getStringMes(dataAtual)
     pie_graph = dash.criarDashboardLucro(list(lucro_por_categoria.keys()), list(lucro_por_categoria.values()))
     return render_template('dashboard.html', mes=mes_atual, graph=graph, pie_graph=pie_graph, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
@@ -425,7 +415,7 @@ def FiltrarDashboard():
         flash('Não há dados suficientes no mês escolhido!', 'error')
         return render_template('dashboard.html', mes=mes_atual, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
     
-    lucro_por_categoria = dash.calcularLucro(dados_entrada, dados_venda, produtos, categorias)
+    lucro_por_categoria = dash.calcularLucro(dadosFiltradosEntrada, dadosFiltradosVendas, produtos, categorias)
     df_relacao = dash.unir_dados(dadosFiltradosEntrada, dadosFiltradosVendas)  
     graph = dash.criar_dashboard(df_relacao)
     pie_graph = dash.criarDashboardLucro(list(lucro_por_categoria.keys()), list(lucro_por_categoria.values()))
@@ -438,7 +428,7 @@ def download_vendas():
     produtos = r.readProdutos()
     excel_data = plh.criar_planilhas_por_mes(dados, produtos)
 
-    return send_file(excel_data, as_attachment=True, download_name="Vendas.xlsx", mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    return send_file(excel_data, as_attachment=True, download_name="vendas.xlsx", mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
 
 @app.route("/login")
