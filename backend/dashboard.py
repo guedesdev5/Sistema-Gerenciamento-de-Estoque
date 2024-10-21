@@ -55,17 +55,24 @@ def filtrarDados(response, data, tipo):
     filtered_data = [item for item in response['data'] if item[f'data_{tipo}'].startswith(data)]
     if filtered_data:
         return filtered_data
-    return 1
+    response['data'][0]['erro'] =1
+    return response['data']
 
 def pegarDataAtual():
-    response = requests.get('http://worldtimeapi.org/api/timezone/Etc/UTC')
-    data = response.json()
-    current_time = data['datetime']
-    data_atual = str(current_time)
-    dt = datetime.fromisoformat(data_atual)
-    data = dt.date()
-    dataN = str(data)
-    return dataN[:7]
+    response = requests.get('http://worldclockapi.com/api/json/utc/now')
+    if response.status_code == 200:
+        data = response.json()
+        current_time = data['currentDateTime']  
+        
+        current_time = current_time.replace('Z', '+00:00')
+      
+        dt = datetime.fromisoformat(current_time)
+        data_atual = dt.date()
+        dataN = str(data_atual)
+        return dataN[:7]  
+    else:
+        return None
+
 
 def criarDashboardLucro(labels, values):
     pie_data = [go.Pie(labels=labels, values=values, textinfo='label+percent')]

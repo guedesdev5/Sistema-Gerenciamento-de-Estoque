@@ -75,14 +75,13 @@ def createProdutos(id, name, description, price, quantity,  categoryID, supplier
 
 def createVendas( qntd, id_produto, id_vendedor):
     EndPoint = urlBase + 'vendas'
-    response = requests.get('http://worldtimeapi.org/api/timezone/Etc/UTC')
+    response = requests.get('http://worldclockapi.com/api/json/utc/now')
     data = response.json()
-    current_time = data['datetime']
-    data_atual = str(current_time)
-    dt = datetime.fromisoformat(data_atual)
-    data = dt.date()
-    dataN = str(data)
-
+    current_time = data['currentDateTime']
+    current_time = current_time.replace('Z', '+00:00')
+    dt = datetime.fromisoformat(current_time)
+    data_atual = dt.date()
+    dataN = str(data_atual)
 
     venda = {
         "data_venda": dataN,
@@ -90,7 +89,6 @@ def createVendas( qntd, id_produto, id_vendedor):
         "id_produto": id_produto,
         "id_vendedor": id_vendedor
     }
-    print(venda)
     try:
         response = requests.post(EndPoint, json=venda)
         if response.status_code == 200:
@@ -103,13 +101,14 @@ def createVendas( qntd, id_produto, id_vendedor):
 
 def createEntradas(qntd, id_produto, id_Fornecedor, valor):
     EndPoint = urlBase + 'entradas'
-    response = requests.get('http://worldtimeapi.org/api/timezone/Etc/UTC')
+    response = requests.get('http://worldclockapi.com/api/json/utc/now')
+
     data = response.json()
-    current_time = data['datetime']
-    data_atual = str(current_time)
-    dt = datetime.fromisoformat(data_atual)
-    data = dt.date()
-    dataN = str(data)
+    current_time = data['currentDateTime']
+    current_time = current_time.replace('Z', '+00:00')
+    dt = datetime.fromisoformat(current_time)
+    data_atual = dt.date()
+    dataN = str(data_atual)
     entrada = {
         "data_entrada": dataN,
         "quantidade_entrada": qntd,

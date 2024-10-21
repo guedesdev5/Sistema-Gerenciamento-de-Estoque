@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import Flask, render_template, request, flash, redirect, url_for, send_file
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.offline as pyo
@@ -10,7 +10,7 @@ import backend.update as u
 import backend.delete as d
 import backend.dashboard as dash
 import backend.utils as utils
-
+import backend.planilha as plh
 app = Flask(__name__)
 app.secret_key = 'abcdohdohfhef32833'
 
@@ -24,20 +24,19 @@ def login():
     password = request.form.get('password')
     login = l.login(username, password)
     if login != 9:
-        readBD = utils.formatMoney(r.readProdutos())
+        produtos = r.readProdutos()
+        readBD = utils.formatMoney(produtos['data'])
         readIdCategory = r.readCategoria()
         readIdFornecedores = r.readFornecedor()
         idCategorias = [item['id'] for item in readIdCategory['data']]
         idFornecedores = [item['id'] for item in readIdFornecedores['data']]
-        print(idCategorias)
-        print(idFornecedores)
         if login == 1:
             app.config['PERMISSION_USER'] = True
         else:
             app.config['PERMISSION_USER'] = False
         
         flash('Login efetuado com sucesso!', 'success')
-        return render_template("homepage.html", lista = readBD['data'], idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+        return render_template("homepage.html", lista = readBD, idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
     else:
         flash('Problema ao efetuar login!', 'error')
         return render_template("login.html")
@@ -53,7 +52,8 @@ def produtos():
     category_id = request.form.get('category_id')
     fornecedor_id = request.form.get('fornecedor_id')
     response = c.createProdutos(int(id), name, description, float(price), int(quantity), int(category_id), int(fornecedor_id))
-    readBD = utils.formatMoney(r.readProdutos()) 
+    produtos = r.readProdutos()
+    readBD = utils.formatMoney(produtos['data']) 
     readIdCategory = r.readCategoria()
     readIdFornecedores = r.readFornecedor()
     idCategorias = readIdCategory['data']
@@ -61,14 +61,13 @@ def produtos():
     
     if response['status'] == 0:
         flash('Produto cadastrado com sucesso!', 'success')
-        return render_template("homepage.html", lista = readBD['data'], idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
+        return render_template("homepage.html", lista = readBD, idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
     else:
-        print(response['error']['code'])
         if response['error']['code'] == 'P2002':
             flash('Código inserido já existe!!', 'error')
-            return render_template("homepage.html", lista = readBD['data'], idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
+            return render_template("homepage.html", lista = readBD, idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
         flash('Problema ao cadastrar o produto!', 'error')
-        return render_template("homepage.html", lista = readBD['data'], idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
+        return render_template("homepage.html", lista = readBD, idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
 
 @app.route("/categorias", methods=['POST'])
 def categoriaspost():
@@ -100,7 +99,6 @@ def editarCategoria():
 def excluirCategoria():
     id = request.form['id'] 
     response = d.deleteCategoria(id)
-    print(response)
     if response['status'] == 0:
         flash('Exclusão realizada com sucesso!', 'success')
         return redirect(url_for('categorias'))
@@ -121,10 +119,10 @@ def fornecedorespost():
     readBD = r.readFornecedor()
     if response['status'] == 0:
         flash('Cadastro realizado com sucesso!', 'success')
-        return render_template("fornecedores.html", lista = readBD['data'])
+        return redirect(url_for('fornecedores'))
     else:
         flash('Problema ao realizar o cadastro!', 'error')
-        return render_template("fornecedores.html", lista = readBD['data'])
+        return redirect(url_for('fornecedores'))
     
 @app.route('/editar/fornecedores', methods=['POST'])
 def editarFornecedor():
@@ -176,7 +174,6 @@ def editarProdutos():
 def excluirProdutos():
     id = request.form['id'] 
     response = d.deleteProdutos(id)
-    print(response)
     if response['status'] == 0:
         flash('Exclusão realizada com sucesso!', 'success')
         return redirect(url_for('homepage'))
@@ -215,9 +212,8 @@ def editarVendedores():
     username = request.form.get('username')
     email = request.form.get('email')
     senha = request.form.get('senha')
-    permissao = request.form.get('permissao')
+    permissao = 1 if request.form.get('permissao') == 'Administrador' else 2
     response = u.updateVendedores(int(id), name, username, email, senha, int(permissao))
-    print(response)
     if response['status'] == 0:
         flash('Edição realizada com sucesso!', 'success')
         return redirect(url_for('vendedores'))
@@ -245,6 +241,9 @@ def vendaspost():
     cd_produto = request.form.get('cod')
     cd_vendedor = request.form.get('codv')
     response = r.readProdutosID(cd_produto)
+    if int(response['data'][0]['quantidade']) - int(qntd) < 0:
+        flash('Impossível efetuar venda! Estoque de produtos  insuficiete', 'error')
+        return redirect(url_for('vendas'))
     readIdVendedor = r.readVender()
     data = dash.pegarDataAtual()
     readBD = dash.filtrarDados(r.readVendas(), data , 'venda')
@@ -252,16 +251,13 @@ def vendaspost():
     readIdProdutos = r.readProdutos()
     idvendedor = readIdVendedor['data']
     idProdutos = readIdProdutos['data']
-    if int(response['data'][0]['quantidade']) - int(qntd) < 0:
-        flash('Impossível efetuar venda! Estoque de produtos  insuficiete', 'error')
-        return render_template("vendas.html", lista = readBD, readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
     result = c.createVendas( int(qntd), int(cd_produto), int(cd_vendedor))   
     if result['status'] == 0:
         flash('Cadastro realizado com sucesso!', 'success')
         return redirect(url_for('vendas'))
     else:
         flash('Problema ao realizar o cadastro!', 'error')
-        return render_template("vendas.html", lista = readBD, readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
+        return redirect(url_for('vendas'))
 
 @app.route("/editar/vendas", methods=['POST'])
 def vendasupdate():
@@ -269,6 +265,10 @@ def vendasupdate():
     qntd = request.form.get('quantidadeVendas')
     cd_produto = request.form.get('idProduto')
     cd_vendedor = request.form.get('codVendedor')
+    response = r.readProdutosID(cd_produto)
+    if int(response['data'][0]['quantidade']) - int(qntd) < 0:
+        flash('Impossível efetuar venda! Estoque de produtos  insuficiete', 'error')
+        return redirect(url_for('vendas'))
     result = u.updateVendas( int(id), int(qntd), int(cd_produto))
     if result['status'] == 0:
         flash('Edição realizada com sucesso!', 'success')
@@ -282,11 +282,7 @@ def excluirVendas():
     id = request.form.get('vendasIdExclusao')
     id_produto = request.form.get('codProdutoEx')
     qntd = request.form.get('quantidadeVendasEX')
-    print(id)
-    print(id_produto)
-    print(qntd)
     response = d.deleteVendas(id, id_produto, qntd)
-    print(response)
     if response['status'] == 0:
         flash('Exclusão realizada com sucesso!', 'success')
         return redirect(url_for('vendas'))
@@ -307,7 +303,7 @@ def entradaspost():
         return redirect(url_for('entradas'))
     else:
         flash('Problema ao realizar a exclusão!', 'error')
-        return render_template("entradas.html", lista = readBD['data'], readIdFornecedor = idFornecedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+        return redirect(url_for('entradas'))
             
 @app.route("/editar/entradas", methods=['POST'])
 def entradasupdate():
@@ -348,12 +344,18 @@ def vendedores():
 
 @app.route("/homepage")
 def homepage():
-    readBD = utils.formatMoney(r.readProdutos())
+    produtos = r.readProdutos()
+    readBD = utils.formatMoney(produtos['data'])
     readIdCategory = r.readCategoria()
     readIdFornecedores = r.readFornecedor()
     idCategorias = readIdCategory['data']
     idFornecedores = readIdFornecedores['data']
-    return render_template("homepage.html", lista = readBD['data'], idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
+    produtosEscassos = ''
+    for produto in produtos['data']:
+        if produto['quantidade'] < 6:
+            produtosEscassos = produtosEscassos + f"{produto['nome']}, "
+            flash(f'Atenção: {produtosEscassos} esta(ão) acabando em seu estoque ', 'warning')
+    return render_template("homepage.html", lista = readBD, idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
   
 
 @app.route("/categorias")
@@ -374,7 +376,7 @@ def vendas():
 
 @app.route("/fornecedores")
 def fornecedores():
-    readBD = r.readFornecedor()
+    readBD = utils.formatTelefone(r.readFornecedor())
     return render_template("fornecedores.html",  lista = readBD['data'])
 
 @app.route("/entradas")
@@ -392,13 +394,15 @@ def entradas():
 def dashboard():
     dataAtual = dash.pegarDataAtual()
     dados_entrada = r.readEntradas()
-    dataFiltradosEntrada = dash.filtrarDados(dados_entrada, dataAtual, 'entrada')
     dados_venda = r.readVendas()
+    if (not dados_venda['data'] or not dados_entrada['data']):
+        flash('Cadastre  alguma Venda/Entrada', 'error')
+        return redirect(url_for('entradas'))
+    dataFiltradosEntrada = dash.filtrarDados(dados_entrada, dataAtual, 'entrada')
     dadosFiltradosVendas= dash.filtrarDados(dados_venda, dataAtual, 'venda')
     df_relacao = dash.unir_dados(dados_entrada['data'], dados_venda['data'])  
     produtos = r.readProdutos()
     categorias = r.readCategoria()
-
     graph = dash.criar_dashboard(df_relacao)
     lucro_por_categoria = dash.calcularLucro(dados_entrada, dados_venda, produtos, categorias)
     mes_atual = dash.getStringMes(dataAtual)
@@ -415,8 +419,9 @@ def FiltrarDashboard():
     produtos = r.readProdutos()
     categorias = r.readCategoria()
     mes_atual = dash.getStringMes(date)
-    if dadosFiltradosEntrada == 1 or dadosFiltradosVendas == 1:
 
+    if (dadosFiltradosEntrada and 'erro' in dadosFiltradosEntrada[0] and dadosFiltradosEntrada[0]['erro']) or \
+   (dadosFiltradosVendas and 'erro' in dadosFiltradosVendas[0] and dadosFiltradosVendas[0]['erro']):
         flash('Não há dados suficientes no mês escolhido!', 'error')
         return render_template('dashboard.html', mes=mes_atual, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
     
@@ -427,6 +432,13 @@ def FiltrarDashboard():
 
     return render_template('dashboard.html', mes=mes_atual, graph=graph, pie_graph=pie_graph, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
 
+@app.route('/download-vendas', methods=['GET'])
+def download_vendas():
+    dados = r.readVendas()
+    produtos = r.readProdutos()
+    excel_data = plh.criar_planilhas_por_mes(dados, produtos)
+
+    return send_file(excel_data, as_attachment=True, download_name="Vendas.xlsx", mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
 
 @app.route("/login")

@@ -334,3 +334,8 @@ td a.btn-delete:hover {
     background-color: #dc3545; 
     color: white;
 }
+
+.flash-message.warning{
+    background-color: rgb(220, 217, 53); 
+    color: white;
+}
