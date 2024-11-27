@@ -67,11 +67,12 @@ def pegarDataAtual():
 
 
 def criarDashboardLucro(labels, values):
-    pie_data = [go.Pie(labels=labels, values=values, textinfo='label+percent')]
+    pie_data = [go.Pie(labels=labels, values=values, textinfo='label+percent', textfont=dict(size=18) )]
     pie_layout = go.Layout(
         plot_bgcolor='rgba(0,0,0,0)',  
         paper_bgcolor='rgba(0,0,0,0)',  
-        margin=dict(l=0, r=0, t=40, b=0)  
+        margin=dict(l=0, r=0, t=40, b=0),
+        legend=dict(font=dict(size=20))
     )
     pie_fig = go.Figure(data=pie_data, layout=pie_layout)
 
@@ -104,8 +105,9 @@ def  criar_dashboard(df_relacao):
         width=800,
         plot_bgcolor='rgba(0,0,0,0)',  
         paper_bgcolor='rgba(0,0,0,0)',  
-        margin=dict(l=0, r=0, t=0, b=0)
-    )
+        margin=dict(l=0, r=0, t=0, b=0),
+        font=dict(size=18),  
+        legend=dict(font=dict(size=20))     )
     
    
     graph = fig.to_html(full_html=False)

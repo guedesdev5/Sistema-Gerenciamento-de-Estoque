@@ -1,6 +1,6 @@
 import requests
 
-urlBase = 'http://localhost:8500/apiGerenciamento/'
+urlBase = 'https://apigerenciamento.onrender.com/apiGerenciamento/'
 
 def deleteCategoria(id):
     EndPoint = urlBase + f'categorias/{id}'
@@ -14,6 +14,7 @@ def deleetFornecedor(id):
     EndPoint = urlBase + f'fornecedores/{id}'
     try:
         response = requests.delete(EndPoint)
+        print(response)
         return response.json()
     except Exception as e:
         return e

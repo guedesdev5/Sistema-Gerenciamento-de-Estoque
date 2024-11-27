@@ -1,7 +1,7 @@
 import requests
 from datetime import datetime
 
-urlBase = 'http://localhost:8500/apiGerenciamento/'
+urlBase = 'https://apigerenciamento.onrender.com/apiGerenciamento/'
 
 def createCategory(name, description):
     EndPoint = urlBase + 'categorias'
@@ -66,18 +66,14 @@ def createProdutos(id, name, description, price, quantity,  categoryID, supplier
     }
     try:
         response = requests.post(EndPoint, json=produto)
-        if response.status_code == 200:
-            return response.json()
-        else:
-            return response.json()
+        return response.json()
     except Exception as e:
         return e
 
 def createVendas(qntd, id_produto, id_vendedor):
     EndPoint = urlBase + 'vendas'
     
-    # Obtém a data atual diretamente do sistema
-    data_atual = datetime.utcnow().date()  # Usa UTC
+    data_atual = datetime.utcnow().date()  
     dataN = str(data_atual)
 
     venda = {

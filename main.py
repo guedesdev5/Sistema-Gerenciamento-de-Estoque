@@ -91,7 +91,7 @@ def excluirCategoria():
         flash('Exclusão realizada com sucesso!', 'success')
         return redirect(url_for('categorias'))
     elif (response['erro']['code'] == 'P2003'):
-        flash('Categortia  já atrtíbuida  algum produto. Impossível exclusão!', 'error')
+        flash('Categoria  já atrtíbuida  algum produto. Impossível exclusão!', 'error')
         return redirect(url_for('categorias'))
     else:
         flash('Problema ao realizar a exclusão!', 'error')
@@ -213,6 +213,7 @@ def editarVendedores():
 def excluirVendedoress():
     id = request.form['id'] 
     response = d.deleetVendedores(id)
+    print(response)
     if response['status'] == 0:
         flash('Exculsão realizada com sucesso!', 'success')
         return redirect(url_for('vendedores'))
@@ -354,12 +355,20 @@ def categorias():
 @app.route("/vendas")
 def vendas():
     data = dash.pegarDataAtual()
-    readBD = dash.filtrarDados(r.readVendas(), data , 'venda')
-    readBD = utils.formatDate(readBD ,'venda')
-    readIdVendedor = r.readVender()
-    readIdProdutos = r.readProdutos()
-    idvendedor = readIdVendedor['data']
-    idProdutos = readIdProdutos['data']
+    print("-----------------------------")
+    response = r.readVendas()
+    print(response['data'] )
+    if(response['data'] != []):
+        readBD = dash.filtrarDados(r.readVendas(), data , 'venda')
+        readBD = utils.formatDate(readBD ,'venda')
+        readIdVendedor = r.readVender()
+        readIdProdutos = r.readProdutos()
+        idvendedor = readIdVendedor['data']
+        idProdutos = readIdProdutos['data']
+    else:
+        readBD = " "
+        idvendedor = " "
+        idProdutos = " " 
     return render_template("vendas.html", lista = readBD, mes = dash.getStringMes(data), readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
 
 @app.route("/fornecedores")
@@ -371,20 +380,24 @@ def fornecedores():
 def entradas():
     data = dash.pegarDataAtual()
     readBDN = r.readEntradas()
-    readBD_Filtrado = dash.filtrarDados(readBDN, data , 'entrada')
-    format_money = utils.formatMoney(readBD_Filtrado)
-    readBD = utils.formatDate(format_money, 'entrada')
-    readFornecedor = r.readFornecedor()
-    readIdProdutos = r.readProdutos()
-    idFornecedor = readFornecedor['data']
-    idProdutos = readIdProdutos['data']
+    print(readBDN)
+    if (readBDN['data'] != []):
+        readBD_Filtrado = dash.filtrarDados(readBDN, data , 'entrada')
+        format_money = utils.formatMoney(readBD_Filtrado)
+        readBD = utils.formatDate(format_money, 'entrada')
+        readFornecedor = r.readFornecedor()
+        readIdProdutos = r.readProdutos()
+        idFornecedor = readFornecedor['data']
+        idProdutos = readIdProdutos['data']
+    else:
+        readBD = " "
+        idFornecedor = " "
+        idProdutos = " "
     return render_template("entradas.html", lista = readBD, mes = dash.getStringMes(data), readIdFornecedor = idFornecedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
     
 @app.route("/dashboard")
 def dashboard():
-    print('problema abaico')
     dataAtual = dash.pegarDataAtual()
-    print('passou')
     dados_entrada = r.readEntradas()
     dados_venda = r.readVendas()
     if (not dados_venda['data'] or not dados_entrada['data']):

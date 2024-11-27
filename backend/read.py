@@ -1,6 +1,6 @@
 import requests
 
-urlBase = 'http://localhost:8500/apiGerenciamento/'
+urlBase = 'https://apigerenciamento.onrender.com/apiGerenciamento/'
 
 def readProdutos ():
     EndPoint = urlBase + 'produtos'
