@@ -213,7 +213,6 @@ def editarVendedores():
 def excluirVendedoress():
     id = request.form['id'] 
     response = d.deleetVendedores(id)
-    print(response)
     if response['status'] == 0:
         flash('Exculsão realizada com sucesso!', 'success')
         return redirect(url_for('vendedores'))
@@ -355,9 +354,7 @@ def categorias():
 @app.route("/vendas")
 def vendas():
     data = dash.pegarDataAtual()
-    print("-----------------------------")
     response = r.readVendas()
-    print(response['data'] )
     if(response['data'] != []):
         readBD = dash.filtrarDados(r.readVendas(), data , 'venda')
         readBD = utils.formatDate(readBD ,'venda')
@@ -380,7 +377,6 @@ def fornecedores():
 def entradas():
     data = dash.pegarDataAtual()
     readBDN = r.readEntradas()
-    print(readBDN)
     if (readBDN['data'] != []):
         readBD_Filtrado = dash.filtrarDados(readBDN, data , 'entrada')
         format_money = utils.formatMoney(readBD_Filtrado)
@@ -451,4 +447,5 @@ def loginO():
     return render_template("login.html")
 
 if __name__ == "__main__":
-    app.run(port = 1404, debug = True)
+    app.run(host='0.0.0.0', port=1404)
+

@@ -8,7 +8,6 @@ def login(username, senha):
        
         for usuario in dados['data']:
             if usuario['username'] == username and usuario['senha'] == senha:
-                print(usuario['permissao'])
                 return usuario['permissao']
         return 9
     else:

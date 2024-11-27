@@ -14,7 +14,6 @@ def deleetFornecedor(id):
     EndPoint = urlBase + f'fornecedores/{id}'
     try:
         response = requests.delete(EndPoint)
-        print(response)
         return response.json()
     except Exception as e:
         return e
