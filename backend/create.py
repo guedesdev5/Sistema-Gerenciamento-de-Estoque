@@ -1,7 +1,7 @@
 import requests
 from datetime import datetime
 
-urlBase = 'https://apigerenciamento.onrender.com/apiGerenciamento/'
+urlBase = 'https://apiigerenciamento.onrender.com/apiGerenciamento/'
 
 def createCategory(name, description):
     EndPoint = urlBase + 'categorias'

@@ -1,6 +1,6 @@
 import requests
 
-urlBase = 'https://apigerenciamento.onrender.com/apiGerenciamento/'
+urlBase = 'https://apiigerenciamento.onrender.com/apiGerenciamento/'
 
 def deleteCategoria(id):
     EndPoint = urlBase + f'categorias/{id}'

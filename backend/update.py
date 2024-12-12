@@ -1,7 +1,7 @@
 import requests
 import backend.read as r
 
-urlBase = 'https://apigerenciamento.onrender.com/apiGerenciamento/'
+urlBase = 'https://apiigerenciamento.onrender.com/apiGerenciamento/'
     
 def updateProductQntd(id, quantity):
     EndPoint = urlBase + f'produtos/{id}'
