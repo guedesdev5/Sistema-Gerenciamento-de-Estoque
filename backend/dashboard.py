@@ -55,11 +55,14 @@ def calcularLucro(dados_entrada, dados_venda, produtos, categorias):
     return lucroCategorias
 
 def filtrarDados(response, data, tipo):
-    filtered_data = [item for item in response['data'] if item[f'data_{tipo}'].startswith(data)]
-    if filtered_data:
-        return filtered_data
-    response['data'][0]['erro'] =1
-    return response['data']
+    if response['data'] != []:    
+        filtered_data = [item for item in response['data'] if item[f'data_{tipo}'].startswith(data)]
+        if filtered_data:
+            return filtered_data
+        response['data'][0]['erro'] =1
+        return response['data']
+    
+    return []
 
 def pegarDataAtual():
     data_atual = datetime.utcnow().date()  # Usa UTC

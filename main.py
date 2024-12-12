@@ -363,7 +363,6 @@ def categorias():
 def vendas():
     try:
         data = dash.pegarDataAtual()
-        response = r.readVendas()
         readBD = dash.filtrarDados(r.readVendas(), data , 'venda')
         readBD = utils.formatDate(readBD ,'venda')
         readIdVendedor = r.readVender()
@@ -384,9 +383,9 @@ def fornecedores():
 
 @app.route("/entradas")
 def entradas():
-    data = dash.pegarDataAtual()
-    readBDN = r.readEntradas()
-    if (readBDN['data'] != []):
+    try:
+        data = dash.pegarDataAtual()
+        readBDN = r.readEntradas()
         readBD_Filtrado = dash.filtrarDados(readBDN, data , 'entrada')
         format_money = utils.formatMoney(readBD_Filtrado)
         readBD = utils.formatDate(format_money, 'entrada')
@@ -394,11 +393,14 @@ def entradas():
         readIdProdutos = r.readProdutos()
         idFornecedor = readFornecedor['data']
         idProdutos = readIdProdutos['data']
-    else:
+    
+    except:
         readBD = " "
         idFornecedor = " "
         idProdutos = " "
-    return render_template("entradas.html", lista = readBD, mes = dash.getStringMes(data), readIdFornecedor = idFornecedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+    
+    finally:
+        return render_template("entradas.html", lista = readBD, mes = dash.getStringMes(data), readIdFornecedor = idFornecedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
     
 @app.route("/dashboard")
 def dashboard():
