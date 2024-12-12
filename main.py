@@ -23,6 +23,8 @@ def login():
     username = request.form.get('username')
     password = request.form.get('password')
     login = l.login(username, password)
+    print(login)
+    print('-------------')
     if login != 9:
         
         if login == 1:
@@ -359,20 +361,21 @@ def categorias():
 
 @app.route("/vendas")
 def vendas():
-    data = dash.pegarDataAtual()
-    response = r.readVendas()
-    if(response['data'] != []):
+    try:
+        data = dash.pegarDataAtual()
+        response = r.readVendas()
         readBD = dash.filtrarDados(r.readVendas(), data , 'venda')
         readBD = utils.formatDate(readBD ,'venda')
         readIdVendedor = r.readVender()
         readIdProdutos = r.readProdutos()
         idvendedor = readIdVendedor['data']
         idProdutos = readIdProdutos['data']
-    else:
+    except:
         readBD = " "
         idvendedor = " "
         idProdutos = " " 
-    return render_template("vendas.html", lista = readBD, mes = dash.getStringMes(data), readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
+    finally:
+        return render_template("vendas.html", lista = readBD, mes = dash.getStringMes(data), readIdVendedor = idvendedor, readIdProdutos = idProdutos, permissionUser =  app.config.get('PERMISSION_USER', 'default_permission'))
 
 @app.route("/fornecedores")
 def fornecedores():
