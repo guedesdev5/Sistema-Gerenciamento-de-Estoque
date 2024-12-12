@@ -332,18 +332,24 @@ def vendedores():
 
 @app.route("/homepage")
 def homepage():
-    produtos = r.readProdutos()
-    readBD = utils.formatMoney(produtos['data'])
-    readIdCategory = r.readCategoria()
-    readIdFornecedores = r.readFornecedor()
-    idCategorias = readIdCategory['data']
-    idFornecedores = readIdFornecedores['data']
-    produtosEscassos = ''
-    for produto in produtos['data']:
-        if produto['quantidade'] < 6:
-            produtosEscassos = produtosEscassos + f"{produto['nome']}, "
-            flash(f'Atenção: {produtosEscassos} esta(ão) acabando em seu estoque ', 'warning')
-    return render_template("homepage.html", lista = readBD, idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
+    try:
+        produtos = r.readProdutos()
+        readBD = utils.formatMoney(produtos['data'])
+        readIdCategory = r.readCategoria()
+        readIdFornecedores = r.readFornecedor()
+        idCategorias = readIdCategory['data']
+        idFornecedores = readIdFornecedores['data']
+        produtosEscassos = ''
+        for produto in produtos['data']:
+            if produto['quantidade'] < 6:
+                produtosEscassos = produtosEscassos + f"{produto['nome']}, "
+                flash(f'Atenção: {produtosEscassos} esta(ão) acabando em seu estoque ', 'warning')
+    except:
+        readBD = []
+        idCategorias = []
+        idFornecedores = []
+    finally:
+        return render_template("homepage.html", lista = readBD, idCategory = idCategorias, readIdFornecedores = idFornecedores, permissionUser = app.config.get('PERMISSION_USER', 'default_permission'))
   
 
 @app.route("/categorias")
